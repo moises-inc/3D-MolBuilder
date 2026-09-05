@@ -7,9 +7,9 @@
   "author": "Moisés Amundarain Romero & PIDE VcM Team",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "dev": "vite --config config/vite.config.ts",
+    "build": "tsc -b config/tsconfig.json && vite build --config config/vite.config.ts",
+    "preview": "vite preview --config config/vite.config.ts"
   },
   "dependencies": {
     "canvas-confetti": "^1.9.4",
@@ -20,6 +20,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
+    "@types/node": "^26.4.1",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.179.0",
