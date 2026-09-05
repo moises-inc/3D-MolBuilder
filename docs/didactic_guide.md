@@ -1,0 +1,55 @@
+# Guía Didáctica y Manual del Monitor — PIDE VcM 3D MolBuilder
+
+**Universidad San Sebastián (USS) — Vinculación con el Medio (VcM)**  
+**Facultad de Ciencias de la Salud / Escuela de Química y Farmacia (QyF)**  
+
+---
+
+## 🏛️ 1. Presentación Institucional
+
+El **Taller de Armado Molecular 3D MolBuilder** es un proyecto de extensión científica y Vinculación con el Medio (VcM) ideado para las ferias escolares USS de **Septiembre y Octubre de 2026**. Su objetivo es articular los contenidos teóricos de la asignatura de **Química General (DQUI1056)** con la educación media (3° y 4° Medio), promoviendo el razonamiento espacial 3D, la comprensión del modelo RPECV (VSEPR), la polaridad molecular y las aplicaciones cotidianas de la química.
+
+### 👥 Equipo Directivo y Autores:
+* **Autor Principal & Arquitecto de Software:** Moisés Amundarain Romero.
+* **Co-Autores Científicos:** Gamaliel Cisternas Herrera y Diego Pavez Gallardo (Estudiantes de Química y Farmacia USS).
+* **Profesora Guía & Líder Académica:** Dra. Fabiola Acuña Sanhueza (Profesora de Química General USS).
+
+---
+
+## 🎮 2. Dinámica del Taller por Rondas
+
+La experiencia se divide en 4 etapas por ronda de competencia:
+
+```
+[1. Exposición 3D y Ficha] ➔ [2. Armado Físico en Mesa] ➔ [3. Trivia Escolar +100pt] ➔ [4. Validación y Podio]
+```
+
+1. **Exposición Visual (1 minuto):**
+   - El proyector muestra la molécula 3D interactiva en Three.js.
+   - El monitor presenta la molécula con un dato curioso cotidiano (ej: ¿por qué el hielo flota en el agua? o ¿por qué la acetona disuelve la plumavit?).
+
+2. **Ensamblado Físico (60 a 150 segundos):**
+   - El equipo de estudiantes recibe la bandeja de esferas (Carbono=Negro, Hidrógeno=Blanco, Oxígeno=Rojo, Nitrógeno=Azul).
+   - Arman la molécula atendiendo a la geometría correcta ($sp^3, sp^2, sp$) y los conectores (cortos rígidos para enlaces simples, largos flexibles para enlaces dobles).
+
+3. **Trivia de Bonificación:**
+   - Estudiantes responden en pantalla la pregunta didáctica. Un acierto otorga **+100 puntos inmediatos**.
+
+4. **Validación del Monitor QyF:**
+   - El estudiante monitor de QyF revisa la estructura física en la mesa.
+   - Al pulsar "Validar Armado", la plataforma calcula el puntaje final y desata la animación de celebraciones con confeti.
+
+---
+
+## 🧪 3. Matriz de Kits Físicos y Consejos de Montaje
+
+| Compuesto | Esferas | Conectores | Consejo de Montaje para Monitores |
+| :--- | :--- | :--- | :--- |
+| **Agua ($\text{H}_2\text{O}$)** | 1 O (Rojo), 2 H (Blanco) | 2 Cortos Rígidos | Verificar que no quede en 180°. Debe usar orificios angulares ($\sim 105^\circ$). |
+| **Dióxido de Carbono ($\text{CO}_2$)** | 1 C (Negro), 2 O (Rojo) | 4 Largos Flexibles | Utilizar 2 conectores curvos por enlace $\text{C=O}$ y verificar geometría lineal ($180^\circ$). |
+| **Metano ($\text{CH}_4$)** | 1 C (Negro), 4 H (Blanco) | 4 Cortos Rígidos | Usar los 4 orificios tetraédricos ($109.5^\circ$) de la esfera negra. |
+| **Amoníaco ($\text{NH}_3$)** | 1 N (Azul), 3 H (Blanco) | 3 Cortos Rígidos | Formar una pirámide tripoidal hacia abajo, dejando libre el par solitario superior. |
+| **Etanol ($\text{C}_2\text{H}_6\text{O}$)** | 2 C, 6 H, 1 O | 8 Cortos Rígidos | Armar primero la cadena $\text{C-C-O}$, luego añadir la cabeza $\text{-OH}$ y los hidrógenos alifáticos. |
+| **Acetona ($\text{C}_3\text{H}_6\text{O}$)** | 3 C, 6 H, 1 O | 8 Cortos, 2 Flexibles | Usar los 2 conectores flexibles en el carbono central ($\text{C=O}$ $sp^2$ trigonal plano). |
+| **Ácido Acético ($\text{C}_2\text{H}_4\text{O}_2$)** | 2 C, 4 H, 2 O | 5 Cortos, 2 Flexibles | El $\text{H}$ ácido se une al $\text{-O-}$ simple, **no** al $\text{C=O}$ carbonílico. |
+| **Acetato de Etilo ($\text{C}_4\text{H}_8\text{O}_2$)** | 4 C, 8 H, 2 O | 11 Cortos, 2 Flexibles | Ensamblar en dos bloques: acetilo ($\text{CH}_3\text{C=O}$) y etoxilo ($\text{-O-CH}_2\text{CH}_3$). |

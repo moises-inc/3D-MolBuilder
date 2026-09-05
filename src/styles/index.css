@@ -1,0 +1,102 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg-oled: #000000;
+  --panel-oled: #080c0e;
+  --card-oled: #0e161b;
+  --line-oled: #1c2b33;
+  --line-highlight: #2a3e49;
+  --cyan-pide: #5de1e5;
+  --amber-pide: #efb65f;
+  --emerald-pide: #38ef7d;
+  --rose-pide: #ff4d6d;
+  --uss-blue: #00205B;
+  --uss-gold: #D4AF37;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-oled);
+  color: #f1f5f9;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* Monospace font for data chips and metrics */
+.font-mono-num {
+  font-family: 'IBM Plex Mono', monospace;
+  font-feature-settings: 'tnum' on, 'zero' on;
+}
+
+/* Glassmorphism custom utilities */
+.glass-panel {
+  background: rgba(12, 18, 22, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--line-oled);
+}
+
+.glass-panel-elevated {
+  background: rgba(16, 25, 31, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--line-highlight);
+  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.7);
+}
+
+/* Neon glow accents */
+.glow-cyan {
+  box-shadow: 0 0 20px rgba(93, 225, 229, 0.2);
+}
+
+.glow-amber {
+  box-shadow: 0 0 20px rgba(239, 182, 95, 0.2);
+}
+
+.glow-emerald {
+  box-shadow: 0 0 20px rgba(56, 239, 125, 0.25);
+}
+
+.glow-uss {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #040708;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1c2b33;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2a3e49;
+}
+
+/* Pulsing alert animation for low timer */
+@keyframes pulse-danger {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+    border-color: rgba(239, 68, 68, 0.6);
+  }
+  50% {
+    box-shadow: 0 0 25px 4px rgba(239, 68, 68, 0.8);
+    border-color: rgba(239, 68, 68, 1);
+  }
+}
+
+.animate-pulse-danger {
+  animation: pulse-danger 1s infinite ease-in-out;
+}
