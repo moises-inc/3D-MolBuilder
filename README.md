@@ -20,7 +20,6 @@ Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos
   - **Gamaliel Cisternas Herrera** (Estudiante de Química y Farmacia USS)
   - **Diego Pavez Gallardo** (Estudiante de Química y Farmacia USS)
 * **Profesora Guía & Líder Académica:** **Dra. Fabiola Acuña Sanhueza** (Docente de Química General USS)
-* **Entidad Colaboradora:** Coordinación VcM USS & Escuela de Química y Farmacia (QyF USS)
 
 ---
 
