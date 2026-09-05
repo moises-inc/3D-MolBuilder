@@ -5,7 +5,7 @@
   "type": "module",
   "description": "Interactive 3D Molecular Builder & Gamification App for USS VcM High-School Science Fairs",
   "author": "Moisés Amundarain Romero & PIDE VcM Team",
-  "license": "MIT",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
