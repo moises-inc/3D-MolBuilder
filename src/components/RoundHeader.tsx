@@ -76,19 +76,15 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Brand & Round Selector */}
         <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
-          <div className="flex items-center gap-2.5">
-            <div className="w-9 h-9 rounded-lg bg-uss-blue border border-uss-gold/60 flex items-center justify-center font-bold text-uss-gold shadow-md">
-              USS
-            </div>
-            <div>
-              <div className="flex items-center gap-1.5">
-                <span className="text-xs font-bold text-slate-100 tracking-wide uppercase">PIDE VcM</span>
-                <span className="text-[10px] px-1.5 py-0.2 bg-uss-gold/20 text-uss-goldBright font-mono font-bold rounded border border-uss-gold/30">
-                  3D MolBuilder
-                </span>
-              </div>
-              <p className="text-[10px] text-slate-400 font-mono">Feria Escolar de Química</p>
-            </div>
+          <div className="flex items-center gap-3">
+            <img 
+              src="/assets/uss_shield.png" 
+              alt="Universidad San Sebastián" 
+              className="h-9 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.45)] drop-shadow-[0_2px_6px_rgba(0,32,91,0.6)] select-none"
+            />
+            <span className="font-mono text-base font-bold text-pide-cyan tracking-wider select-none">
+              3D MolBuilder
+            </span>
           </div>
 
           <div className="h-6 w-px bg-oled-border hidden md:block" />

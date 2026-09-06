@@ -104,7 +104,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full bg-oled-card rounded-xl border border-oled-border overflow-hidden">
+    <div className="flex flex-col flex-1 min-h-[380px] h-full bg-oled-card rounded-xl border border-oled-border overflow-hidden">
       {/* Panel Header */}
       <div className="p-3.5 border-b border-oled-border bg-gradient-to-r from-oled-panel to-oled-card flex items-center justify-between">
         <div className="flex items-center gap-2">

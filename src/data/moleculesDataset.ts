@@ -460,8 +460,8 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     },
     kitFisico: {
       esferas: { C: 2, H: 4, O: 2 },
-      conectores: { cortosRigidos: 5, largosFlexibles: 2 },
-      descripcionConectores: '7 conectores: 2 flexibles para el doble enlace C=O y 5 cortos rígidos para enlaces simples.',
+      conectores: { cortosRigidos: 6, largosFlexibles: 2 },
+      descripcionConectores: '8 conectores: 2 flexibles para el doble enlace C=O y 6 cortos rígidos para enlaces simples.',
       tipsArmado: 'El carbono carboxílico central se une a 2 oxígenos distintos: uno con doble enlace (2 conectores flexibles) y otro con enlace simple (1 conector rígido). ¡El hidrógeno ácido debe ir conectado al oxígeno simple, no al carbono!',
     },
     trivia: {
@@ -540,8 +540,8 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     },
     kitFisico: {
       esferas: { C: 4, H: 8, O: 2 },
-      conectores: { cortosRigidos: 11, largosFlexibles: 2 },
-      descripcionConectores: '13 conectores: 2 flexibles para el doble enlace C=O y 11 cortos rígidos para enlaces simples.',
+      conectores: { cortosRigidos: 12, largosFlexibles: 2 },
+      descripcionConectores: '14 conectores: 2 flexibles para el doble enlace C=O y 12 cortos rígidos para enlaces simples.',
       tipsArmado: '¡Desafío Avanzado de 14 átomos! Divide y vencerás: 1° Construye el grupo acetilo izquierdo (CH3-C=O con 2 flexibles en el doble enlace), 2° Conecta el oxígeno puente (-O-), 3° Añade el grupo etilo derecho (-CH2-CH3) en el otro extremo del oxígeno puente. ¡No conectes los dos oxígenos juntos!',
     },
     trivia: {

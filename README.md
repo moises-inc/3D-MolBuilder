@@ -1,4 +1,4 @@
-# 🧪 🧩 PIDE VcM 3D MolBuilder
+# 🧪 🧩 3D MolBuilder
 
 [![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=111827)](https://react.dev/)
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
@@ -7,7 +7,7 @@
 [![Offline Deterministic](https://img.shields.io/badge/Runtime-100%25%20offline%20%7C%20deterministic-111827)](docs/architecture.md)
 [![License AGPLv3](https://img.shields.io/badge/License-AGPLv3-00e676.svg)](LICENSE)
 
-**PIDE VcM 3D MolBuilder** es una aplicación interactiva tridimensional y plataforma gamificada de armado molecular, desarrollada específicamente para las ferias y talleres de extensión científica de **Vinculación con el Medio (VcM)** de la **Universidad San Sebastián (USS)**.
+**3D MolBuilder** es una aplicación interactiva tridimensional y plataforma gamificada de armado molecular, desarrollada específicamente para las ferias y talleres de extensión científica de **Vinculación con el Medio (VcM)** de la **Universidad San Sebastián (USS)**.
 
 Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos visualizando estructuras moleculares 3D analíticas (CPK, Van der Waals, Malla 3D), consultando fichas didácticas de química cotidiana y replicando el ensamblado físico con kits de esferas y conectores moleculares contra reloj.
 
@@ -53,8 +53,8 @@ Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos
 | **04** | **Amoníaco** *(Bonus)* | $\text{NH}_3$ | 17.03 g/mol | Piramidal trigonal ($107.3^\circ$) | Polar ($1.47$ D) | Fácil | 60s | 3 simples (cortos rígidos) |
 | **05** | **Etanol** | $\text{C}_2\text{H}_6\text{O}$ | 46.07 g/mol | Tetraédrica / Angular | Polar ($1.69$ D) | Intermedio | 90s | 8 simples (cortos rígidos) |
 | **06** | **Acetona** | $\text{C}_3\text{H}_6\text{O}$ | 58.08 g/mol | Trigonal plana ($\text{C=O}$) | Polar ($2.88$ D) | Intermedio | 90s | 1 doble ($\text{C=O}$), 8 simples |
-| **07** | **Ácido Acético** *(Bonus)* | $\text{C}_2\text{H}_4\text{O}_2$ | 60.05 g/mol | Trigonal / Angular | Polar ($1.74$ D) | Intermedio | 90s | 1 doble ($\text{C=O}$), 5 simples |
-| **08** | **Acetato de Etilo** | $\text{C}_4\text{H}_8\text{O}_2$ | 88.11 g/mol | Trigonal / Angular / Tet. | Polar ($1.78$ D) | Avanzado | 150s | 1 doble ($\text{C=O}$), 11 simples |
+| **07** | **Ácido Acético** *(Bonus)* | $\text{C}_2\text{H}_4\text{O}_2$ | 60.05 g/mol | Trigonal / Angular | Polar ($1.74$ D) | Intermedio | 90s | 1 doble ($\text{C=O}$, 2 flexibles), 6 simples |
+| **08** | **Acetato de Etilo** | $\text{C}_4\text{H}_8\text{O}_2$ | 88.11 g/mol | Trigonal / Angular / Tet. | Polar ($1.78$ D) | Avanzado | 150s | 1 doble ($\text{C=O}$, 2 flexibles), 12 simples |
 
 ---
 

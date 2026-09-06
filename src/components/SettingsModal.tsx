@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Settings, X, Plus, Trash2, RotateCcw, Info, Check } from 'lucide-react';
+import { Settings, X, Plus, Trash2, RotateCcw, Check } from 'lucide-react';
 import { TeamScore } from '../types/game';
 
 interface SettingsModalProps {
@@ -128,17 +128,6 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Reiniciar Torneo Escolar</span>
             </button>
-          </div>
-
-          {/* Institutional Credits */}
-          <div className="p-3 bg-uss-blue/30 border border-uss-gold/30 rounded-xl space-y-1">
-            <div className="flex items-center gap-1.5 text-uss-goldBright font-bold text-[11px]">
-              <Info className="w-3.5 h-3.5" />
-              <span>PIDE VcM 3D MolBuilder — Universidad San Sebastián</span>
-            </div>
-            <p className="text-slate-300 text-[11px] leading-relaxed">
-              Desarrollado para las ferias de Vinculación con el Medio (25 de Septiembre y 6 de Octubre). Arquitectura desacoplada en React 19 + Three.js con representación CPK estándar.
-            </p>
           </div>
         </div>
 

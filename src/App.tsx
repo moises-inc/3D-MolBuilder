@@ -66,6 +66,23 @@ export const App: React.FC = () => {
     trivia: 0,
   });
 
+  // Auto-unlock Web Audio API on first user gesture to overcome browser autoplay restrictions
+  useEffect(() => {
+    const handleFirstGesture = () => {
+      sounds.unlockAudio();
+    };
+
+    window.addEventListener('click', handleFirstGesture, { once: true });
+    window.addEventListener('pointerdown', handleFirstGesture, { once: true });
+    window.addEventListener('keydown', handleFirstGesture, { once: true });
+
+    return () => {
+      window.removeEventListener('click', handleFirstGesture);
+      window.removeEventListener('pointerdown', handleFirstGesture);
+      window.removeEventListener('keydown', handleFirstGesture);
+    };
+  }, []);
+
   // Reset timer whenever molecule changes
   useEffect(() => {
     setTimeLeft(currentMolecule.timeLimitSeconds);
@@ -250,7 +267,7 @@ export const App: React.FC = () => {
           </div>
 
           {/* Bottom Half: Physical Kit Assembly Checklist & Validation */}
-          <div className="h-[290px]">
+          <div className="flex-1 min-h-[380px] flex flex-col">
             <KitValidationPanel
               molecule={currentMolecule}
               timeLeft={timeLeft}

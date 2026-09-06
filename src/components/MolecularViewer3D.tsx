@@ -104,7 +104,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     // OrbitControls
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
-    controls.dampingFactor = 0.07;
+    controls.dampingFactor = 0.05;
     controls.rotateSpeed = 0.8;
     controls.zoomSpeed = 1.0;
     controls.minDistance = 2.5;
@@ -311,8 +311,8 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       } else {
         material = new THREE.MeshPhysicalMaterial({
           color: baseColor,
-          roughness: atom.symbol === 'C' ? 0.35 : 0.22,
-          metalness: 0.12,
+          roughness: 0.25,
+          metalness: 0.1,
           clearcoat: 0.35,
           clearcoatRoughness: 0.15,
           reflectivity: 0.6,
@@ -376,10 +376,12 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
               opacity: 0.6,
             });
           } else {
-            bondMat = new THREE.MeshStandardMaterial({
+            bondMat = new THREE.MeshPhysicalMaterial({
               color: 0x94a3b8, // sleek metallic titanium
-              roughness: 0.35,
-              metalness: 0.4,
+              roughness: 0.25,
+              metalness: 0.1,
+              clearcoat: 0.35,
+              clearcoatRoughness: 0.15,
             });
           }
 

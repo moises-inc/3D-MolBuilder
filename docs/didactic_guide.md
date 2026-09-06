@@ -1,4 +1,4 @@
-# Guía Didáctica y Manual del Monitor — PIDE VcM 3D MolBuilder
+# Guía Didáctica y Manual del Monitor — 3D MolBuilder
 
 **Universidad San Sebastián (USS) — Vinculación con el Medio (VcM)**  
 **Facultad de Ciencias de la Salud / Escuela de Química y Farmacia (QyF)**  
@@ -51,5 +51,5 @@ La experiencia se divide en 4 etapas por ronda de competencia:
 | **Amoníaco ($\text{NH}_3$)** | 1 N (Azul), 3 H (Blanco) | 3 Cortos Rígidos | Formar una pirámide tripoidal hacia abajo, dejando libre el par solitario superior. |
 | **Etanol ($\text{C}_2\text{H}_6\text{O}$)** | 2 C, 6 H, 1 O | 8 Cortos Rígidos | Armar primero la cadena $\text{C-C-O}$, luego añadir la cabeza $\text{-OH}$ y los hidrógenos alifáticos. |
 | **Acetona ($\text{C}_3\text{H}_6\text{O}$)** | 3 C, 6 H, 1 O | 8 Cortos, 2 Flexibles | Usar los 2 conectores flexibles en el carbono central ($\text{C=O}$ $sp^2$ trigonal plano). |
-| **Ácido Acético ($\text{C}_2\text{H}_4\text{O}_2$)** | 2 C, 4 H, 2 O | 5 Cortos, 2 Flexibles | El $\text{H}$ ácido se une al $\text{-O-}$ simple, **no** al $\text{C=O}$ carbonílico. |
-| **Acetato de Etilo ($\text{C}_4\text{H}_8\text{O}_2$)** | 4 C, 8 H, 2 O | 11 Cortos, 2 Flexibles | Ensamblar en dos bloques: acetilo ($\text{CH}_3\text{C=O}$) y etoxilo ($\text{-O-CH}_2\text{CH}_3$). |
+| **Ácido Acético ($\text{C}_2\text{H}_4\text{O}_2$)** | 2 C, 4 H, 2 O | 6 Cortos, 2 Flexibles | El $\text{H}$ ácido se une al $\text{-O-}$ simple, **no** al $\text{C=O}$ carbonílico. |
+| **Acetato de Etilo ($\text{C}_4\text{H}_8\text{O}_2$)** | 4 C, 8 H, 2 O | 12 Cortos, 2 Flexibles | Ensamblar en dos bloques: acetilo ($\text{CH}_3\text{C=O}$) y etoxilo ($\text{-O-CH}_2\text{CH}_3$). |

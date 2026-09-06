@@ -20,6 +20,21 @@ class SoundSynthesizer {
     return this.ctx;
   }
 
+  /**
+   * Resumes or initializes AudioContext on the first user interaction,
+   * overcoming browser autoplay restrictions.
+   */
+  unlockAudio(): void {
+    try {
+      const ctx = this.getContext();
+      if (ctx && ctx.state === 'suspended') {
+        ctx.resume();
+      }
+    } catch {
+      // Ignore audio failure in non-interactive environments
+    }
+  }
+
   // Soft beep for timer tick under 10 seconds
   playTick() {
     try {
