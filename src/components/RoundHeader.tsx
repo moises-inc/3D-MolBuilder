@@ -8,12 +8,15 @@ import {
   Users, 
   Settings, 
   ChevronLeft, 
-  ChevronRight,
-  Flame,
-  Award
+  ChevronRight, 
+  Flame, 
+  Award,
+  Tv,
+  QrCode
 } from 'lucide-react';
 import { MoleculeData } from '../types/chemistry';
 import { TeamScore } from '../types/game';
+import { ConnectionStatus } from '../utils/socketSync';
 
 interface RoundHeaderProps {
   currentMolecule: MoleculeData;
@@ -29,6 +32,10 @@ interface RoundHeaderProps {
   onSelectTeam: (teamId: string) => void;
   onOpenSettings: () => void;
   onOpenLeaderboard: () => void;
+  syncStatus?: ConnectionStatus;
+  connectedCount?: number;
+  onSwitchToProjector?: () => void;
+  onOpenSyncQR?: () => void;
 }
 
 export const RoundHeader: React.FC<RoundHeaderProps> = ({
@@ -45,6 +52,10 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
   onSelectTeam,
   onOpenSettings,
   onOpenLeaderboard,
+  syncStatus = 'offline',
+  connectedCount = 1,
+  onSwitchToProjector,
+  onOpenSyncQR,
 }) => {
   const maxTime = currentMolecule.timeLimitSeconds;
   const progressPercent = Math.max(0, Math.min(100, (timeLeft / maxTime) * 100));
@@ -193,6 +204,46 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
           >
             <Award className="w-4 h-4 text-pide-cyan" />
           </button>
+
+          {/* Fallback QR Modal Button */}
+          {onOpenSyncQR && (
+            <button
+              onClick={onOpenSyncQR}
+              className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-amber-300 hover:text-white hover:border-amber-500/60 transition-colors"
+              title="Generar Código QR y Código Corto de Mesa"
+            >
+              <QrCode className="w-4 h-4" />
+            </button>
+          )}
+
+          {/* Switch to Projector Mode Button */}
+          {onSwitchToProjector && (
+            <button
+              onClick={onSwitchToProjector}
+              className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-cyan-300 hover:text-white hover:border-cyan-500/60 transition-colors flex items-center gap-1 text-xs font-semibold"
+              title="Conmutar a Modo Proyector Central"
+            >
+              <Tv className="w-4 h-4 text-pide-cyan" />
+              <span className="hidden sm:inline">Proyector</span>
+            </button>
+          )}
+
+          {/* LAN Connection LED Indicator */}
+          <div 
+            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-oled-panel border border-oled-border text-[11px] font-mono cursor-help"
+            title={syncStatus === 'connected' ? `Conectado a Red LAN en tiempo real (${connectedCount} dispositivos)` : 'Modo Local Offline / Respaldo QR Activo'}
+          >
+            <span 
+              className={`w-2 h-2 rounded-full ${
+                syncStatus === 'connected' 
+                  ? 'bg-emerald-400 shadow-[0_0_8px_#38ef7d] animate-pulse' 
+                  : 'bg-amber-400 shadow-[0_0_8px_#efb65f]'
+              }`} 
+            />
+            <span className="text-slate-300 hidden lg:inline">
+              {syncStatus === 'connected' ? 'LAN' : 'QR'}
+            </span>
+          </div>
 
           {/* Settings Button */}
           <button

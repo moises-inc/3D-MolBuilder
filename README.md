@@ -73,10 +73,13 @@ cd 3D-MolBuilder
 # Instalar dependencias
 npm install
 
-# Iniciar servidor de desarrollo
+# Iniciar servidor de desarrollo en estación individual
 npm run dev
+
+# Iniciar en MODO LAN MULTIDISPOSITIVO (Servidor Socket.io + Vite en red)
+npm run dev:lan
 ```
-Accede a la aplicación en `http://localhost:5173/` (o la dirección que indique Vite en consola).
+Accede a la aplicación en `http://localhost:5173/` para estaciones de mesa o `http://localhost:5173/?role=master` para el proyector principal.
 
 ### Compilación para Producción (Offline):
 ```bash
@@ -86,8 +89,19 @@ Genera la carpeta `dist/` estática optimizada para ser proyectada en cualquier 
 
 ---
 
+## 🌐 Modo Compartido Multidispositivo (Ferias Escolares VcM)
+
+La aplicación soporta despliegue colaborativo en tiempo real mediante dos modalidades:
+1. **Sincronización en Vivo por Red LAN (Socket.io):** Conecta las mesas de los estudiantes al proyector principal en tiempo real sin requerir internet. Los puntajes, trivias y confeti se sincronizan al instante en el auditorio.
+2. **Modo Respaldo por Código QR y Código Corto de 6 Dígitos:** Si no hay señal Wi-Fi, la mesa genera un código QR SVG y una clave alfanumérica (ej. `ALFA-850`) que el monitor puede ingresar en la pantalla central para acreditar los puntos manualmente.
+
+Para instrucciones completas de configuración de red y pruebas, consulta la **[Guía de Sincronización Multidispositivo](docs/multi_device_guide.md)**.
+
+---
+
 ## 📑 Documentación Adicional
 
+- 🌐 [Guía de Sincronización Multidispositivo (LAN & QR)](docs/multi_device_guide.md)
 - 🏗️ [Arquitectura de Software](docs/architecture.md)
 - 📖 [Guía Didáctica y Manual del Monitor](docs/didactic_guide.md)
 - 🔬 [Referencia de Coordenadas y Dataset Molecular](docs/dataset_reference.md)

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Settings, X, Plus, Trash2, RotateCcw, Check } from 'lucide-react';
+import { Settings, X, Plus, Trash2, RotateCcw, Check, Monitor, Tv, Wifi, WifiOff, Users } from 'lucide-react';
 import { TeamScore } from '../types/game';
+import { ClientRole, ConnectionStatus } from '../utils/socketSync';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -8,6 +9,10 @@ interface SettingsModalProps {
   teams: TeamScore[];
   onUpdateTeams: (teams: TeamScore[]) => void;
   onResetTournament: () => void;
+  currentRole?: ClientRole;
+  onSelectRole?: (role: ClientRole) => void;
+  syncStatus?: ConnectionStatus;
+  connectedCount?: number;
 }
 
 export const SettingsModal: React.FC<SettingsModalProps> = ({
@@ -16,6 +21,10 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   teams,
   onUpdateTeams,
   onResetTournament,
+  currentRole = 'station',
+  onSelectRole,
+  syncStatus = 'offline',
+  connectedCount = 1,
 }) => {
   const [newTeamName, setNewTeamName] = useState('');
 
@@ -58,6 +67,58 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
         {/* Body */}
         <div className="p-5 space-y-5 max-h-[65vh] overflow-y-auto text-xs">
+          {/* Screen Role Selector */}
+          <div className="p-3.5 bg-oled-panel rounded-xl border border-oled-border space-y-2.5">
+            <div className="flex items-center justify-between">
+              <h4 className="font-bold text-slate-200 uppercase tracking-wider text-[11px] font-mono flex items-center gap-1.5">
+                <Monitor className="w-3.5 h-3.5 text-pide-cyan" />
+                <span>Rol de Pantalla de este Dispositivo:</span>
+              </h4>
+              <div className="flex items-center gap-1.5 text-[11px] font-mono">
+                <span className={`w-2 h-2 rounded-full ${syncStatus === 'connected' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
+                <span className="text-slate-300">{syncStatus === 'connected' ? `LAN (${connectedCount} disp.)` : 'Offline / QR'}</span>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-2">
+              <button
+                type="button"
+                onClick={() => onSelectRole && onSelectRole('station')}
+                className={`p-3 rounded-xl border text-left flex items-start gap-2.5 transition-all ${
+                  currentRole === 'station'
+                    ? 'bg-cyan-950/40 border-pide-cyan text-white shadow-lg shadow-cyan-500/10'
+                    : 'bg-black/40 border-oled-border text-slate-400 hover:text-white'
+                }`}
+              >
+                <Monitor className="w-4 h-4 text-pide-cyan shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-bold text-xs text-white">Estación de Mesa</div>
+                  <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                    Visor 3D, kit físico y trivia para estudiantes en competencia.
+                  </p>
+                </div>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => onSelectRole && onSelectRole('master')}
+                className={`p-3 rounded-xl border text-left flex items-start gap-2.5 transition-all ${
+                  currentRole === 'master'
+                    ? 'bg-amber-950/40 border-uss-gold text-white shadow-lg shadow-amber-500/10'
+                    : 'bg-black/40 border-oled-border text-slate-400 hover:text-white'
+                }`}
+              >
+                <Tv className="w-4 h-4 text-uss-goldBright shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-bold text-xs text-white">Proyector Principal</div>
+                  <p className="text-[10px] text-slate-400 mt-0.5 leading-snug">
+                    Marcador central gigante, podio en vivo y ticker para la audiencia.
+                  </p>
+                </div>
+              </button>
+            </div>
+          </div>
+
           {/* Team management section */}
           <div>
             <h4 className="font-bold text-slate-200 uppercase tracking-wider text-[11px] mb-2 font-mono">

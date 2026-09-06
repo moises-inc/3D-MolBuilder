@@ -9,7 +9,11 @@ import { KitValidationPanel } from './components/KitValidationPanel';
 import { RoundTrophyModal } from './components/RoundTrophyModal';
 import { LeaderboardModal } from './components/LeaderboardModal';
 import { SettingsModal } from './components/SettingsModal';
+import { SyncQRModal, SyncQRData } from './components/SyncQRModal';
+import { ProjectorView } from './components/ProjectorView';
+import { socketSync, ClientRole, ConnectionStatus, ActivityEvent } from './utils/socketSync';
 import { sounds } from './utils/soundEffects';
+import confetti from 'canvas-confetti';
 import { Atom, Award, Info, Sparkles } from 'lucide-react';
 
 const INITIAL_TEAMS: TeamScore[] = [
@@ -65,6 +69,66 @@ export const App: React.FC = () => {
     time: 0,
     trivia: 0,
   });
+
+  // Multi-Device LAN & Screen Role state
+  const [clientRole, setClientRole] = useState<ClientRole>(() => {
+    if (typeof window !== 'undefined' && window.location.search.includes('role=master')) {
+      return 'master';
+    }
+    return 'station';
+  });
+  const [syncStatus, setSyncStatus] = useState<ConnectionStatus>('offline');
+  const [connectedCount, setConnectedCount] = useState<number>(1);
+  const [recentEvents, setRecentEvents] = useState<ActivityEvent[]>([]);
+
+  // QR / Short Code Fallback modal state
+  const [showSyncQRModal, setShowSyncQRModal] = useState<boolean>(false);
+  const [qrModalMode, setQrModalMode] = useState<'show' | 'redeem'>('show');
+  const [currentQRData, setCurrentQRData] = useState<SyncQRData | null>(null);
+
+  // Initialize Socket.io LAN synchronization
+  useEffect(() => {
+    socketSync.init(clientRole, activeTeamId);
+
+    const unsubStatus = socketSync.onStatusChange((status, count) => {
+      setSyncStatus(status);
+      setConnectedCount(count);
+    });
+
+    const unsubTournament = socketSync.onTournamentSync((syncedState) => {
+      if (syncedState && Array.isArray(syncedState.teams)) {
+        setTeams(syncedState.teams);
+      }
+      if (syncedState?.recentEvents) {
+        setRecentEvents(syncedState.recentEvents);
+      }
+    });
+
+    const unsubVictory = (payload: { teamId: string; moleculeId: string; scoreEarned: number; teamName?: string }) => {
+      sounds.playSuccess();
+      try {
+        confetti({
+          particleCount: 160,
+          spread: 90,
+          origin: { y: 0.6 },
+        });
+      } catch {
+        // Ignore in environments without canvas
+      }
+    };
+
+    const cleanupVictory = socketSync.onVictory(unsubVictory);
+
+    return () => {
+      unsubStatus();
+      unsubTournament();
+      cleanupVictory();
+    };
+  }, [clientRole]);
+
+  useEffect(() => {
+    socketSync.setRole(clientRole, activeTeamId);
+  }, [clientRole, activeTeamId]);
 
   // Auto-unlock Web Audio API on first user gesture to overcome browser autoplay restrictions
   useEffect(() => {
@@ -136,6 +200,13 @@ export const App: React.FC = () => {
       setTeams((prev) =>
         prev.map((t) => (t.id === activeTeamId ? { ...t, score: t.score + bonus } : t))
       );
+      // Emit trivia score to LAN server
+      socketSync.emitScoreUpdate({
+        teamId: activeTeamId,
+        scoreDelta: bonus,
+        triviaBonus: bonus,
+        totalEarned: bonus,
+      });
     }
   };
 
@@ -163,6 +234,37 @@ export const App: React.FC = () => {
       })
     );
 
+    // Emit real-time update to LAN server
+    socketSync.emitScoreUpdate({
+      teamId: activeTeamId,
+      scoreDelta: roundScore,
+      completedMoleculeId: currentMolecule.id,
+      timeBonus,
+      triviaBonus: triviaBonusEarned,
+      totalEarned,
+    });
+    socketSync.emitVictoryFanfare({
+      teamId: activeTeamId,
+      moleculeId: currentMolecule.id,
+      scoreEarned: totalEarned,
+      teamName: activeTeam.name,
+    });
+
+    // Generate short 6-char fallback code and QR data
+    const teamPrefix = activeTeam.id.replace('team-', '').slice(0, 3).toUpperCase() || 'ALF';
+    const shortCode = `${teamPrefix}-${totalEarned}`;
+    setCurrentQRData({
+      teamId: activeTeam.id,
+      teamName: activeTeam.name,
+      moleculeId: currentMolecule.id,
+      moleculeName: currentMolecule.name,
+      scoreEarned: totalEarned,
+      timeBonus,
+      triviaBonus: triviaBonusEarned,
+      shortCode,
+      timestamp: Date.now(),
+    });
+
     setLastRoundScore({
       total: totalEarned,
       time: timeBonus,
@@ -179,6 +281,7 @@ export const App: React.FC = () => {
   };
 
   const handleResetTournament = () => {
+    socketSync.emitResetTournament();
     setTeams((prev) =>
       prev.map((t) => ({
         ...t,
@@ -191,128 +294,186 @@ export const App: React.FC = () => {
     setTimerActive(false);
   };
 
+  const handleUpdateTeams = (newTeams: TeamScore[]) => {
+    setTeams(newTeams);
+    socketSync.emitTournamentSync(newTeams);
+  };
+
+  const handleRedeemCode = (payload: { teamId: string; score: number; moleculeId: string; code: string }) => {
+    socketSync.emitRedeemCode(payload);
+    setTeams((prev) =>
+      prev.map((t) => {
+        if (t.id === payload.teamId) {
+          const completed = payload.moleculeId && !t.completedMolecules.includes(payload.moleculeId)
+            ? [...t.completedMolecules, payload.moleculeId]
+            : t.completedMolecules;
+          return {
+            ...t,
+            score: t.score + payload.score,
+            completedMolecules: completed,
+          };
+        }
+        return t;
+      })
+    );
+    sounds.playSuccess();
+    try {
+      confetti({
+        particleCount: 140,
+        spread: 80,
+        origin: { y: 0.6 },
+      });
+    } catch {
+      // Ignore
+    }
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-black text-slate-100 selection:bg-cyan-500 selection:text-black">
-      {/* Top Header */}
-      <RoundHeader
-        currentMolecule={currentMolecule}
-        currentIndex={currentIndex}
-        totalMolecules={MOLECULES_DATASET.length}
-        onSelectIndex={setCurrentIndex}
-        timeLeft={timeLeft}
-        timerActive={timerActive}
-        onToggleTimer={handleToggleTimer}
-        onResetTimer={handleResetTimer}
-        activeTeam={activeTeam}
-        teams={teams}
-        onSelectTeam={setActiveTeamId}
-        onOpenSettings={() => setShowSettingsModal(true)}
-        onOpenLeaderboard={() => setShowLeaderboardModal(true)}
-      />
+      {clientRole === 'master' ? (
+        <ProjectorView
+          teams={teams}
+          syncStatus={syncStatus}
+          connectedCount={connectedCount}
+          recentEvents={recentEvents}
+          onOpenRedeemModal={() => {
+            setQrModalMode('redeem');
+            setShowSyncQRModal(true);
+          }}
+          onSwitchToStation={() => setClientRole('station')}
+          onOpenSettings={() => setShowSettingsModal(true)}
+        />
+      ) : (
+        <>
+          {/* Top Header */}
+          <RoundHeader
+            currentMolecule={currentMolecule}
+            currentIndex={currentIndex}
+            totalMolecules={MOLECULES_DATASET.length}
+            onSelectIndex={setCurrentIndex}
+            timeLeft={timeLeft}
+            timerActive={timerActive}
+            onToggleTimer={handleToggleTimer}
+            onResetTimer={handleResetTimer}
+            activeTeam={activeTeam}
+            teams={teams}
+            onSelectTeam={setActiveTeamId}
+            onOpenSettings={() => setShowSettingsModal(true)}
+            onOpenLeaderboard={() => setShowLeaderboardModal(true)}
+            syncStatus={syncStatus}
+            connectedCount={connectedCount}
+            onSwitchToProjector={() => setClientRole('master')}
+            onOpenSyncQR={() => {
+              setQrModalMode('show');
+              setShowSyncQRModal(true);
+            }}
+          />
 
-      {/* Main Workspace */}
-      <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5">
-        {/* Left / Center: 3D Molecular Stage (7 cols on lg) */}
-        <section className="lg:col-span-7 flex flex-col gap-3 min-h-[440px] lg:min-h-[580px]">
-          <div className="flex-1 relative rounded-xl overflow-hidden shadow-2xl">
-            <MolecularViewer3D
-              molecule={currentMolecule}
-              onSelectAtom={setSelectedAtom}
-              selectedAtom={selectedAtom}
-            />
-          </div>
+          {/* Main Workspace */}
+          <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5">
+            {/* Left / Center: 3D Molecular Stage (7 cols on lg) */}
+            <section className="lg:col-span-7 flex flex-col gap-3 min-h-[440px] lg:min-h-[580px]">
+              <div className="flex-1 relative rounded-xl overflow-hidden shadow-2xl">
+                <MolecularViewer3D
+                  molecule={currentMolecule}
+                  onSelectAtom={setSelectedAtom}
+                  selectedAtom={selectedAtom}
+                />
+              </div>
 
-          {/* Bottom CPK Legend & Shortcut Strip */}
-          <div className="bg-oled-card p-3 rounded-xl border border-oled-border flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-3">
-              <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">
-                Código CPK:
+              {/* Bottom CPK Legend & Shortcut Strip */}
+              <div className="bg-oled-card p-3 rounded-xl border border-oled-border flex flex-wrap items-center justify-between gap-3 text-xs">
+                <div className="flex items-center gap-3">
+                  <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">
+                    Código CPK:
+                  </span>
+                  <div className="flex items-center gap-2">
+                    <span className="flex items-center gap-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#262626] border border-white/40" />
+                      <span className="text-slate-300 text-[11px]">Carbono (C)</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-400" />
+                      <span className="text-slate-300 text-[11px]">Hidrógeno (H)</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
+                      <span className="text-slate-300 text-[11px]">Oxígeno (O)</span>
+                    </span>
+                    <span className="flex items-center gap-1">
+                      <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6]" />
+                      <span className="text-slate-300 text-[11px]">Nitrógeno (N)</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+                  <Sparkles className="w-3.5 h-3.5 text-pide-cyan" />
+                  <span>Rotar: Arrastre | Zoom: Rueda | Clic: Info Átomo</span>
+                </div>
+              </div>
+            </section>
+
+            {/* Right: Molecule Didactic Card & Kit Validation (5 cols on lg) */}
+            <section className="lg:col-span-5 flex flex-col gap-3 min-h-[580px]">
+              {/* Top Half: Molecule Educational Info & Trivia */}
+              <div className="flex-1 min-h-[300px]">
+                <MoleculeInfoCard
+                  molecule={currentMolecule}
+                  onTriviaAnswered={handleTriviaAnswered}
+                  triviaAnswered={triviaAnswered}
+                />
+              </div>
+
+              {/* Bottom Half: Physical Kit Assembly Checklist & Validation */}
+              <div className="flex-1 min-h-[380px] flex flex-col">
+                <KitValidationPanel
+                  molecule={currentMolecule}
+                  timeLeft={timeLeft}
+                  onValidateSuccess={handleValidateSuccess}
+                  disabled={false}
+                />
+              </div>
+            </section>
+          </main>
+
+          {/* Bottom Fast Selector Carousel Bar */}
+          <nav className="w-full bg-black/95 border-t border-oled-border px-4 py-2">
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto py-1">
+              <span className="text-[10px] uppercase font-mono text-slate-400 font-bold shrink-0 hidden sm:inline">
+                Compuestos:
               </span>
-              <div className="flex items-center gap-2">
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#262626] border border-white/40" />
-                  <span className="text-slate-300 text-[11px]">Carbono (C)</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-400" />
-                  <span className="text-slate-300 text-[11px]">Hidrógeno (H)</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
-                  <span className="text-slate-300 text-[11px]">Oxígeno (O)</span>
-                </span>
-                <span className="flex items-center gap-1">
-                  <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6]" />
-                  <span className="text-slate-300 text-[11px]">Nitrógeno (N)</span>
-                </span>
+              <div className="flex items-center gap-2 overflow-x-auto">
+                {MOLECULES_DATASET.map((mol, idx) => {
+                  const isSelected = idx === currentIndex;
+                  const isCompleted = activeTeam.completedMolecules.includes(mol.id);
+
+                  return (
+                    <button
+                      key={mol.id}
+                      onClick={() => setCurrentIndex(idx)}
+                      className={`px-3 py-1.5 rounded-lg border text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                        isSelected
+                          ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_12px_rgba(93,225,229,0.3)]'
+                          : 'bg-oled-panel border-oled-border text-slate-400 hover:text-white hover:border-slate-600'
+                      }`}
+                    >
+                      <span className="font-mono text-[10px] text-slate-500 font-bold">
+                        0{idx + 1}
+                      </span>
+                      <span>{mol.name}</span>
+                      <span className="text-[10px] font-mono text-slate-400">({mol.formula})</span>
+                      {isCompleted && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-sm" />
+                      )}
+                    </button>
+                  );
+                })}
               </div>
             </div>
-
-            <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-              <Sparkles className="w-3.5 h-3.5 text-pide-cyan" />
-              <span>Rotar: Arrastre | Zoom: Rueda | Clic: Info Átomo</span>
-            </div>
-          </div>
-        </section>
-
-        {/* Right: Molecule Didactic Card & Kit Validation (5 cols on lg) */}
-        <section className="lg:col-span-5 flex flex-col gap-3 min-h-[580px]">
-          {/* Top Half: Molecule Educational Info & Trivia */}
-          <div className="flex-1 min-h-[300px]">
-            <MoleculeInfoCard
-              molecule={currentMolecule}
-              onTriviaAnswered={handleTriviaAnswered}
-              triviaAnswered={triviaAnswered}
-            />
-          </div>
-
-          {/* Bottom Half: Physical Kit Assembly Checklist & Validation */}
-          <div className="flex-1 min-h-[380px] flex flex-col">
-            <KitValidationPanel
-              molecule={currentMolecule}
-              timeLeft={timeLeft}
-              onValidateSuccess={handleValidateSuccess}
-              disabled={false}
-            />
-          </div>
-        </section>
-      </main>
-
-      {/* Bottom Fast Selector Carousel Bar */}
-      <nav className="w-full bg-black/95 border-t border-oled-border px-4 py-2">
-        <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 overflow-x-auto py-1">
-          <span className="text-[10px] uppercase font-mono text-slate-400 font-bold shrink-0 hidden sm:inline">
-            Compuestos:
-          </span>
-          <div className="flex items-center gap-2 overflow-x-auto">
-            {MOLECULES_DATASET.map((mol, idx) => {
-              const isSelected = idx === currentIndex;
-              const isCompleted = activeTeam.completedMolecules.includes(mol.id);
-
-              return (
-                <button
-                  key={mol.id}
-                  onClick={() => setCurrentIndex(idx)}
-                  className={`px-3 py-1.5 rounded-lg border text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
-                    isSelected
-                      ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_12px_rgba(93,225,229,0.3)]'
-                      : 'bg-oled-panel border-oled-border text-slate-400 hover:text-white hover:border-slate-600'
-                  }`}
-                >
-                  <span className="font-mono text-[10px] text-slate-500 font-bold">
-                    0{idx + 1}
-                  </span>
-                  <span>{mol.name}</span>
-                  <span className="text-[10px] font-mono text-slate-400">({mol.formula})</span>
-                  {isCompleted && (
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-sm" />
-                  )}
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      </nav>
+          </nav>
+        </>
+      )}
 
       {/* Modals */}
       <RoundTrophyModal
@@ -338,8 +499,21 @@ export const App: React.FC = () => {
         isOpen={showSettingsModal}
         onClose={() => setShowSettingsModal(false)}
         teams={teams}
-        onUpdateTeams={setTeams}
+        onUpdateTeams={handleUpdateTeams}
         onResetTournament={handleResetTournament}
+        currentRole={clientRole}
+        onSelectRole={setClientRole}
+        syncStatus={syncStatus}
+        connectedCount={connectedCount}
+      />
+
+      <SyncQRModal
+        isOpen={showSyncQRModal}
+        onClose={() => setShowSyncQRModal(false)}
+        mode={qrModalMode}
+        data={currentQRData}
+        teams={teams}
+        onRedeemCode={handleRedeemCode}
       />
     </div>
   );
