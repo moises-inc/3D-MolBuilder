@@ -228,22 +228,32 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
             </button>
           )}
 
-          {/* LAN Connection LED Indicator */}
-          <div 
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-oled-panel border border-oled-border text-[11px] font-mono cursor-help"
-            title={syncStatus === 'connected' ? `Conectado a Red LAN en tiempo real (${connectedCount} dispositivos)` : 'Modo Local Offline / Respaldo QR Activo'}
+          {/* LAN Connection LED Indicator (Clic para abrir configuración de red) */}
+          <button 
+            type="button"
+            onClick={onOpenSettings}
+            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-oled-panel border border-oled-border text-[11px] font-mono hover:border-slate-500 transition-colors"
+            title={
+              syncStatus === 'connected' 
+                ? `Conectado a Red LAN en tiempo real (${connectedCount} disp.) — Clic para ver detalles de red` 
+                : syncStatus === 'connecting'
+                ? 'Conectando al servidor LAN... — Clic para configurar IP'
+                : 'Modo Local Offline / Respaldo QR — Clic para configurar IP del Servidor'
+            }
           >
             <span 
               className={`w-2 h-2 rounded-full ${
                 syncStatus === 'connected' 
                   ? 'bg-emerald-400 shadow-[0_0_8px_#38ef7d] animate-pulse' 
+                  : syncStatus === 'connecting'
+                  ? 'bg-cyan-400 shadow-[0_0_8px_#5de1e5] animate-ping'
                   : 'bg-amber-400 shadow-[0_0_8px_#efb65f]'
               }`} 
             />
             <span className="text-slate-300 hidden lg:inline">
-              {syncStatus === 'connected' ? 'LAN' : 'QR'}
+              {syncStatus === 'connected' ? 'LAN' : syncStatus === 'connecting' ? 'Conectando...' : 'QR'}
             </span>
-          </div>
+          </button>
 
           {/* Settings Button */}
           <button

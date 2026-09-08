@@ -81,11 +81,15 @@ npm run dev:lan
 ```
 Accede a la aplicación en `http://localhost:5173/` para estaciones de mesa o `http://localhost:5173/?role=master` para el proyector principal.
 
-### Compilación para Producción (Offline):
+### Compilación y Despliegue Autónomo (Offline / Un Solo Puerto):
 ```bash
+# Compilar bundle estático optimizado
 npm run build
+
+# Iniciar servidor unificado (Web + Socket.io en puerto 3001)
+npm start
 ```
-Genera la carpeta `dist/` estática optimizada para ser proyectada en cualquier equipo sin conexión.
+Genera la carpeta `dist/` estática y permite ejecutar toda la solución en un único puerto (`http://<IP-PC>:3001/`) sin dependencias de desarrollo, ideal para computadores de feria escolar.
 
 ---
 

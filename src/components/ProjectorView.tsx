@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Trophy, 
   Crown, 
@@ -13,11 +13,15 @@ import {
   Users,
   Flame,
   ChevronRight,
-  Maximize2
+  Maximize2,
+  Settings,
+  Globe,
+  Copy,
+  Check
 } from 'lucide-react';
 import { TeamScore } from '../types/game';
 import { MOLECULES_DATASET } from '../data/moleculesDataset';
-import { ActivityEvent, ConnectionStatus } from '../utils/socketSync';
+import { ActivityEvent, ConnectionStatus, NetworkDiagnostics, socketSync } from '../utils/socketSync';
 
 interface ProjectorViewProps {
   teams: TeamScore[];
@@ -38,12 +42,36 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
   onSwitchToStation,
   onOpenSettings,
 }) => {
+  const [diagnostics, setDiagnostics] = useState<NetworkDiagnostics>(() => socketSync.getDiagnostics());
+  const [copiedUrl, setCopiedUrl] = useState(false);
+
+  useEffect(() => {
+    const unsub = socketSync.onDiagnosticsChange((diag) => {
+      setDiagnostics(diag);
+    });
+    return unsub;
+  }, []);
   const sortedTeams = [...teams].sort((a, b) => b.score - a.score);
   const leaderTeam = sortedTeams[0];
   const totalMolecules = MOLECULES_DATASET.length;
 
   const totalPointsAwarded = teams.reduce((acc, t) => acc + t.score, 0);
   const totalCompletions = teams.reduce((acc, t) => acc + t.completedMolecules.length, 0);
+
+  const primaryHostIp = diagnostics.detectedIps.length > 0 
+    ? diagnostics.detectedIps[0] 
+    : (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
+    ? window.location.hostname
+    : 'IP-DE-ESTE-PC';
+  const stationConnectUrl = `http://${primaryHostIp}:5173`;
+
+  const handleCopyStationUrl = () => {
+    if (typeof navigator !== 'undefined') {
+      navigator.clipboard.writeText(stationConnectUrl);
+      setCopiedUrl(true);
+      setTimeout(() => setCopiedUrl(false), 2000);
+    }
+  };
 
   const getRankBadge = (index: number) => {
     switch (index) {
@@ -99,18 +127,25 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
             </div>
           </div>
 
-          {/* Center: Live LAN Indicator Badge */}
-          <div className="flex items-center gap-3 bg-oled-panel px-4 py-2 rounded-xl border border-oled-border">
+          {/* Center: Live LAN Indicator Badge (Clic para abrir configuración de red) */}
+          <button 
+            type="button"
+            onClick={onOpenSettings}
+            className="flex items-center gap-3 bg-oled-panel px-4 py-2 rounded-xl border border-oled-border hover:border-slate-500 transition-colors text-left"
+            title="Clic para ver detalles de red y configurar IP"
+          >
             <div className="flex items-center gap-2">
               <span 
                 className={`w-2.5 h-2.5 rounded-full ${
                   syncStatus === 'connected' 
                     ? 'bg-emerald-400 shadow-[0_0_10px_#38ef7d] animate-pulse' 
+                    : syncStatus === 'connecting'
+                    ? 'bg-cyan-400 shadow-[0_0_10px_#5de1e5] animate-ping'
                     : 'bg-amber-400 shadow-[0_0_10px_#efb65f]'
                 }`} 
               />
               <span className="text-xs font-mono font-bold">
-                {syncStatus === 'connected' ? 'Red LAN en Vivo' : 'Modo Local / QR'}
+                {syncStatus === 'connected' ? 'Red LAN en Vivo' : syncStatus === 'connecting' ? 'Conectando...' : 'Modo Local / QR'}
               </span>
             </div>
 
@@ -120,7 +155,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               <Users className="w-3.5 h-3.5 text-slate-400" />
               <span>{connectedCount} {connectedCount === 1 ? 'dispositivo' : 'dispositivos'}</span>
             </div>
-          </div>
+          </button>
 
           {/* Right Action Controls */}
           <div className="flex items-center gap-2.5">
@@ -143,12 +178,56 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               <Monitor className="w-4 h-4 text-pide-cyan" />
               <span>Modo Estación</span>
             </button>
+
+            {/* Settings Button */}
+            <button
+              onClick={onOpenSettings}
+              className="p-2 bg-oled-panel hover:bg-slate-800 border border-oled-border text-slate-300 hover:text-white rounded-xl transition-colors"
+              title="Configuración de Red y Torneo"
+            >
+              <Settings className="w-4 h-4" />
+            </button>
           </div>
         </div>
       </header>
 
       {/* Main Projector Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+        {/* LAN Connection Guidance Banner for Mesas */}
+        <div className="lg:col-span-12 p-3.5 bg-cyan-950/30 border border-cyan-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg shadow-cyan-500/5">
+          <div className="flex items-center gap-3">
+            <div className="p-2.5 rounded-xl bg-cyan-950/60 border border-cyan-800/60 text-pide-cyan shrink-0">
+              <Globe className="w-5 h-5" />
+            </div>
+            <div>
+              <span className="text-[11px] font-mono uppercase text-slate-300 font-bold block">
+                Conexión Wi-Fi para Laptops y Tablets de Mesas Escolares:
+              </span>
+              <p className="text-xs text-slate-300 mt-0.5">
+                En cualquier navegador de la misma red Wi-Fi ingresa a:{' '}
+                <span className="font-mono font-extrabold text-cyan-300 bg-black/60 px-2.5 py-1 rounded-lg border border-cyan-500/50 text-sm inline-block ml-1">
+                  {stationConnectUrl}
+                </span>
+              </p>
+            </div>
+          </div>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              onClick={handleCopyStationUrl}
+              className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-mono rounded-lg flex items-center gap-1.5 transition-colors"
+              title="Copiar URL para mesas"
+            >
+              {copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
+              <span>{copiedUrl ? '¡Copiado!' : 'Copiar URL'}</span>
+            </button>
+            <button
+              onClick={onOpenSettings}
+              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-mono rounded-lg transition-colors"
+            >
+              Ajustes de Red
+            </button>
+          </div>
+        </div>
         {/* Metric Highlights Strip (Top row across lg:col-span-12) */}
         <div className="lg:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-oled-card p-4 rounded-2xl border border-oled-border flex items-center gap-3">

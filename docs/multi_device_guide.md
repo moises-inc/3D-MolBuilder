@@ -120,10 +120,51 @@ Si en el colegio o recinto ferial no hay señal Wi-Fi o se produce una caída de
 
 ## ⚙️ 5. Configuración y Puertos del Sistema
 
-| Componente | Archivo de Código | Puerto Predeterminado | Protocolo |
+| Componente | Archivo de Código | Puerto Predeterminado | Protocolo / Función |
 | :--- | :--- | :---: | :--- |
-| Servidor Socket.io | [`server/index.js`](../server/index.js) | `3001` | WebSocket / HTTP Polling |
-| Cliente Web Vite | [`config/vite.config.ts`](../config/vite.config.ts) | `5173` | HTTP / HMR / Static Assets |
-| Gestor de Sincronización | [`src/utils/socketSync.ts`](../src/utils/socketSync.ts) | N/A | Detección automática `hostname` |
-| Componente Proyector | [`src/components/ProjectorView.tsx`](../src/components/ProjectorView.tsx) | N/A | React 19 + Lucide Icons |
-| Modal Respaldo QR | [`src/components/SyncQRModal.tsx`](../src/components/SyncQRModal.tsx) | N/A | `qrcode.react` SVG |
+| **Cliente Web Vite** | [`config/vite.config.ts`](../config/vite.config.ts) | `5173` | HTTP / HMR / Proxy WebSocket transparente a `3001` (`host: 0.0.0.0`) |
+| **Servidor Socket.io / API** | [`server/index.js`](../server/index.js) | `3001` | WebSockets / HTTP Polling / Servidor de producción autónomo |
+| **Gestor de Sincronización** | [`src/utils/socketSync.ts`](../src/utils/socketSync.ts) | N/A | Detección automática de origen, fallback dinámico y reconexión infinita |
+| **Componente Proyector** | [`src/components/ProjectorView.tsx`](../src/components/ProjectorView.tsx) | N/A | Pantalla principal con banner de URL de mesas y control central |
+| **Modal de Ajustes y Red** | [`src/components/SettingsModal.tsx`](../src/components/SettingsModal.tsx) | N/A | Selector de roles, diagnósticos de enlace LAN e input de IP manual |
+| **Modal Respaldo QR** | [`src/components/SyncQRModal.tsx`](../src/components/SyncQRModal.tsx) | N/A | Respaldo fuera de línea por código QR SVG y claves de 6 caracteres |
+
+---
+
+## 🛠️ 6. Guía de Solución de Problemas en Redes Wi-Fi (Troubleshooting)
+
+Si realizaste pruebas con dos laptops en la misma red Wi-Fi y no lograste conexión, revisa los siguientes escenarios habituales:
+
+### Escenario 1: La página web no carga en la segunda laptop (`ERR_CONNECTION_REFUSED` o `Timeout`)
+1. **Verifica la dirección y el puerto exacto:**
+   - Asegúrate de ingresar el puerto **`5173`** (ejemplo: `http://192.168.1.50:5173`), no `5174` ni `3000`.
+   - Confirma la IP del computador central mirando el banner en la terminal donde se ejecutó `npm run dev:lan` (el servidor ahora clasifica y resalta la IP `[Wi-Fi 📶]` para distinguirla de VPNs como Tailscale o Docker).
+2. **Firewall del Sistema Operativo en el PC Servidor:**
+   - En **Linux (Ubuntu/Debian):** Si tienes `ufw` activo, permite los puertos ejecutando:
+     ```bash
+     sudo ufw allow 5173/tcp
+     sudo ufw allow 3001/tcp
+     ```
+   - En **Windows:** Al iniciar Node.js por primera vez, Windows Defender suele preguntar si deseas permitir el acceso en redes públicas/privadas. Asegúrate de marcar ambas casillas o agregar una regla de entrada para el puerto `5173`.
+
+### Escenario 2: La página carga, pero el indicador permanece en 🟡 "QR / Offline"
+1. **Configuración manual de IP desde la interfaz:**
+   - Haz clic directamente en el indicador **`🟡 QR`** de la barra superior (o en el engranaje de **Configuración**).
+   - En la sección **"Sincronización Multidispositivo & Red Wi-Fi"**, escribe la IP del PC central en el campo *"Dirección IP / Servidor del PC Central"* (ej. `192.168.1.50:5173` o `192.168.1.50:3001`) y presiona **"Conectar"**.
+   - El cliente persistirá la IP en `localStorage` y se conectará al instante.
+2. **Aislamiento de Clientes en la Red Wi-Fi (AP Isolation / Guest Network):**
+   - En redes universitarias (como eduroam o redes de invitados) o routers institucionales, suele estar activada la función **AP Isolation** (Aislamiento de Punto de Acceso), la cual impide que dos dispositivos conectados a la misma antena Wi-Fi se vean o comuniquen entre sí.
+   - **Solución Rápida y Efectiva:** Activa la **Zona Wi-Fi Portátil / Compartir Internet (Hotspot)** desde un teléfono móvil o desde una de las laptops. Conecta ambas laptops a esa red compartida. Las zonas Wi-Fi móviles no tienen aislamiento de clientes y funcionan de manera inmediata y estable.
+
+### Escenario 3: Ambas laptops ejecutaron `npm run dev` localmente
+- Si clonaste el proyecto en las dos laptops y abriste `http://localhost:5173` en ambas, cada laptop se conectará a su propio servidor local independiente y no se comunicarán.
+- **Solución:** En la laptop de la mesa, abre `SettingsModal` (icono de engranaje o clic en `QR`), ingresa la IP del PC proyector y presiona **"Conectar"**, o simplemente abre en el navegador la dirección de red del proyector: `http://<IP-PC-PROYECTOR>:5173`.
+
+### Escenario 4: Modo Producción Autónomo (Un Solo Puerto `3001`)
+- Puedes compilar la aplicación y servirla en un único puerto unificado sin dependencias de desarrollo:
+  ```bash
+  npm run build
+  npm start
+  ```
+- El servidor Express alojará la interfaz web estática y el servidor Socket.io simultáneamente en el puerto **`3001`**:
+  `http://<IP-DEL-PC>:3001/`

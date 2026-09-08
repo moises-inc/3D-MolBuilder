@@ -10,6 +10,7 @@
     "dev": "vite --config config/vite.config.ts",
     "dev:lan": "concurrently \"npm run server\" \"vite --config config/vite.config.ts --host\"",
     "server": "node server/index.js",
+    "start": "node server/index.js",
     "build": "tsc -b config/tsconfig.json && vite build --config config/vite.config.ts",
     "preview": "vite preview --config config/vite.config.ts"
   },

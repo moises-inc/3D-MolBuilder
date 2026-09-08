@@ -10,6 +10,13 @@ import express from 'express';
 import { createServer } from 'http';
 import { Server } from 'socket.io';
 import os from 'os';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const distPath = path.resolve(__dirname, '../dist');
 
 const app = express();
 const httpServer = createServer(app);
@@ -56,7 +63,6 @@ let tournamentState = {
   connectedClients: 0,
 };
 
-// Endpoint de diagnóstico
 app.get('/health', (req, res) => {
   res.json({
     status: 'ok',
@@ -71,13 +77,44 @@ app.get('/api/state', (req, res) => {
   res.json(tournamentState);
 });
 
+app.get('/api/info', (req, res) => {
+  res.json({
+    status: 'ok',
+    port: PORT,
+    vitePort: 5173,
+    localIps: getIpStrings(),
+    detailedInterfaces: getLocalIpAddresses(),
+    connectedClients: tournamentState.connectedClients,
+    hasStaticBuild: fs.existsSync(path.join(distPath, 'index.html')),
+  });
+});
+
+// Servir frontend estático compilado en producción / modo offline autónomo (si dist/ existe)
+if (fs.existsSync(path.join(distPath, 'index.html'))) {
+  app.use(express.static(distPath));
+  console.log(`[Express] 📦 Servidor de archivos estáticos habilitado desde ${distPath}`);
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/socket.io') || req.path === '/health') {
+      return next();
+    }
+    res.sendFile(path.join(distPath, 'index.html'));
+  });
+}
+
 // Gestión de conexiones Socket.io
 io.on('connection', (socket) => {
   tournamentState.connectedClients = io.engine.clientsCount;
   console.log(`[Socket.io] 🟢 Cliente conectado: ${socket.id} (Total: ${tournamentState.connectedClients})`);
 
-  // Enviar estado actual al cliente que recién conecta
-  socket.emit('init-state', tournamentState);
+  // Enviar estado actual y metadatos de red al cliente que recién conecta
+  socket.emit('init-state', {
+    ...tournamentState,
+    serverInfo: {
+      ips: getIpStrings(),
+      port: PORT,
+      vitePort: 5173,
+    },
+  });
   io.emit('client-count-updated', tournamentState.connectedClients);
 
   // Asignar rol: 'master' (proyector) o 'station' (mesa de equipo)
@@ -210,37 +247,68 @@ io.on('connection', (socket) => {
   });
 });
 
-// Función para obtener las IPs de la red local
+// Función para obtener las interfaces de red local clasificadas
 function getLocalIpAddresses() {
   const interfaces = os.networkInterfaces();
-  const addresses = [];
-  for (const name of Object.keys(interfaces)) {
-    for (const iface of interfaces[name]) {
+  const results = [];
+  for (const [name, addrs] of Object.entries(interfaces)) {
+    if (!addrs) continue;
+    for (const iface of addrs) {
       if (iface.family === 'IPv4' && !iface.internal) {
-        addresses.push(iface.address);
+        const isVirtual = /tailscale|docker|br-|veth|vmnet|vbox|tun|tap/i.test(name);
+        const isWifi = /wl|wifi|airport/i.test(name);
+        const isEthernet = /eth|enp|eno|en\d/i.test(name);
+        results.push({
+          name,
+          address: iface.address,
+          type: isWifi ? 'wifi' : isEthernet ? 'ethernet' : isVirtual ? 'virtual' : 'other',
+          isVirtual,
+        });
       }
     }
   }
-  return addresses;
+  // Ordenar priorizando Wi-Fi y Ethernet sobre interfaces virtuales
+  return results.sort((a, b) => {
+    if (!a.isVirtual && b.isVirtual) return -1;
+    if (a.isVirtual && !b.isVirtual) return 1;
+    if (a.type === 'wifi' && b.type !== 'wifi') return -1;
+    if (a.type !== 'wifi' && b.type === 'wifi') return 1;
+    return 0;
+  });
+}
+
+function getIpStrings() {
+  return getLocalIpAddresses().map((item) => item.address);
 }
 
 // Iniciar servidor
 httpServer.listen(PORT, '0.0.0.0', () => {
-  const localIps = getLocalIpAddresses();
+  const interfaces = getLocalIpAddresses();
+  const primaryIp = interfaces.find((i) => !i.isVirtual)?.address || 'localhost';
+
   console.log('\n=============================================================');
   console.log('🧪 🧩 3D MOLBUILDER — SERVIDOR DE SINCRONIZACIÓN LOCAL LAN');
   console.log('   Universidad San Sebastián (USS) - Vinculación con el Medio');
   console.log('=============================================================');
-  console.log(`📡 Puerto del Servidor Socket.io: ${PORT}`);
+  console.log(`📡 Puerto Socket.io / API Backend: ${PORT}`);
   console.log(`💻 Localhost: http://localhost:${PORT}`);
-  if (localIps.length > 0) {
-    console.log('🌐 Direcciones LAN disponibles para conectar mesas y proyector:');
-    localIps.forEach((ip) => {
-      console.log(`   👉 http://${ip}:${PORT}`);
-      console.log(`   👉 Cliente Web Vite: http://${ip}:5173`);
+  
+  if (interfaces.length > 0) {
+    console.log('\n🌐 Conexión de Laptops de Mesa y Proyector en la misma Wi-Fi:');
+    interfaces.forEach((iface) => {
+      const tag = iface.type === 'wifi' ? '[Wi-Fi 📶]' : iface.type === 'ethernet' ? '[Ethernet 🔌]' : '[Virtual 🔒]';
+      console.log(`   ${tag} ${iface.name}:`);
+      console.log(`      👉 Cliente Web Vite (Recomendado): http://${iface.address}:5173`);
+      console.log(`      👉 Proyector Principal:            http://${iface.address}:5173/?role=master`);
+      console.log(`      👉 API / Socket Directo:           http://${iface.address}:${PORT}`);
     });
   } else {
-    console.log('⚠️  No se detectaron adaptadores de red activos (Modo Offline Local).');
+    console.log('\n⚠️  No se detectaron adaptadores de red activos (Modo Offline Local).');
+  }
+
+  if (fs.existsSync(path.join(distPath, 'index.html'))) {
+    console.log(`\n📦 Servidor Web de Producción Autónomo activo en puerto ${PORT}:`);
+    console.log(`   👉 http://${primaryIp}:${PORT}/`);
   }
   console.log('=============================================================\n');
 });

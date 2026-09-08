@@ -1,7 +1,24 @@
-import React, { useState } from 'react';
-import { Settings, X, Plus, Trash2, RotateCcw, Check, Monitor, Tv, Wifi, WifiOff, Users } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { 
+  Settings, 
+  X, 
+  Plus, 
+  Trash2, 
+  RotateCcw, 
+  Check, 
+  Monitor, 
+  Tv, 
+  Wifi, 
+  WifiOff, 
+  Users,
+  Globe,
+  RefreshCw,
+  AlertTriangle,
+  Radio,
+  CheckCircle2
+} from 'lucide-react';
 import { TeamScore } from '../types/game';
-import { ClientRole, ConnectionStatus } from '../utils/socketSync';
+import { ClientRole, ConnectionStatus, NetworkDiagnostics, socketSync } from '../utils/socketSync';
 
 interface SettingsModalProps {
   isOpen: boolean;
@@ -27,6 +44,21 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   connectedCount = 1,
 }) => {
   const [newTeamName, setNewTeamName] = useState('');
+  const [diagnostics, setDiagnostics] = useState<NetworkDiagnostics>(() => socketSync.getDiagnostics());
+  const [customIpInput, setCustomIpInput] = useState('');
+  const [isSavedNotice, setIsSavedNotice] = useState(false);
+
+  useEffect(() => {
+    if (!isOpen) return;
+    setDiagnostics(socketSync.getDiagnostics());
+    const unsub = socketSync.onDiagnosticsChange((diag) => {
+      setDiagnostics(diag);
+      if (!customIpInput && diag.activeUrl) {
+        setCustomIpInput(diag.activeUrl);
+      }
+    });
+    return unsub;
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -48,14 +80,36 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     onUpdateTeams(teams.filter((t) => t.id !== id));
   };
 
+  const handleConnectCustomIp = () => {
+    if (!customIpInput.trim()) return;
+    socketSync.setCustomServer(customIpInput.trim());
+    setIsSavedNotice(true);
+    setTimeout(() => setIsSavedNotice(false), 2500);
+  };
+
+  const handleResetToAuto = () => {
+    socketSync.resetToAutoServer();
+    setCustomIpInput('');
+    setIsSavedNotice(true);
+    setTimeout(() => setIsSavedNotice(false), 2500);
+  };
+
+  const handleQuickConnect = (ip: string) => {
+    const target = `http://${ip}:5173`;
+    setCustomIpInput(target);
+    socketSync.setCustomServer(target);
+    setIsSavedNotice(true);
+    setTimeout(() => setIsSavedNotice(false), 2500);
+  };
+
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-fade-in">
-      <div className="w-full max-w-lg bg-oled-card border border-oled-border rounded-2xl shadow-2xl overflow-hidden flex flex-col">
+      <div className="w-full max-w-xl bg-oled-card border border-oled-border rounded-2xl shadow-2xl overflow-hidden flex flex-col">
         {/* Header */}
         <div className="p-4 border-b border-oled-border flex items-center justify-between bg-oled-panel">
           <div className="flex items-center gap-2">
             <Settings className="w-5 h-5 text-slate-300" />
-            <h3 className="font-bold text-white text-base">Configuración de Torneo & Equipos</h3>
+            <h3 className="font-bold text-white text-base">Configuración de Red & Torneo</h3>
           </div>
           <button
             onClick={onClose}
@@ -66,7 +120,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         {/* Body */}
-        <div className="p-5 space-y-5 max-h-[65vh] overflow-y-auto text-xs">
+        <div className="p-5 space-y-5 max-h-[70vh] overflow-y-auto text-xs">
           {/* Screen Role Selector */}
           <div className="p-3.5 bg-oled-panel rounded-xl border border-oled-border space-y-2.5">
             <div className="flex items-center justify-between">
@@ -75,8 +129,20 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 <span>Rol de Pantalla de este Dispositivo:</span>
               </h4>
               <div className="flex items-center gap-1.5 text-[11px] font-mono">
-                <span className={`w-2 h-2 rounded-full ${syncStatus === 'connected' ? 'bg-emerald-400 animate-pulse' : 'bg-amber-400'}`} />
-                <span className="text-slate-300">{syncStatus === 'connected' ? `LAN (${connectedCount} disp.)` : 'Offline / QR'}</span>
+                <span className={`w-2 h-2 rounded-full ${
+                  diagnostics.status === 'connected' 
+                    ? 'bg-emerald-400 animate-pulse' 
+                    : diagnostics.status === 'connecting'
+                    ? 'bg-cyan-400 animate-ping'
+                    : 'bg-amber-400'
+                }`} />
+                <span className="text-slate-300">
+                  {diagnostics.status === 'connected' 
+                    ? `LAN (${diagnostics.connectedCount} disp.)` 
+                    : diagnostics.status === 'connecting'
+                    ? 'Conectando...'
+                    : 'Offline / QR'}
+                </span>
               </div>
             </div>
 
@@ -117,6 +183,134 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                 </div>
               </button>
             </div>
+          </div>
+
+          {/* Network LAN Synchronization & Server IP Setup */}
+          <div className="p-3.5 bg-oled-panel rounded-xl border border-oled-border space-y-3">
+            <div className="flex items-center justify-between">
+              <h4 className="font-bold text-slate-200 uppercase tracking-wider text-[11px] font-mono flex items-center gap-1.5">
+                <Globe className="w-3.5 h-3.5 text-pide-cyan" />
+                <span>Sincronización Multidispositivo & Red Wi-Fi:</span>
+              </h4>
+              <button
+                onClick={() => socketSync.reconnect()}
+                className="text-[10px] font-mono text-cyan-400 hover:text-cyan-300 flex items-center gap-1 bg-cyan-950/40 border border-cyan-800/40 px-2 py-0.5 rounded-md transition-colors"
+                title="Reconectar socket"
+              >
+                <RefreshCw className="w-3 h-3" />
+                <span>Reintentar Enlace</span>
+              </button>
+            </div>
+
+            {/* Connection Status Badge & Details */}
+            <div className={`p-2.5 rounded-lg border flex items-center justify-between ${
+              diagnostics.status === 'connected'
+                ? 'bg-emerald-950/30 border-emerald-500/40 text-emerald-300'
+                : diagnostics.status === 'connecting'
+                ? 'bg-cyan-950/30 border-cyan-500/40 text-cyan-300'
+                : 'bg-amber-950/30 border-amber-500/40 text-amber-300'
+            }`}>
+              <div className="flex items-center gap-2">
+                {diagnostics.status === 'connected' ? (
+                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+                ) : diagnostics.status === 'connecting' ? (
+                  <RefreshCw className="w-4 h-4 text-cyan-400 shrink-0 animate-spin" />
+                ) : (
+                  <WifiOff className="w-4 h-4 text-amber-400 shrink-0" />
+                )}
+                <div>
+                  <div className="font-bold text-xs">
+                    {diagnostics.status === 'connected'
+                      ? 'Conectado a Red LAN en Tiempo Real'
+                      : diagnostics.status === 'connecting'
+                      ? 'Conectando al Servidor...'
+                      : 'Modo Offline / Respaldo QR Activo'}
+                  </div>
+                  <div className="text-[10px] text-slate-400 font-mono mt-0.5 truncate max-w-sm">
+                    Servidor: <span className="text-white">{diagnostics.activeUrl || 'Auto-detectando'}</span>
+                    {diagnostics.isCustomServer && <span className="ml-1 text-amber-400">(Manual)</span>}
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="font-mono text-xs font-bold block">{diagnostics.connectedCount}</span>
+                <span className="text-[9px] uppercase tracking-wider text-slate-400 block">Conectados</span>
+              </div>
+            </div>
+
+            {/* Error banner if lastError exists */}
+            {diagnostics.lastError && diagnostics.status === 'offline' && (
+              <div className="p-2.5 bg-red-950/40 border border-red-500/40 rounded-lg text-red-200 flex items-start gap-2">
+                <AlertTriangle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                <div className="space-y-1 text-[11px]">
+                  <p className="font-bold text-red-300">No se pudo conectar al servidor LAN</p>
+                  <p className="text-[10px] text-slate-300">Detalle: {diagnostics.lastError}</p>
+                  <ul className="list-disc list-inside text-[10px] text-slate-400 space-y-0.5">
+                    <li>Verifica que ambas laptops estén en la misma red Wi-Fi o zona portátil.</li>
+                    <li>Verifica la IP del PC central (debe ser accesible en el puerto 5173 o 3001).</li>
+                    <li>Si la red Wi-Fi tiene aislamiento de clientes (AP Isolation), usa la zona Wi-Fi del teléfono.</li>
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Custom Server URL input */}
+            <div className="space-y-1.5">
+              <label className="text-[10px] uppercase font-mono text-slate-400 font-bold block">
+                Dirección IP / Servidor del PC Central (Proyector):
+              </label>
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="ej: 192.168.1.50 o 192.168.1.50:5173"
+                  value={customIpInput}
+                  onChange={(e) => setCustomIpInput(e.target.value)}
+                  onKeyDown={(e) => e.key === 'Enter' && handleConnectCustomIp()}
+                  className="flex-1 bg-black/60 border border-oled-border rounded-lg px-3 py-1.5 text-xs text-white placeholder-slate-500 font-mono focus:outline-none focus:border-cyan-400"
+                />
+                <button
+                  onClick={handleConnectCustomIp}
+                  className="px-3 py-1.5 bg-cyan-500 hover:bg-cyan-400 text-black font-bold rounded-lg transition-colors shrink-0"
+                >
+                  Conectar
+                </button>
+                {diagnostics.isCustomServer && (
+                  <button
+                    onClick={handleResetToAuto}
+                    className="px-2.5 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg transition-colors shrink-0 text-[10px] font-mono"
+                    title="Restaurar a auto-detección del origen"
+                  >
+                    Auto
+                  </button>
+                )}
+              </div>
+              {isSavedNotice && (
+                <span className="text-[10px] text-emerald-400 font-mono flex items-center gap-1">
+                  <Check className="w-3 h-3" /> Configuración de red actualizada
+                </span>
+              )}
+            </div>
+
+            {/* Detected IPs Quick Selector */}
+            {diagnostics.detectedIps.length > 0 && (
+              <div className="pt-2 border-t border-oled-border/60">
+                <span className="text-[10px] uppercase font-mono text-slate-400 block mb-1.5">
+                  IPs detectadas en el Servidor (haz clic para conectar):
+                </span>
+                <div className="flex flex-wrap gap-1.5">
+                  {diagnostics.detectedIps.map((ip) => (
+                    <button
+                      key={ip}
+                      type="button"
+                      onClick={() => handleQuickConnect(ip)}
+                      className="px-2 py-1 bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-800/60 text-cyan-300 rounded-md text-[10px] font-mono transition-colors"
+                    >
+                      {ip}:5173
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Team management section */}

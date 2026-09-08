@@ -20,8 +20,19 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5174,
-    host: '127.0.0.1',
+    port: 5173,
+    host: '0.0.0.0',
+    proxy: {
+      '/socket.io': {
+        target: 'http://127.0.0.1:3001',
+        ws: true,
+        changeOrigin: true,
+      },
+      '/api': {
+        target: 'http://127.0.0.1:3001',
+        changeOrigin: true,
+      },
+    },
   },
   build: {
     outDir: path.resolve(__dirname, '../dist'),
