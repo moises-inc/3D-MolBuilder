@@ -57,7 +57,7 @@ graph TD
 2. **Iniciar el Servidor y la Aplicación en el PC Central:**
    En la consola del computador conectado al proyector, ejecuta:
    ```bash
-   cd /mnt/9b846436-0407-4e80-b8af-5417ffbdee8e/PIDE_VcM_MolBuilder
+   cd 3D-MolBuilder
    npm run dev:lan
    ```
    La consola imprimirá un banner informativo indicando la IP de la red local:

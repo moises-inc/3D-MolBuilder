@@ -38,3 +38,7 @@ dist-ssr
 # Vite / Vitest / Cache
 .vite
 .cache
+
+# Internal Agent Prompts & Scratch Files
+prompt_*.md
+*.tmp
