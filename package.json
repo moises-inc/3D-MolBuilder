@@ -7,8 +7,8 @@
   "author": "Moisés Amundarain Romero & PIDE VcM Team",
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "dev": "vite --config config/vite.config.ts --host 0.0.0.0 --port 5174",
-    "dev:lan": "concurrently 'npm run server' 'vite --config config/vite.config.ts --host 0.0.0.0 --port 5174'",
+    "dev": "concurrently \"npm run server\" \"vite --config config/vite.config.ts --host 0.0.0.0 --port 5174\"",
+    "dev:lan": "concurrently \"npm run server\" \"vite --config config/vite.config.ts --host 0.0.0.0 --port 5174\"",
     "server": "node server/index.js",
     "start": "node server/index.js",
     "build": "tsc -b config/tsconfig.json && vite build --config config/vite.config.ts",
