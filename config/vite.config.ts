@@ -4,13 +4,47 @@ import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import http from 'node:http';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 export default defineConfig({
   root: path.resolve(__dirname, '..'),
-  plugins: [react()],
+  plugins: [
+    react(),
+    {
+      name: 'lan-server-check',
+      configureServer(server) {
+        server.middlewares.use((req, res, next) => {
+          if (req.url && req.url.startsWith('/api')) {
+            // Comprobar rápido en 150ms si el servidor LAN en 3001 está activo
+            const checkReq = http.request(
+              { host: '127.0.0.1', port: 3001, path: '/health', method: 'GET', timeout: 150 },
+              (checkRes) => {
+                if (checkRes.statusCode === 200) {
+                  next();
+                } else {
+                  res.statusCode = 503;
+                  res.setHeader('Content-Type', 'application/json');
+                  res.end(JSON.stringify({ offline: true, message: 'Servidor LAN offline' }));
+                }
+              }
+            );
+            checkReq.on('error', () => {
+              // Servidor 3001 inactivo: responder HTTP 503 silenciosamente sin log de error proxy en rojo
+              res.statusCode = 503;
+              res.setHeader('Content-Type', 'application/json');
+              res.end(JSON.stringify({ offline: true, message: 'Servidor LAN offline' }));
+            });
+            checkReq.end();
+            return;
+          }
+          next();
+        });
+      },
+    },
+  ],
   css: {
     postcss: {
       plugins: [
@@ -23,31 +57,9 @@ export default defineConfig({
     port: 5174,
     host: '0.0.0.0',
     proxy: {
-      '/socket.io': {
-        target: 'http://127.0.0.1:3001',
-        ws: true,
-        changeOrigin: true,
-        configure: (proxy, _options) => {
-          proxy.on('error', (_err, _req, _res) => {
-            // Silenciar ECONNREFUSED si el servidor Socket.io aún no está levantado
-          });
-        },
-      },
       '/api': {
         target: 'http://127.0.0.1:3001',
         changeOrigin: true,
-        configure: (proxy, _options) => {
-          proxy.on('error', (_err, _req, res) => {
-            if ('writeHead' in res && typeof res.writeHead === 'function') {
-              try {
-                res.writeHead(503, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ offline: true, message: 'Servidor LAN offline o en espera' }));
-              } catch {
-                // Cabeceras ya enviadas
-              }
-            }
-          });
-        },
       },
     },
   },
@@ -67,3 +79,4 @@ export default defineConfig({
     },
   },
 });
+
