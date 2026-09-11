@@ -21,6 +21,7 @@ const distPath = path.resolve(__dirname, '../dist');
 const app = express();
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 3001;
+const VITE_PORT = process.env.VITE_PORT || 5174;
 
 // Configuración CORS permisiva para red local escolar
 const io = new Server(httpServer, {
@@ -81,7 +82,7 @@ app.get('/api/info', (req, res) => {
   res.json({
     status: 'ok',
     port: PORT,
-    vitePort: 5173,
+    vitePort: VITE_PORT,
     localIps: getIpStrings(),
     detailedInterfaces: getLocalIpAddresses(),
     connectedClients: tournamentState.connectedClients,
@@ -112,7 +113,7 @@ io.on('connection', (socket) => {
     serverInfo: {
       ips: getIpStrings(),
       port: PORT,
-      vitePort: 5173,
+      vitePort: VITE_PORT,
     },
   });
   io.emit('client-count-updated', tournamentState.connectedClients);
@@ -255,8 +256,10 @@ function getLocalIpAddresses() {
     if (!addrs) continue;
     for (const iface of addrs) {
       if (iface.family === 'IPv4' && !iface.internal) {
-        const isVirtual = /tailscale|docker|br-|veth|vmnet|vbox|tun|tap/i.test(name);
-        const isWifi = /wl|wifi|airport/i.test(name);
+        // Filtrar direcciones APIPA (169.254.x.x) autogeneradas sin red
+        if (iface.address.startsWith('169.254.')) continue;
+        const isVirtual = /tailscale|docker|br-|veth|vmnet|vbox|virbr|tun|tap|dummy/i.test(name);
+        const isWifi = /wl|wifi|airport|wlan/i.test(name);
         const isEthernet = /eth|enp|eno|en\d/i.test(name);
         results.push({
           name,
@@ -298,8 +301,8 @@ httpServer.listen(PORT, '0.0.0.0', () => {
     interfaces.forEach((iface) => {
       const tag = iface.type === 'wifi' ? '[Wi-Fi 📶]' : iface.type === 'ethernet' ? '[Ethernet 🔌]' : '[Virtual 🔒]';
       console.log(`   ${tag} ${iface.name}:`);
-      console.log(`      👉 Cliente Web Vite (Recomendado): http://${iface.address}:5173`);
-      console.log(`      👉 Proyector Principal:            http://${iface.address}:5173/?role=master`);
+      console.log(`      👉 Cliente Web Vite (Recomendado): http://${iface.address}:${VITE_PORT}`);
+      console.log(`      👉 Proyector Principal:            http://${iface.address}:${VITE_PORT}/?role=master`);
       console.log(`      👉 API / Socket Directo:           http://${iface.address}:${PORT}`);
     });
   } else {

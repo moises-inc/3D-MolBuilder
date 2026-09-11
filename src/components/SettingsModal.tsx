@@ -48,6 +48,8 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   const [customIpInput, setCustomIpInput] = useState('');
   const [isSavedNotice, setIsSavedNotice] = useState(false);
 
+  const activePort = typeof window !== 'undefined' && window.location.port ? window.location.port : '5174';
+
   useEffect(() => {
     if (!isOpen) return;
     setDiagnostics(socketSync.getDiagnostics());
@@ -62,21 +64,26 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
 
   if (!isOpen) return null;
 
-  const handleAddTeam = () => {
+  const handleAddTeam = (e?: React.FormEvent) => {
+    if (e) e.preventDefault();
     if (!newTeamName.trim()) return;
+
+    const colors = ['#5de1e5', '#efb65f', '#38ef7d', '#f43f5e', '#a855f7', '#ec4899'];
+    const assignedColor = colors[teams.length % colors.length];
+
     const newTeam: TeamScore = {
       id: `team-${Date.now()}`,
       name: newTeamName.trim(),
       score: 0,
       completedMolecules: [],
-      color: '#5de1e5',
+      color: assignedColor,
     };
+
     onUpdateTeams([...teams, newTeam]);
     setNewTeamName('');
   };
 
   const handleRemoveTeam = (id: string) => {
-    if (teams.length <= 1) return; // keep at least 1 team
     onUpdateTeams(teams.filter((t) => t.id !== id));
   };
 
@@ -95,7 +102,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   const handleQuickConnect = (ip: string) => {
-    const target = `http://${ip}:5173`;
+    const target = `http://${ip}:${activePort}`;
     setCustomIpInput(target);
     socketSync.setCustomServer(target);
     setIsSavedNotice(true);
@@ -247,7 +254,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                   <p className="text-[10px] text-slate-300">Detalle: {diagnostics.lastError}</p>
                   <ul className="list-disc list-inside text-[10px] text-slate-400 space-y-0.5">
                     <li>Verifica que ambas laptops estén en la misma red Wi-Fi o zona portátil.</li>
-                    <li>Verifica la IP del PC central (debe ser accesible en el puerto 5173 o 3001).</li>
+                    <li>Verifica la IP del PC central (debe ser accesible en el puerto {activePort} o 3001).</li>
                     <li>Si la red Wi-Fi tiene aislamiento de clientes (AP Isolation), usa la zona Wi-Fi del teléfono.</li>
                   </ul>
                 </div>
@@ -262,7 +269,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
               <div className="flex gap-2">
                 <input
                   type="text"
-                  placeholder="ej: 192.168.1.50 o 192.168.1.50:5173"
+                  placeholder={`ej: 192.168.1.50 o 192.168.1.50:${activePort}`}
                   value={customIpInput}
                   onChange={(e) => setCustomIpInput(e.target.value)}
                   onKeyDown={(e) => e.key === 'Enter' && handleConnectCustomIp()}
@@ -305,7 +312,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
                       onClick={() => handleQuickConnect(ip)}
                       className="px-2 py-1 bg-cyan-950/40 hover:bg-cyan-900/60 border border-cyan-800/60 text-cyan-300 rounded-md text-[10px] font-mono transition-colors"
                     >
-                      {ip}:5173
+                      {ip}:{activePort}
                     </button>
                   ))}
                 </div>

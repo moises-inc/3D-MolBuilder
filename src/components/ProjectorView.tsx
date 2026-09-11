@@ -63,7 +63,8 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
     : (typeof window !== 'undefined' && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1')
     ? window.location.hostname
     : 'IP-DE-ESTE-PC';
-  const stationConnectUrl = `http://${primaryHostIp}:5173`;
+  const activePort = typeof window !== 'undefined' && window.location.port ? window.location.port : '5174';
+  const stationConnectUrl = `http://${primaryHostIp}:${activePort}`;
 
   const handleCopyStationUrl = () => {
     if (typeof navigator !== 'undefined') {

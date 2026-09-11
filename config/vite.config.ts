@@ -20,19 +20,40 @@ export default defineConfig({
     },
   },
   server: {
-    port: 5173,
+    port: 5174,
     host: '0.0.0.0',
     proxy: {
       '/socket.io': {
         target: 'http://127.0.0.1:3001',
         ws: true,
         changeOrigin: true,
+        configure: (proxy, _options) => {
+          proxy.on('error', (_err, _req, _res) => {
+            // Silenciar ECONNREFUSED si el servidor Socket.io aún no está levantado
+          });
+        },
       },
       '/api': {
         target: 'http://127.0.0.1:3001',
         changeOrigin: true,
+        configure: (proxy, _options) => {
+          proxy.on('error', (_err, _req, res) => {
+            if ('writeHead' in res && typeof res.writeHead === 'function') {
+              try {
+                res.writeHead(503, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify({ offline: true, message: 'Servidor LAN offline o en espera' }));
+              } catch {
+                // Cabeceras ya enviadas
+              }
+            }
+          });
+        },
       },
     },
+  },
+  preview: {
+    port: 5174,
+    host: '0.0.0.0',
   },
   build: {
     outDir: path.resolve(__dirname, '../dist'),
