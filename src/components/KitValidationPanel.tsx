@@ -19,6 +19,7 @@ interface KitValidationPanelProps {
   timeLeft: number;
   onValidateSuccess: (scoreEarned: number, timeBonus: number) => void;
   disabled?: boolean;
+  isAlreadyCompleted?: boolean;
 }
 
 export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
@@ -26,6 +27,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
   timeLeft,
   onValidateSuccess,
   disabled = false,
+  isAlreadyCompleted = false,
 }) => {
   // Checklist items tracked by student team / monitor
   const [checkedItems, setCheckedItems] = useState<{
@@ -42,6 +44,17 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
 
   const [validationError, setValidationError] = useState<string | null>(null);
   const [successAnimation, setSuccessAnimation] = useState<boolean>(false);
+
+  // Reset checklist and error whenever active molecule changes
+  React.useEffect(() => {
+    setCheckedItems({
+      spheresVerified: false,
+      connectorsVerified: false,
+      geometryVerified: false,
+      noDanglingBonds: false,
+    });
+    setValidationError(null);
+  }, [molecule.id]);
 
   const toggleCheck = (key: keyof typeof checkedItems) => {
     if (disabled) return;
@@ -62,35 +75,46 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
     setValidationError(null);
   };
 
+  // Rescaled base points: Fácil = 100, Intermedio = 125, Avanzado = 150
+  const basePoints = 
+    molecule.difficultyLevel === 'facil' ? 100 : 
+    molecule.difficultyLevel === 'intermedio' ? 125 : 150;
+
+  // Each verified item grants 25% of the round's base score
+  const checkedCount = [
+    checkedItems.spheresVerified,
+    checkedItems.connectorsVerified,
+    checkedItems.geometryVerified,
+    checkedItems.noDanglingBonds,
+  ].filter(Boolean).length;
+
+  const pointsPerItem = Math.round(basePoints * 0.25);
+  const partialBaseScore = Math.round((checkedCount / 4) * basePoints);
+
+  // Speed bonus: +1 to +25 based on remaining time
+  const rawSpeedBonus = timeLeft > 0
+    ? Math.max(1, Math.min(25, Math.round((timeLeft / molecule.timeLimitSeconds) * 25)))
+    : 0;
+
+  const effectiveSpeedBonus = checkedCount === 4
+    ? rawSpeedBonus
+    : Math.round(rawSpeedBonus * (checkedCount / 4));
+
+  const currentTotalPotential = partialBaseScore + effectiveSpeedBonus;
+
   const handleValidate = () => {
     if (disabled) return;
 
-    // Check if all criteria are checked
-    const allChecked = 
-      checkedItems.spheresVerified && 
-      checkedItems.connectorsVerified && 
-      checkedItems.geometryVerified && 
-      checkedItems.noDanglingBonds;
-
-    if (!allChecked) {
-      setValidationError('¡Falta verificar algunos aspectos! Asegúrate de que el equipo haya revisado las 4 condiciones del kit físico.');
+    if (checkedCount === 0) {
+      setValidationError('¡Debes verificar al menos 1 condición del kit físico antes de validar!');
       return;
     }
 
-    // Calculate score
-    const basePoints = 
-      molecule.difficultyLevel === 'facil' ? 500 : 
-      molecule.difficultyLevel === 'intermedio' ? 800 : 1200;
-    
-    // Time bonus: 5 points per remaining second
-    const timeBonus = Math.max(0, timeLeft * 5);
-    const totalRoundScore = basePoints + timeBonus;
-
     setSuccessAnimation(true);
     setTimeout(() => {
-      onValidateSuccess(totalRoundScore, timeBonus);
+      onValidateSuccess(currentTotalPotential, effectiveSpeedBonus);
       setSuccessAnimation(false);
-    }, 600);
+    }, 500);
   };
 
   // Element CPK badge info
@@ -123,6 +147,19 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
 
       {/* Content */}
       <div className="flex-1 p-4 overflow-y-auto space-y-4 text-xs">
+        {/* Already completed badge */}
+        {isAlreadyCompleted && (
+          <div className="p-3 bg-emerald-950/40 border border-emerald-500/50 rounded-lg flex items-center justify-between text-emerald-200 animate-fade-in">
+            <div className="flex items-center gap-2">
+              <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
+              <span className="font-semibold text-xs">Molécula ya validada por este equipo</span>
+            </div>
+            <span className="text-[10px] font-mono uppercase bg-emerald-900/60 px-2 py-0.5 rounded text-emerald-300 border border-emerald-700/50 font-bold">
+              Completada
+            </span>
+          </div>
+        )}
+
         {/* Required Spheres & Connectors Card */}
         <div className="bg-oled-panel p-3.5 rounded-lg border border-oled-border space-y-3">
           <div className="text-[11px] uppercase font-mono font-bold text-pide-cyan flex items-center gap-1.5">
@@ -185,11 +222,40 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
           </div>
         </div>
 
+        {/* Real-Time Partial Score Widget */}
+        <div className="bg-black/70 p-3 rounded-lg border border-oled-border flex items-center justify-between">
+          <div className="flex flex-col">
+            <span className="text-[10px] uppercase font-mono text-slate-400">Puntaje parcial acumulado:</span>
+            <div className="flex items-baseline gap-1.5 mt-0.5">
+              <span className="text-base font-mono font-extrabold text-pide-cyan">
+                {partialBaseScore}
+              </span>
+              <span className="text-xs text-slate-400 font-mono">/ {basePoints} pts base</span>
+              {effectiveSpeedBonus > 0 && (
+                <span className="text-xs font-mono font-bold text-amber-400 flex items-center gap-0.5 ml-1">
+                  <Zap className="w-3 h-3 inline" />+{effectiveSpeedBonus} vel
+                </span>
+              )}
+            </div>
+          </div>
+          <div className="text-right">
+            <span className="text-[10px] font-mono text-slate-400 block">Total ronda:</span>
+            <span className="text-sm font-mono font-bold text-emerald-400">
+              {currentTotalPotential} pts
+            </span>
+          </div>
+        </div>
+
         {/* Physical Kit Inspection Checklist */}
         <div className="space-y-2">
-          <span className="text-[11px] uppercase font-mono font-bold text-slate-300 block">
-            Validación de Mesa (Monitores USS / Capitán):
-          </span>
+          <div className="flex items-center justify-between">
+            <span className="text-[11px] uppercase font-mono font-bold text-slate-300 block">
+              Validación de Mesa ({checkedCount}/4 ítems):
+            </span>
+            <span className="text-[10px] font-mono text-slate-400">
+              {pointsPerItem} pts c/u (25%)
+            </span>
+          </div>
 
           <div className="space-y-1.5">
             <button
@@ -205,7 +271,10 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               ) : (
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
-              <span>Conteo exacto de esferas CPK utilizadas</span>
+              <span className="flex-1">Conteo exacto de esferas CPK utilizadas</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+                +{pointsPerItem} pts
+              </span>
             </button>
 
             <button
@@ -221,7 +290,10 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               ) : (
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
-              <span>Conectores correctos (rígidos en simples, flexibles en dobles)</span>
+              <span className="flex-1">Conectores correctos (rígidos en simples, flexibles en dobles)</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+                +{pointsPerItem} pts
+              </span>
             </button>
 
             <button
@@ -237,7 +309,10 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               ) : (
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
-              <span>Geometría espacial 3D coincide con el modelo digital</span>
+              <span className="flex-1">Geometría espacial 3D coincide con el modelo digital</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+                +{pointsPerItem} pts
+              </span>
             </button>
 
             <button
@@ -253,7 +328,10 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               ) : (
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
-              <span>Sin orificios vacíos indebidos o enlaces flotantes</span>
+              <span className="flex-1">Sin orificios vacíos indebidos o enlaces flotantes</span>
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+                +{pointsPerItem} pts
+              </span>
             </button>
           </div>
         </div>
@@ -277,11 +355,21 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
               : successAnimation
               ? 'bg-emerald-400 text-black scale-[0.98]'
-              : 'bg-gradient-to-r from-cyan-400 via-cyan-500 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-extrabold shadow-[0_0_20px_rgba(93,225,229,0.4)]'
+              : checkedCount === 4
+              ? 'bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 hover:from-emerald-300 hover:to-blue-400 text-black font-extrabold shadow-[0_0_20px_rgba(93,225,229,0.4)]'
+              : checkedCount > 0
+              ? 'bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-bold'
+              : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'
           }`}
         >
           <Send className="w-4 h-4" />
-          <span>Validar Ensamblado de Ronda</span>
+          <span>
+            {checkedCount === 4
+              ? `Validar Ensamblado Completo (${currentTotalPotential} pts)`
+              : checkedCount > 0
+              ? `Validar Puntaje Parcial (${currentTotalPotential} pts)`
+              : 'Validar Ensamblado de Ronda'}
+          </span>
         </button>
       </div>
     </div>

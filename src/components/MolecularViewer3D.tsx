@@ -397,6 +397,71 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       });
     }
 
+    // 3. Create VSEPR Non-Bonding Electron Density Lobes (RPECV) for NH3 and H2O
+    const hasVseprLobes = molecule.id === 'water' || molecule.id === 'ammonia';
+    if (hasVseprLobes) {
+      const createLobeGeometry = () => {
+        const geo = new THREE.SphereGeometry(0.32, 24, 24);
+        const pos = geo.attributes.position;
+        for (let i = 0; i < pos.count; i++) {
+          const y = pos.getY(i);
+          const factor = 1.0 + 0.28 * y; // wider tip, tapered base
+          pos.setX(i, pos.getX(i) * 0.72 * factor);
+          pos.setY(i, pos.getY(i) * 1.30 + 0.42); // stretch along Y and shift origin to base
+          pos.setZ(i, pos.getZ(i) * 0.72 * factor);
+        }
+        geo.computeVertexNormals();
+        return geo;
+      };
+
+      const lobeMaterial = isWireframe
+        ? new THREE.MeshBasicMaterial({
+            color: 0x5de1e5,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.55,
+          })
+        : new THREE.MeshPhysicalMaterial({
+            color: 0x5de1e5,
+            transparent: true,
+            opacity: 0.40,
+            roughness: 0.2,
+            metalness: 0.05,
+            transmission: 0.3,
+            depthWrite: false,
+            side: THREE.DoubleSide,
+          });
+
+      if (molecule.id === 'ammonia') {
+        // Nitrogen atom
+        const nAtom = molecule.atoms.find((a) => a.symbol === 'N') || molecule.atoms[0];
+        const nPos = new THREE.Vector3(nAtom.x, nAtom.y, nAtom.z);
+        // 1 Apical superior lobe over nitrogen pointing along +Z (opposite to N-H tripod)
+        const apicalDir = new THREE.Vector3(0, 0, 1).normalize();
+        const lobeMesh = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
+        lobeMesh.position.copy(nPos);
+        lobeMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), apicalDir);
+        group.add(lobeMesh);
+      } else if (molecule.id === 'water') {
+        // Oxygen atom
+        const oAtom = molecule.atoms.find((a) => a.symbol === 'O') || molecule.atoms[0];
+        const oPos = new THREE.Vector3(oAtom.x, oAtom.y, oAtom.z);
+        // 2 Tetrahedral lobes pointing in -Y tilted symmetrically along +Z and -Z
+        const dir1 = new THREE.Vector3(0, -0.65, 0.76).normalize();
+        const dir2 = new THREE.Vector3(0, -0.65, -0.76).normalize();
+
+        const lobeMesh1 = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
+        lobeMesh1.position.copy(oPos);
+        lobeMesh1.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir1);
+        group.add(lobeMesh1);
+
+        const lobeMesh2 = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
+        lobeMesh2.position.copy(oPos);
+        lobeMesh2.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir2);
+        group.add(lobeMesh2);
+      }
+    }
+
     // Centering calculation
     const box = new THREE.Box3().setFromObject(group);
     const center = new THREE.Vector3();
@@ -404,6 +469,8 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     group.position.sub(center); // perfectly center molecule at (0, 0, 0)
 
   }, [molecule, viewMode]);
+
+  const hasVseprLobes = molecule.id === 'water' || molecule.id === 'ammonia';
 
   return (
     <div className={`relative flex flex-col w-full h-full bg-black select-none overflow-hidden rounded-xl border border-oled-border ${className}`}>
@@ -444,7 +511,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
       {/* Top HUD Controls */}
       <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-auto">
-        <div className="flex items-center gap-2 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-oled-border text-xs text-slate-200 shadow-lg">
+        <div className="flex items-center gap-2 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-oled-border text-xs text-slate-200 shadow-lg flex-wrap">
           <Sparkles className="w-4 h-4 text-pide-cyan animate-pulse" />
           <span className="font-mono font-bold text-white">{molecule.formula}</span>
           <span className="text-slate-600">|</span>
@@ -453,6 +520,15 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${molecule.didactica.polaridad === 'polar' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'bg-slate-700/40 text-slate-300 border border-slate-600/30'}`}>
             {molecule.didactica.polaridad.toUpperCase()}
           </span>
+          {hasVseprLobes && (
+            <>
+              <span className="text-slate-600">|</span>
+              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-400/60 text-cyan-300 text-[10px] font-mono font-bold shadow-[0_0_10px_rgba(93,225,229,0.3)] animate-pulse">
+                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+                Lóbulos RPECV Visibles
+              </span>
+            </>
+          )}
         </div>
 
         {/* Action button bar */}

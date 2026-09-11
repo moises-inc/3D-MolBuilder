@@ -51,15 +51,35 @@ El motor gráfico 3D utiliza **Three.js** con `OrbitControls` (amortiguación su
    - **Espacio Lleno (Van der Waals):** Esferas aumentadas al 220% de su radio atómico relativo para mostrar volumen estérico de empaquetamiento.
    - **Malla Alámbrica 3D (Wireframe):** Estructuras alámbricas translúcidas de alta frecuencia poligonal.
 
-4. **Raycasting & Inspección Atómica:**
+4. **Lóbulos de Densidad Electrónica no Enlazantes RPECV (VSEPR):**
+   Renderizado volumétrico dinámico para compuestos con pares solitarios clave:
+   - **Material Translúcido:** `THREE.MeshPhysicalMaterial` con tinte Cyan PIDE (`#5de1e5`), `opacity = 0.40`, `roughness = 0.2`, `metalness = 0.05` y `transmission = 0.3`.
+   - **Amoníaco ($\text{NH}_3$):** 1 lóbulo apical elipsoidal deformado sobre el nitrógeno en $+Z$ opuesto a los tres enlaces $\text{N-H}$, evidenciando la repulsión tripoidal ($107.3^\circ$).
+   - **Agua ($\text{H}_2\text{O}$):** 2 lóbulos tetraédricos sobre el oxígeno en el plano $YZ$ opuestos a los enlaces $\text{O-H}$, ilustrando la compresión angular a $104.5^\circ$.
+   - **Indicador HUD:** Badge flotante interactivo indicando *"Lóbulos RPECV Visibles"*.
+
+5. **Raycasting & Inspección Atómica:**
    Detección de clics mediante `THREE.Raycaster` sobre la geometría de los átomos para resaltar el objeto seleccionado con un aura cromática (Cyan `#5de1e5`) y proyectar su hibridación, símbolo y estado en la interfaz.
 
-5. **Exportación de Capturas PNG HD:**
+6. **Exportación de Capturas PNG HD:**
    Un botón directo invoca `webglRenderer.domElement.toDataURL('image/png')` para generar imágenes de la molécula 3D en alta resolución sin necesidad de capturas de pantalla externas.
 
 ---
 
-## 🔊 3. Motor de Audio Sintetizado Offline (`soundEffects.ts`)
+## 📐 3. Rediseño de Layout Dual y Validación Progresiva
+
+1. **Layout Dual Optimizado para Proyector Escolar:**
+   - **Zona Superior Didáctica:** Tarjeta horizontal continua que consolida propiedades físicas, fórmulas con subíndices UTF-8, modelo RPECV, curiosidades del mundo real y la pestaña de **Trivia Escolar USS** (8 preguntas calibradas para 3° y 4° Medio con balance homogéneo de opciones A, B, C, D).
+   - **Zona Inferior de Ejecución:** Escenario 3D interactivo a la izquierda (con leyenda CPK y controles orbitales) y panel de validación de kit físico a la derecha.
+
+2. **Panel de Validación del Kit Físico y Puntuación Parcial:**
+   - **Aislamiento de Estado por Molécula:** Limpieza automática de casillas (`useEffect` en `molecule.id`) evitando el marcado masivo accidental.
+   - **Puntuación Proporcional:** 25% del puntaje base por cada criterio verificado (esferas, conectores, geometría, sin piezas sueltas).
+   - **Bonificación Dinámica de Velocidad:** Otorga entre +1 y +25 puntos adicionales en función del tiempo restante de la ronda.
+
+---
+
+## 🔊 4. Motor de Audio Sintetizado Offline (`soundEffects.ts`)
 
 Para evitar la carga de assets pesados o dependencias de red, el sistema utiliza **Web Audio API** nativa del navegador:
 
@@ -70,7 +90,7 @@ Para evitar la carga de assets pesados o dependencias de red, el sistema utiliza
 
 ---
 
-## ⚙️ 4. Verificación y Calidad de Código
+## ⚙️ 5. Verificación y Calidad de Código
 
 El repositorio cumple con los estándares estrictos de compilación:
 - `tsc -b`: Validación estricta del compilador TypeScript sin tipos `any` ni advertencias.

@@ -369,69 +369,70 @@ export const App: React.FC = () => {
             }}
           />
 
-          {/* Main Workspace */}
-          <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 grid grid-cols-1 lg:grid-cols-12 gap-3.5">
-            {/* Left / Center: 3D Molecular Stage (7 cols on lg) */}
-            <section className="lg:col-span-7 flex flex-col gap-3 min-h-[440px] lg:min-h-[580px]">
-              <div className="flex-1 relative rounded-xl overflow-hidden shadow-2xl">
-                <MolecularViewer3D
-                  molecule={currentMolecule}
-                  onSelectAtom={setSelectedAtom}
-                  selectedAtom={selectedAtom}
-                />
-              </div>
-
-              {/* Bottom CPK Legend & Shortcut Strip */}
-              <div className="bg-oled-card p-3 rounded-xl border border-oled-border flex flex-wrap items-center justify-between gap-3 text-xs">
-                <div className="flex items-center gap-3">
-                  <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">
-                    Código CPK:
-                  </span>
-                  <div className="flex items-center gap-2">
-                    <span className="flex items-center gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#262626] border border-white/40" />
-                      <span className="text-slate-300 text-[11px]">Carbono (C)</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-400" />
-                      <span className="text-slate-300 text-[11px]">Hidrógeno (H)</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
-                      <span className="text-slate-300 text-[11px]">Oxígeno (O)</span>
-                    </span>
-                    <span className="flex items-center gap-1">
-                      <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6]" />
-                      <span className="text-slate-300 text-[11px]">Nitrógeno (N)</span>
-                    </span>
-                  </div>
-                </div>
-
-                <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-                  <Sparkles className="w-3.5 h-3.5 text-pide-cyan" />
-                  <span>Rotar: Arrastre | Zoom: Rueda | Clic: Info Átomo</span>
-                </div>
-              </div>
+          {/* Main Workspace: Two Clear Structural Sections */}
+          <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 flex flex-col gap-4">
+            {/* SECCIÓN SUPERIOR DIDÁCTICA (Ficha molecular amplia y corrida) */}
+            <section className="w-full">
+              <MoleculeInfoCard
+                molecule={currentMolecule}
+                onTriviaAnswered={handleTriviaAnswered}
+                triviaAnswered={triviaAnswered}
+              />
             </section>
 
-            {/* Right: Molecule Didactic Card & Kit Validation (5 cols on lg) */}
-            <section className="lg:col-span-5 flex flex-col gap-3 min-h-[580px]">
-              {/* Top Half: Molecule Educational Info & Trivia */}
-              <div className="flex-1 min-h-[300px]">
-                <MoleculeInfoCard
-                  molecule={currentMolecule}
-                  onTriviaAnswered={handleTriviaAnswered}
-                  triviaAnswered={triviaAnswered}
-                />
+            {/* SECCIÓN INFERIOR 3D Y ENSAMBLADO (Visor 3D a la izquierda, Validación Kit a la derecha) */}
+            <section className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
+              {/* Left Column: 3D Molecular Stage + CPK Legend (7 cols on lg) */}
+              <div className="lg:col-span-7 flex flex-col gap-3 min-h-[460px] lg:min-h-[520px]">
+                <div className="flex-1 relative rounded-xl overflow-hidden shadow-2xl min-h-[380px]">
+                  <MolecularViewer3D
+                    molecule={currentMolecule}
+                    onSelectAtom={setSelectedAtom}
+                    selectedAtom={selectedAtom}
+                  />
+                </div>
+
+                {/* Bottom CPK Legend & Shortcut Strip */}
+                <div className="bg-oled-card p-3 rounded-xl border border-oled-border flex flex-wrap items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-3">
+                    <span className="text-[10px] uppercase font-mono text-slate-400 font-bold">
+                      Código CPK:
+                    </span>
+                    <div className="flex items-center gap-2">
+                      <span className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#262626] border border-white/40" />
+                        <span className="text-slate-300 text-[11px]">Carbono (C)</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-white border border-slate-400" />
+                        <span className="text-slate-300 text-[11px]">Hidrógeno (H)</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#EF4444]" />
+                        <span className="text-slate-300 text-[11px]">Oxígeno (O)</span>
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <span className="w-2.5 h-2.5 rounded-full bg-[#3B82F6]" />
+                        <span className="text-slate-300 text-[11px]">Nitrógeno (N)</span>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
+                    <Sparkles className="w-3.5 h-3.5 text-pide-cyan" />
+                    <span>Rotar: Arrastre | Zoom: Rueda | Clic: Info Átomo</span>
+                  </div>
+                </div>
               </div>
 
-              {/* Bottom Half: Physical Kit Assembly Checklist & Validation */}
-              <div className="flex-1 min-h-[380px] flex flex-col">
+              {/* Right Column: Physical Kit Assembly Checklist & Validation (5 cols on lg) */}
+              <div className="lg:col-span-5 flex flex-col min-h-[460px] lg:min-h-[520px]">
                 <KitValidationPanel
                   molecule={currentMolecule}
                   timeLeft={timeLeft}
                   onValidateSuccess={handleValidateSuccess}
                   disabled={false}
+                  isAlreadyCompleted={activeTeam.completedMolecules.includes(currentMolecule.id)}
                 />
               </div>
             </section>

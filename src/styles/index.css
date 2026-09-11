@@ -100,3 +100,21 @@ body {
 .animate-pulse-danger {
   animation: pulse-danger 1s infinite ease-in-out;
 }
+
+/* Responsive adjustments for 1366x768 (classroom laptops) and 1920x1080 (lab monitors & projectors) */
+@media (max-width: 1400px) and (max-height: 820px) {
+  :root {
+    font-size: 14px;
+  }
+  
+  main {
+    padding: 0.5rem 0.75rem !important;
+    gap: 0.75rem !important;
+  }
+}
+
+@media (min-width: 1900px) {
+  .max-w-7xl {
+    max-width: 1600px;
+  }
+}

@@ -28,18 +28,22 @@ Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos
 1. **Visor Gráfico 3D Analítico (Three.js):**
    - **3 Modos de Renderizado:** Esferas y Varillas (CPK), Espacio Lleno (Van der Waals) y Malla Alámbrica 3D (Wireframe).
    - **Código de Colores CPK:** Carbono (Negro `#262626`), Hidrógeno (Blanco `#FFFFFF`), Oxígeno (Rojo `#EF4444`), Nitrógeno (Azul `#3B82F6`).
+   - **Lóbulos 3D RPECV (VSEPR):** Visualización volumétrica de pares de electrones no enlazantes mediante mallas translúcidas cian (`#5de1e5`, `MeshPhysicalMaterial`), ilustrando el par solitario apical en $\text{NH}_3$ y los dos pares tetraédricos en $\text{H}_2\text{O}$ con repulsión angular ($107.3^\circ$ y $104.5^\circ$).
    - **Cálculo de Enlaces Dobles:** Orientación analítica por cuaterniones y cilindros paralelos para enlaces $\text{C=O}$.
    - **Inspección Interactiva:** Raycasting atómico para consultar hibridaciones ($sp^3, sp^2, sp$) y botón de exportación de fotos PNG HD.
 
-2. **Gamificación por Rondas de Competencia Escolar:**
+2. **Gamificación y Evaluación Didáctica Escolar:**
+   - **Puntuación Parcial y Reescalada:** Puntaje base por dificultad (Fácil = 100 pts, Intermedio = 125 pts, Avanzado = 150 pts), con acreditación progresiva del 25% por cada criterio validado (esferas, conectores, geometría, sin piezas flotantes).
+   - **Bonificación de Velocidad:** Recompensa de +1 a +25 pts proporcionales al tiempo restante en el ensamblado.
    - **Cronómetro Regresivo Dinámico:** Con advertencias visuales y efectos de audio sintetizados offline.
    - **Audio Sintetizado Web Audio API:** Sonidos de cuenta regresiva, respuesta correcta de trivia y fanfarria de victoria sin requerir archivos de audio externos.
-   - **Panel Didáctico de Química Cotidiana:** Explicaciones de fenómenos del mundo real (por qué el hielo flota, contracción de volumen agua-etanol, desinfección con alcohol al 70%, disolución de plumavit en acetona).
-   - **Trivia Escolar USS:** Preguntas interactivas con bonificación de **+100 puntos**.
-   - **Panel de Verificación de Kit Físico:** Conteo de esferas/conectores en mesa y guía del monitor.
+   - **Rediseño Dual para Proyector:** Layout optimizado para 1366x768 y 1080p con zona superior didáctica amplia (propiedades, usos cotidianos, datos curiosos y trivia calibrada para 3°/4° Medio) y zona inferior de trabajo simultáneo (escenario 3D + panel de kit físico).
+   - **Trivia Escolar USS:** Preguntas interactivas con balance homogéneo de alternativas (distribución equitativa A, B, C, D) y bonificación de **+100 puntos**.
+   - **Panel de Verificación de Kit Físico:** Conteo de esferas/conectores en mesa, estado de completitud aislado por molécula y guía del monitor.
 
-3. **Arquitectura 100% Offline:**
-   - Diseñado para funcionar de manera completamente autónoma en notebooks y proyectores de ferias escolares sin necesidad de acceso a internet.
+3. **Arquitectura 100% Offline e Integración con PIDE Core:**
+   - Diseñado para operar autónomamente en notebooks escolares sin internet.
+   - Integrado bidireccionalmente con **PIDE Core** mediante enlace en la barra de navegación principal y banner de invitación en el visor de orbitales atómicos.
 
 ---
 
