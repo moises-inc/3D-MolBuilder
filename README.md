@@ -4,12 +4,14 @@
 [![TypeScript 5](https://img.shields.io/badge/TypeScript-5.5-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Vite 5](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![Three.js](https://img.shields.io/badge/Three.js-0.168-000000?logo=three.js&logoColor=white)](https://threejs.org/)
+[![Tailwind CSS v3](https://img.shields.io/badge/Tailwind-v3.4-38BDF8?logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+[![E2E Suite](https://img.shields.io/badge/Playwright%20E2E-26%2F26%20PASS%20(100%25)-38ef7d?logo=playwright&logoColor=white)](qa_e2e_report.md)
 [![Offline Deterministic](https://img.shields.io/badge/Runtime-100%25%20offline%20%7C%20deterministic-111827)](docs/architecture.md)
 [![License AGPLv3](https://img.shields.io/badge/License-AGPLv3-00e676.svg)](LICENSE)
 
-**3D MolBuilder** es una aplicación interactiva tridimensional y plataforma gamificada de armado molecular, desarrollada específicamente para las ferias y talleres de extensión científica de **Vinculación con el Medio (VcM)** de la **Universidad San Sebastián (USS)**.
+**3D MolBuilder** es una plataforma interactiva tridimensional y aplicación gamificada de modelado molecular, desarrollada específicamente para ferias científicas escolares y talleres de extensión de **Vinculación con el Medio (VcM)** de la **Universidad San Sebastián (USS)**.
 
-Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos visualizando estructuras moleculares 3D analíticas (CPK, Van der Waals, Malla 3D), consultando fichas didácticas de química cotidiana y replicando el ensamblado físico con kits de esferas y conectores moleculares contra reloj.
+Permite a estudiantes de educación media (3° y 4° Medio) interactuar en equipo visualizando estructuras moleculares 3D analíticas con rigor científico (CPK, Van der Waals, Malla 3D), consultar fichas didácticas de química cotidiana y replicar el ensamblado físico con kits de esferas y conectores moleculares en rondas contra reloj.
 
 ---
 
@@ -25,94 +27,119 @@ Permite a estudiantes de educación media (3° y 4° Medio) competir por equipos
 
 ## ⚡ Características Principales
 
-1. **Visor Gráfico 3D Analítico (Three.js):**
-   - **3 Modos de Renderizado:** Esferas y Varillas (CPK), Espacio Lleno (Van der Waals) y Malla Alámbrica 3D (Wireframe).
-   - **Código de Colores CPK:** Carbono (Negro `#262626`), Hidrógeno (Blanco `#FFFFFF`), Oxígeno (Rojo `#EF4444`), Nitrógeno (Azul `#3B82F6`).
-   - **Lóbulos 3D RPECV (VSEPR):** Visualización volumétrica de pares de electrones no enlazantes mediante mallas translúcidas cian (`#5de1e5`, `MeshPhysicalMaterial`), ilustrando el par solitario apical en $\text{NH}_3$ y los dos pares tetraédricos en $\text{H}_2\text{O}$ con repulsión angular ($107.3^\circ$ y $104.5^\circ$).
-   - **Cálculo de Enlaces Dobles:** Orientación analítica por cuaterniones y cilindros paralelos para enlaces $\text{C=O}$.
-   - **Inspección Interactiva:** Raycasting atómico para consultar hibridaciones ($sp^3, sp^2, sp$) y botón de exportación de fotos PNG HD.
+### 1. 🎨 Visor Gráfico 3D Analítico (Three.js) & Preservación CPK
+- **3 Modos de Renderizado Dinámico:**
+  - **Esferas y Varillas (CPK):** Modelado proporcional con enlaces analíticos calculados por orientación de cuaterniones.
+  - **Espacio Lleno (Van der Waals):** Esferas aumentadas según sus radios atómicos de van der Waals relativos para ilustrar volumen de exclusión estérico.
+  - **Malla Alámbrica 3D (Wireframe):** Estructura poligonal geométrica para análisis de simetría y ejes de enlace.
+- **Código Cromático Internacional CPK Estricto:**
+  - Carbono (Gris carbón `#262626`)
+  - Hidrógeno (Blanco `#FFFFFF`)
+  - Oxígeno (Rojo brillante `#EF4444`)
+  - Nitrógeno (Azul cian `#3B82F6`)
+  - Cloro (Verde esmeralda `#10B981`)
+  - Azufre (Amarillo ámbar `#F59E0B`)
+- **Lóbulos de Densidad Electrónica RPECV (VSEPR):** Visualización volumétrica de pares de electrones no enlazantes mediante mallas translúcidas cian (`#5de1e5`, `MeshPhysicalMaterial`), ilustrando el par solitario apical en $\text{NH}_3$ y los dos pares tetraédricos en $\text{H}_2\text{O}$ con repulsión angular ($107.3^\circ$ y $104.5^\circ$).
+- **Inspección Atómica con Raycasting:** Detección de clics en tiempo real para consultar el símbolo químico, radio covalente e hibridación orbital ($sp^3$, $sp^2$, $sp$).
+- **Exportación Directa PNG HD:** Botón integrado para capturar imágenes en alta definición del modelo 3D sin depender de herramientas externas.
 
-2. **Gamificación y Evaluación Didáctica Escolar:**
-   - **Puntuación Parcial y Reescalada:** Puntaje base por dificultad (Fácil = 100 pts, Intermedio = 125 pts, Avanzado = 150 pts), con acreditación progresiva del 25% por cada criterio validado (esferas, conectores, geometría, sin piezas flotantes).
-   - **Bonificación de Velocidad:** Recompensa de +1 a +25 pts proporcionales al tiempo restante en el ensamblado.
-   - **Cronómetro Regresivo Dinámico:** Con advertencias visuales y efectos de audio sintetizados offline.
-   - **Audio Sintetizado Web Audio API:** Sonidos de cuenta regresiva, respuesta correcta de trivia y fanfarria de victoria sin requerir archivos de audio externos.
-   - **Rediseño Dual para Proyector:** Layout optimizado para 1366x768 y 1080p con zona superior didáctica amplia (propiedades, usos cotidianos, datos curiosos y trivia calibrada para 3°/4° Medio) y zona inferior de trabajo simultáneo (escenario 3D + panel de kit físico).
-   - **Trivia Escolar USS:** Preguntas interactivas con balance homogéneo de alternativas (distribución equitativa A, B, C, D) y bonificación de **+100 puntos**.
-   - **Panel de Verificación de Kit Físico:** Conteo de esferas/conectores en mesa, estado de completitud aislado por molécula y guía del monitor.
+### 2. 🌌 Fondo Procedural 3D (`RecursiveErosionBackground`) & Estética OLED
+- **Campo de 22.000 Partículas en Tiempo Real:** 14.000 partículas en la esfera de erosión fractal orgánica (fBm invertido en GLSL) y 8.000 partículas en el halo cósmico orbital de baja latencia.
+- **Paleta de Alta Gama:** Negro OLED (`#09090b`), Carbón Mate (`#18181b`), paneles en vidrio esmerilado translúcido (`rgba(18, 18, 22, 0.85)` con `backdrop-blur-md`) y bordes en Naranja Ámbar PIDE (`#F97316` / `#EA580C`).
+- **Arquitectura Híbrida Offline:** Ejecución fluida en Three.js con fallback automático a sombreadores WebGL 1.0 nativos si el dispositivo carece de conexión a internet.
+- **Eficiencia Energética:** Detección automática del ciclo de vida de la pestaña (`document.hidden`) para suspender el bucle de render y conservar batería en notebooks escolares.
 
-3. **Arquitectura 100% Offline e Integración con PIDE Core:**
-   - Diseñado para operar autónomamente en notebooks escolares sin internet.
-   - Integrado bidireccionalmente con **PIDE Core** mediante enlace en la barra de navegación principal y banner de invitación en el visor de orbitales atómicos.
+### 3. 🎯 Gamificación Escolar y Rigor Pedagógico
+- **Ficha Didáctica Amplia:** Sección continua sin compresión vertical que detalla la descripción química fundamental, modelo RPECV, clasificación de polaridad rigurosa con notación en Debye ($\mu > 0\text{ D}$ / $\mu = 0\text{ D}$), curiosidades del mundo real y aplicaciones en la industria chilena.
+- **Validación Matemática Proporcional del Kit Físico:** Sistema de puntaje que otorga exactamente el **25%** del puntaje base por cada hito verificado en mesa (25%, 50%, 75%, 100%), evitando la frustración escolar y fomentando la resolución incremental.
+- **Trivia Escolar USS:** Desafíos conceptuales alineados con el currículo nacional chileno y la prueba PAES, con distribución equitativa de alternativas correctas (A, B, C, D) y bonificación de **+100 puntos**.
+- **Audio Sintetizado Offline (Web Audio API):** Ticks de advertencia en los últimos 5 segundos, acordes de acierto en trivia y fanfarria triunfal de victoria con confeti animado, sin requerir descarga de archivos `.mp3` externos.
 
 ---
 
-## 🔬 Dataset Molecular Incluido (`moleculesDataset.ts`)
+## 🔬 Dataset Molecular Oficial (`moleculesDataset.ts`)
 
-| # | Compuesto | Fórmula | Masa Molar | Geometría RPECV | Polaridad | Dificultad | Tiempo | Enlaces / Conectores Requeridos |
+| # | Compuesto | Fórmula | Masa Molar | Geometría RPECV | Polaridad | Dificultad | Tiempo | Enlaces Requeridos en Kit Físico |
 | :-: | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
-| **01** | **Agua** | $\text{H}_2\text{O}$ | 18.02 g/mol | Angular ($104.5^\circ$) | Polar ($1.85$ D) | Fácil | 60s | 2 simples (cortos rígidos) |
-| **02** | **Dióxido de Carbono** | $\text{CO}_2$ | 44.01 g/mol | Lineal ($180^\circ$) | Apolar ($0$ D) | Fácil | 60s | 2 dobles ($\text{C=O}$, 4 flexibles) |
-| **03** | **Metano** | $\text{CH}_4$ | 16.04 g/mol | Tetraédrica ($109.5^\circ$) | Apolar ($0$ D) | Fácil | 60s | 4 simples (cortos rígidos) |
-| **04** | **Amoníaco** *(Bonus)* | $\text{NH}_3$ | 17.03 g/mol | Piramidal trigonal ($107.3^\circ$) | Polar ($1.47$ D) | Fácil | 60s | 3 simples (cortos rígidos) |
-| **05** | **Etanol** | $\text{C}_2\text{H}_6\text{O}$ | 46.07 g/mol | Tetraédrica / Angular | Polar ($1.69$ D) | Intermedio | 90s | 8 simples (cortos rígidos) |
-| **06** | **Acetona** | $\text{C}_3\text{H}_6\text{O}$ | 58.08 g/mol | Trigonal plana ($\text{C=O}$) | Polar ($2.88$ D) | Intermedio | 90s | 1 doble ($\text{C=O}$), 8 simples |
-| **07** | **Ácido Acético** *(Bonus)* | $\text{C}_2\text{H}_4\text{O}_2$ | 60.05 g/mol | Trigonal / Angular | Polar ($1.74$ D) | Intermedio | 90s | 1 doble ($\text{C=O}$, 2 flexibles), 6 simples |
-| **08** | **Acetato de Etilo** | $\text{C}_4\text{H}_8\text{O}_2$ | 88.11 g/mol | Trigonal / Angular / Tet. | Polar ($1.78$ D) | Avanzado | 150s | 1 doble ($\text{C=O}$, 2 flexibles), 12 simples |
+| **01** | **Agua** | $\text{H}_2\text{O}$ | 18.015 g/mol | Angular ($104.5^\circ$) | Polar ($\mu > 0\text{ D}$) | Fácil | 60s | 2 enlaces simples (conectores rígidos) |
+| **02** | **Dióxido de Carbono** | $\text{CO}_2$ | 44.01 g/mol | Lineal ($180^\circ$) | Apolar ($\mu = 0\text{ D}$) | Fácil | 60s | 2 enlaces dobles ($\text{C=O}$, 4 conectores flexibles) |
+| **03** | **Metano** | $\text{CH}_4$ | 16.04 g/mol | Tetraédrica ($109.5^\circ$) | Apolar ($\mu = 0\text{ D}$) | Fácil | 60s | 4 enlaces simples (conectores rígidos) |
+| **04** | **Amoníaco** *(Bonus)* | $\text{NH}_3$ | 17.03 g/mol | Piramidal trigonal ($107.3^\circ$) | Polar ($\mu > 0\text{ D}$) | Fácil | 60s | 3 enlaces simples + lóbulo par solitario |
+| **05** | **Etanol** | $\text{C}_2\text{H}_6\text{O}$ | 46.07 g/mol | Tetraédrica / Angular | Polar ($\mu > 0\text{ D}$) | Intermedio | 90s | 8 enlaces simples (cadena alifática + hidroxilo) |
+| **06** | **Acetona** | $\text{C}_3\text{H}_6\text{O}$ | 58.08 g/mol | Trigonal plana ($\text{C=O}$) | Polar ($\mu > 0\text{ D}$) | Intermedio | 90s | 1 doble ($\text{C=O}$, 2 flexibles) + 8 simples |
+| **07** | **Ácido Acético** *(Bonus)* | $\text{C}_2\text{H}_4\text{O}_2$ | 60.05 g/mol | Trigonal / Angular | Polar ($\mu > 0\text{ D}$) | Intermedio | 90s | 1 doble ($\text{C=O}$, 2 flexibles) + 6 simples |
+| **08** | **Acetato de Etilo** | $\text{C}_4\text{H}_8\text{O}_2$ | 88.11 g/mol | Trigonal / Angular / Tet. | Polar ($\mu > 0\text{ D}$) | Avanzado | 150s | 1 doble ($\text{C=O}$, 2 flexibles) + 12 simples |
 
 ---
 
-## 🚀 Inicio Rápido
+## 🚀 Instalación y Puesta en Marcha
 
 ### Requisitos Previos:
-- Node.js >= 18.0.0
-- npm >= 9.0.0
+- **Node.js:** >= 18.0.0
+- **npm:** >= 9.0.0
 
-### Instalación y Ejecución Local:
+### Ejecución Local en Desarrollo:
 ```bash
-# Clonar el repositorio
+# 1. Clonar el repositorio
 git clone https://github.com/moises-inc/3D-MolBuilder.git
 cd 3D-MolBuilder
 
-# Instalar dependencias
+# 2. Instalar dependencias
 npm install
 
-# Iniciar servidor de desarrollo en estación individual
+# 3. Iniciar servidor Vite (Estación de Mesa Escolar en puerto :5174)
 npm run dev
 
-# Iniciar en MODO LAN MULTIDISPOSITIVO (Servidor Socket.io + Vite en red)
+# 4. Iniciar en Modo LAN Multidispositivo (Servidor Socket.io + Vite en red)
 npm run dev:lan
 ```
-Accede a la aplicación en `http://localhost:5173/` para estaciones de mesa o `http://localhost:5173/?role=master` para el proyector principal.
 
-### Compilación y Despliegue Autónomo (Offline / Un Solo Puerto):
+- **Estación de Mesa Alumnos:** `http://localhost:5174/`
+- **Marcador Central Proyector Auditorio:** `http://localhost:5174/?role=master`
+
+### Compilación y Ejecución Unificada Offline (Puerto Único :3001):
 ```bash
 # Compilar bundle estático optimizado
 npm run build
 
-# Iniciar servidor unificado (Web + Socket.io en puerto 3001)
+# Iniciar servidor unificado Express/Socket.io sirviendo la carpeta dist/
 npm start
 ```
-Genera la carpeta `dist/` estática y permite ejecutar toda la solución en un único puerto (`http://<IP-PC>:3001/`) sin dependencias de desarrollo, ideal para computadores de feria escolar.
+Permite desplegar todo el ecosistema en un único puerto (`http://<IP-HOST>:3001/`) sin dependencias de desarrollo, ideal para ferias escolares en entornos sin conectividad a internet.
 
 ---
 
-## 🌐 Modo Compartido Multidispositivo (Ferias Escolares VcM)
+## 🌐 Sincronización en Tiempo Real (Red Escolar LAN & Respaldo QR)
 
-La aplicación soporta despliegue colaborativo en tiempo real mediante dos modalidades:
-1. **Sincronización en Vivo por Red LAN (Socket.io):** Conecta las mesas de los estudiantes al proyector principal en tiempo real sin requerir internet. Los puntajes, trivias y confeti se sincronizan al instante en el auditorio.
-2. **Modo Respaldo por Código QR y Código Corto de 6 Dígitos:** Si no hay señal Wi-Fi, la mesa genera un código QR SVG y una clave alfanumérica (ej. `ALFA-850`) que el monitor puede ingresar en la pantalla central para acreditar los puntos manualmente.
+1. **Sincronización WebSocket (Socket.io en `:3001`):** Actualización instantánea (< 5ms de latencia en LAN local) de puntuaciones, eventos de completitud de ronda y disparo de fanfarrias en la pantalla gigante del auditorio.
+2. **Modo Respaldo Alfanumérico y Código QR:** En recintos con restricciones de firewall o sin router local, cada mesa genera un código QR SVG y un identificador alfanumérico (ej. `ALFA-850`) que el monitor del taller puede ingresar en el proyector para acreditar los puntos de forma manual.
 
-Para instrucciones completas de configuración de red y pruebas, consulta la **[Guía de Sincronización Multidispositivo](docs/multi_device_guide.md)**.
+Consulta la **[Guía de Sincronización Multidispositivo](docs/multi_device_guide.md)** para detalles de configuración de red y topología en ferias.
 
 ---
 
-## 📑 Documentación Adicional
+## 🧪 Aseguramiento de Calidad y Suite E2E (Playwright)
 
-- 🌐 [Guía de Sincronización Multidispositivo (LAN & QR)](docs/multi_device_guide.md)
-- 🏗️ [Arquitectura de Software](docs/architecture.md)
-- 📖 [Guía Didáctica y Manual del Monitor](docs/didactic_guide.md)
-- 🔬 [Referencia de Coordenadas y Dataset Molecular](docs/dataset_reference.md)
+El repositorio cuenta con una suite completa de pruebas end-to-end automatizadas en navegador real Chromium:
+
+```bash
+# Ejecutar suite E2E automatizada en navegador real
+node scripts/e2e_browser_test_vcm.js
+```
+
+- **Resultado Oficial:** **26 de 26 aserciones aprobadas (100% PASS)** con 0 errores JavaScript de consola y 0 fallos de red.
+- **Evidencia Visual:** 24 capturas de pantalla de alta fidelidad sincronizadas en [`docs/vcm_qa_captures/`](docs/vcm_qa_captures/).
+- **Reporte Técnico Consolidado:** Consulta el reporte completo en **[`qa_e2e_report.md`](qa_e2e_report.md)**.
+
+---
+
+## 📑 Documentación Técnica Completa
+
+- 📊 **[Reporte de Auditoría E2E y Evaluación Técnica](qa_e2e_report.md)**
+- 🏗️ **[Arquitectura de Software](docs/architecture.md)**
+- 🌐 **[Guía de Sincronización Multidispositivo (LAN & QR)](docs/multi_device_guide.md)**
+- 📖 **[Guía Didáctica y Manual del Monitor](docs/didactic_guide.md)**
+- 🔬 **[Referencia de Coordenadas y Dataset Molecular](docs/dataset_reference.md)**
 
 ---
 

@@ -191,8 +191,8 @@ Todas las capturas se encuentran almacenadas y disponibles en [`docs/vcm_qa_capt
 - **Mejoras Implementadas:**
   1. **Fondo 3D de Partículas con Ruido de Erosión Recursivo (`RecursiveErosionBackground.tsx`):**
      - Simulación de esfera de partículas tridimensionales con ruido fractal de erosión (fBm invertido) implementado mediante Three.js y fallback nativo WebGL para resiliencia 100% offline.
-     - Contenedor con `srcDoc` e `iframe` sandbox (`allow-scripts`), estilizado con props `mode="dark"`, `hue={-30}`, `saturation={1.2}`, `brightness={0.9}`.
-     - Capa fijada en `-z-10` con gradiente de atenuación sobre negro OLED (`#09090b`), garantizando máxima legibilidad de los paneles superiores.
+     - Contenedor con `srcDoc` e `iframe` sandbox (`allow-scripts allow-same-origin`), configurado en capa `z-0` y contenedores raíz en `bg-transparent` (`App.tsx` y `ProjectorView.tsx`), resolviendo definitivamente la oclusión de apilamiento CSS.
+     - Sombreador GLSL con blending aditivo (`THREE.AdditiveBlending`) y paleta de partículas de alta visibilidad en Naranja Ámbar (`#F97316` / `#EA580C`) con halo orbital exterior sobre negro OLED (`#09090b`).
      - Pausa de ciclos de render en pestañas inactivas (`document.hidden`) para optimización de batería en notebooks escolares.
   2. **Ampliación de Legibilidad Didáctica en `MoleculeInfoCard.tsx`:**
      - Eliminación de la restricción de altura comprimida (`max-h-[280px]` y scrollbars internos) para una lectura continua y holgada del fundamento químico.

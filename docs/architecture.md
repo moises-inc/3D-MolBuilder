@@ -95,3 +95,31 @@ Para evitar la carga de assets pesados o dependencias de red, el sistema utiliza
 El repositorio cumple con los estándares estrictos de compilación:
 - `tsc -b`: Validación estricta del compilador TypeScript sin tipos `any` ni advertencias.
 - `vite build`: Generación de bundles minificados en `dist/` con precarga de módulos de Three.js y React 19.
+
+---
+
+## 🌌 6. Sistema de Fondo Dinámico 3D (`RecursiveErosionBackground`) & Estética OLED / Ámbar
+
+Para dotar a la plataforma de una estética sobria de grado científico y alta gama visual, se integró el motor procedural `RecursiveErosionBackground`:
+
+1. **Simulación Procedural de 22.000 Partículas:**
+   - **Esfera de Erosión Recursiva (14.000 partículas):** Mapeo esférico de Fibonacci deformado dinámicamente mediante ruido fractal Simplex 3D (fBm invertido) en GLSL.
+   - **Halo Cósmico Orbital (8.000 partículas):** Distribución elíptica extendida que enmarca el viewport y rota suavemente en el eje $Y$, respondiendo de manera fluida al cursor del mouse.
+2. **Arquitectura Híbrida Three.js + WebGL Nativo:**
+   - Si Three.js está cargado, utiliza un `THREE.ShaderMaterial` con `blending: THREE.AdditiveBlending`.
+   - Si se opera en aulas completamente desconectadas sin acceso al CDN, conmuta automáticamente a un sombreador WebGL 1.0 nativo de cero dependencias externas.
+3. **Resolución de Stacking Context:**
+   - Montado a través de un `iframe` seguro (`sandbox="allow-scripts allow-same-origin"`) fijado en `fixed inset-0 pointer-events-none z-0`.
+   - Los contenedores raíz de la aplicación (`App.tsx` y `ProjectorView.tsx`) operan con `bg-transparent`, permitiendo que el lienzo negro OLED (`#09090b`) de `index.html` sirva de base y las partículas ámbar destellen detrás de los paneles con glassmorphism (`backdrop-blur-md`).
+4. **Optimización Energética:**
+   - Listener de `visibilitychange` (`document.hidden`) que suspende automáticamente el ciclo `requestAnimationFrame` cuando el navegador pasa a segundo plano o se minimiza.
+
+---
+
+## 🧪 7. Suite de Pruebas Automatizadas E2E en Navegador Real (`scripts/e2e_browser_test_vcm.js`)
+
+Se desarrolló una suite de aseguramiento de calidad (QA) determinista basada en **Playwright Chromium**:
+- **26 Aserciones Automatizadas (100% PASS):** Evaluación secuencial de los 8 compuestos, modos Three.js (CPK, VDW, Malla), lóbulos RPECV, validación proporcional del kit (25%, 50%, 75%, 100%), trivias escolares, fanfarria modal, vista de proyector master 1080p y adaptación responsiva a notebooks escolares (1366x768).
+- **Evidencia Fotográfica de Alta Definición:** Generación de 24 capturas PNG en `docs/vcm_qa_captures/` y reporte de métricas en `docs/vcm_qa_captures/e2e_summary.json`.
+- **Integración con PIDE Core:** Validación del acceso directo cruzado desde la barra lateral de PIDE (`:5173`) hacia el taller molecular 3D (`:5174`).
+
