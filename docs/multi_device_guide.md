@@ -65,20 +65,20 @@ graph TD
    📡 Puerto del Servidor Socket.io: 3001
    🌐 Direcciones LAN disponibles para conectar mesas y proyector:
       👉 http://192.168.3.132:3001
-      👉 Cliente Web Vite: http://192.168.3.132:5173
+      👉 Cliente Web Vite: http://192.168.3.132:5174
    ```
 
 3. **Abrir el Proyector en el PC Central:**
    Abre el navegador en el PC del proyector y navega a:
    ```text
-   http://localhost:5173/?role=master
+   http://localhost:5174/?role=master
    ```
    (O haz clic en el botón `"Proyector"` en la barra superior).
 
 4. **Conectar los Notebooks / Tablets de las Mesas:**
    En cada mesa de estudiantes, abre el navegador web e ingresa la dirección IP del PC central:
    ```text
-   http://192.168.3.132:5173
+   http://192.168.3.132:5174
    ```
    - Cada mesa selecciona su equipo en el menú desplegable (ej. *Equipo Alfa*, *Equipo Beta*, etc.).
    - El indicador LED de la barra superior cambiará a 🟢 **LAN** (Verde), confirmando conexión en tiempo real con el marcador central.
@@ -90,11 +90,11 @@ graph TD
 Puedes simular el entorno del torneo abriendo **dos pestañas** en tu navegador:
 
 1. **Pestaña 1 (Proyector):**
-   - Abre `http://localhost:5173/?role=master`.
+   - Abre `http://localhost:5174/?role=master`.
    - Observarás el Marcador Central con el podio de los 3 equipos y la bitácora vacía.
 
 2. **Pestaña 2 (Mesa 1):**
-   - Abre `http://localhost:5173/`.
+   - Abre `http://localhost:5174/`.
    - Selecciona `"Equipo Alfa"` en el selector de equipos.
    - Responde la Trivia (+100 pts) y valida el armado de la primera molécula (Agua).
    - Regresa a la **Pestaña 1**: ¡Verás cómo el puntaje del Equipo Alfa se actualiza inmediatamente en el proyector, la barra de progreso avanza, aparece el evento en la bitácora y se desata la fanfarria de victoria con confeti!
@@ -122,7 +122,7 @@ Si en el colegio o recinto ferial no hay señal Wi-Fi o se produce una caída de
 
 | Componente | Archivo de Código | Puerto Predeterminado | Protocolo / Función |
 | :--- | :--- | :---: | :--- |
-| **Cliente Web Vite** | [`config/vite.config.ts`](../config/vite.config.ts) | `5173` | HTTP / HMR / Proxy WebSocket transparente a `3001` (`host: 0.0.0.0`) |
+| **Cliente Web Vite** | [`config/vite.config.ts`](../config/vite.config.ts) | `5174` | HTTP / HMR / Proxy WebSocket transparente a `3001` (`host: 0.0.0.0`) |
 | **Servidor Socket.io / API** | [`server/index.js`](../server/index.js) | `3001` | WebSockets / HTTP Polling / Servidor de producción autónomo |
 | **Gestor de Sincronización** | [`src/utils/socketSync.ts`](../src/utils/socketSync.ts) | N/A | Detección automática de origen, fallback dinámico y reconexión infinita |
 | **Componente Proyector** | [`src/components/ProjectorView.tsx`](../src/components/ProjectorView.tsx) | N/A | Pantalla principal con banner de URL de mesas y control central |
@@ -137,28 +137,28 @@ Si realizaste pruebas con dos laptops en la misma red Wi-Fi y no lograste conexi
 
 ### Escenario 1: La página web no carga en la segunda laptop (`ERR_CONNECTION_REFUSED` o `Timeout`)
 1. **Verifica la dirección y el puerto exacto:**
-   - Asegúrate de ingresar el puerto **`5173`** (ejemplo: `http://192.168.1.50:5173`), no `5174` ni `3000`.
+   - Asegúrate de ingresar el puerto **`5174`** (ejemplo: `http://192.168.1.50:5174`), no `5174` ni `3000`.
    - Confirma la IP del computador central mirando el banner en la terminal donde se ejecutó `npm run dev:lan` (el servidor ahora clasifica y resalta la IP `[Wi-Fi 📶]` para distinguirla de VPNs como Tailscale o Docker).
 2. **Firewall del Sistema Operativo en el PC Servidor:**
    - En **Linux (Ubuntu/Debian):** Si tienes `ufw` activo, permite los puertos ejecutando:
      ```bash
-     sudo ufw allow 5173/tcp
+     sudo ufw allow 5174/tcp
      sudo ufw allow 3001/tcp
      ```
-   - En **Windows:** Al iniciar Node.js por primera vez, Windows Defender suele preguntar si deseas permitir el acceso en redes públicas/privadas. Asegúrate de marcar ambas casillas o agregar una regla de entrada para el puerto `5173`.
+   - En **Windows:** Al iniciar Node.js por primera vez, Windows Defender suele preguntar si deseas permitir el acceso en redes públicas/privadas. Asegúrate de marcar ambas casillas o agregar una regla de entrada para el puerto `5174`.
 
 ### Escenario 2: La página carga, pero el indicador permanece en 🟡 "QR / Offline"
 1. **Configuración manual de IP desde la interfaz:**
    - Haz clic directamente en el indicador **`🟡 QR`** de la barra superior (o en el engranaje de **Configuración**).
-   - En la sección **"Sincronización Multidispositivo & Red Wi-Fi"**, escribe la IP del PC central en el campo *"Dirección IP / Servidor del PC Central"* (ej. `192.168.1.50:5173` o `192.168.1.50:3001`) y presiona **"Conectar"**.
+   - En la sección **"Sincronización Multidispositivo & Red Wi-Fi"**, escribe la IP del PC central en el campo *"Dirección IP / Servidor del PC Central"* (ej. `192.168.1.50:5174` o `192.168.1.50:3001`) y presiona **"Conectar"**.
    - El cliente persistirá la IP en `localStorage` y se conectará al instante.
 2. **Aislamiento de Clientes en la Red Wi-Fi (AP Isolation / Guest Network):**
    - En redes universitarias (como eduroam o redes de invitados) o routers institucionales, suele estar activada la función **AP Isolation** (Aislamiento de Punto de Acceso), la cual impide que dos dispositivos conectados a la misma antena Wi-Fi se vean o comuniquen entre sí.
    - **Solución Rápida y Efectiva:** Activa la **Zona Wi-Fi Portátil / Compartir Internet (Hotspot)** desde un teléfono móvil o desde una de las laptops. Conecta ambas laptops a esa red compartida. Las zonas Wi-Fi móviles no tienen aislamiento de clientes y funcionan de manera inmediata y estable.
 
 ### Escenario 3: Ambas laptops ejecutaron `npm run dev` localmente
-- Si clonaste el proyecto en las dos laptops y abriste `http://localhost:5173` en ambas, cada laptop se conectará a su propio servidor local independiente y no se comunicarán.
-- **Solución:** En la laptop de la mesa, abre `SettingsModal` (icono de engranaje o clic en `QR`), ingresa la IP del PC proyector y presiona **"Conectar"**, o simplemente abre en el navegador la dirección de red del proyector: `http://<IP-PC-PROYECTOR>:5173`.
+- Si clonaste el proyecto en las dos laptops y abriste `http://localhost:5174` en ambas, cada laptop se conectará a su propio servidor local independiente y no se comunicarán.
+- **Solución:** En la laptop de la mesa, abre `SettingsModal` (icono de engranaje o clic en `QR`), ingresa la IP del PC proyector y presiona **"Conectar"**, o simplemente abre en el navegador la dirección de red del proyector: `http://<IP-PC-PROYECTOR>:5174`.
 
 ### Escenario 4: Modo Producción Autónomo (Un Solo Puerto `3001`)
 - Puedes compilar la aplicación y servirla en un único puerto unificado sin dependencias de desarrollo:
