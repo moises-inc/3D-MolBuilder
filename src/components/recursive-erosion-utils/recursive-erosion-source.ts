@@ -2,9 +2,9 @@
  * Recursive Erosion Source HTML/WebGL Generator
  * Ecosistema VcM Universidad San Sebastián - PIDE Core & 3D MolBuilder
  *
- * Genera el documento HTML autónomo para iframe sandbox srcDoc.
- * Simula una esfera de partículas 3D con ruido de erosión recursivo
- * (fBm con inverso de valor absoluto) y paleta sobria Negro OLED y Naranja Ámbar.
+ * Simulación de campo de partículas 3D con esfera de erosión recursiva
+ * (fBm invertido) y halo orbital de polvo estelar visible en todo el viewport.
+ * Paleta: Negro OLED (#09090b) y Naranja Ámbar (#F97316 / #EA580C) de alta visibilidad.
  */
 
 export interface RecursiveErosionSourceOptions {
@@ -17,16 +17,10 @@ export interface RecursiveErosionSourceOptions {
 export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions = {}): string {
   const {
     mode = 'dark',
-    hue = -30,
-    saturation = 1.2,
-    brightness = 0.9,
   } = options;
 
   const isDark = mode === 'dark';
   const bgColor = isDark ? '#09090b' : '#f8fafc';
-  const baseColorHex = isDark ? '0.08, 0.08, 0.09' : '0.85, 0.88, 0.92'; // Charcoal / Light base
-  const amberColorHex = '0.976, 0.451, 0.086'; // #F97316 Naranja Ámbar
-  const brightColorHex = '1.0, 0.75, 0.45';    // #FFBF73 Núcleo luminoso
 
   return `<!DOCTYPE html>
 <html lang="es">
@@ -56,7 +50,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
 <body>
   <canvas id="erosion-canvas"></canvas>
 
-  <!-- Intento de carga CDN Three.js con fallback automático a WebGL nativo offline -->
+  <!-- Carga Three.js con fallback automático a WebGL nativo si está offline -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"><\/script>
 
   <script>
@@ -67,7 +61,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
     var time = 0;
     var animFrameId = null;
 
-    // Optimización de batería en notebooks escolares: pausa automática en segundo plano
+    // Optimización de batería en notebooks escolares
     document.addEventListener('visibilitychange', function() {
       if (document.hidden) {
         isPaused = true;
@@ -75,7 +69,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
       } else {
         isPaused = false;
         lastTimestamp = performance.now();
-        loop(lastTimestamp);
+        requestAnimationFrame(renderLoop);
       }
     });
 
@@ -85,8 +79,8 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
     });
 
     var lastTimestamp = performance.now();
+    var renderLoop = null;
 
-    // Verificamos si Three.js está disponible
     if (typeof THREE !== 'undefined') {
       initThreeJS();
     } else {
@@ -102,7 +96,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
 
       var scene = new THREE.Scene();
       var camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
-      camera.position.z = 4.2;
+      camera.position.z = 5.2;
 
       var renderer = new THREE.WebGLRenderer({
         canvas: canvas,
@@ -113,19 +107,38 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
       renderer.setSize(width, height);
       renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-      // Creación de nube de puntos en esfera con distribución Fibonacci uniforme
-      var particleCount = 16000;
+      // 22.000 partículas: 14.000 en esfera de erosión + 8.000 en halo cósmico expandido
+      var totalParticles = 22000;
+      var sphereCount = 14000;
       var geometry = new THREE.BufferGeometry();
-      var positions = new Float32Array(particleCount * 3);
-      var randoms = new Float32Array(particleCount);
+      var positions = new Float32Array(totalParticles * 3);
+      var randoms = new Float32Array(totalParticles);
+      var isHalo = new Float32Array(totalParticles);
 
       var phi = Math.PI * (3.0 - Math.sqrt(5.0));
-      for (var i = 0; i < particleCount; i++) {
-        var y = 1.0 - (i / (particleCount - 1.0)) * 2.0;
-        var r = Math.sqrt(Math.max(0.0, 1.0 - y * y));
-        var theta = phi * i;
-        var x = Math.cos(theta) * r;
-        var z = Math.sin(theta) * r;
+      for (var i = 0; i < totalParticles; i++) {
+        var x, y, z;
+        if (i < sphereCount) {
+          // Esfera Fibonacci densa
+          var yNorm = 1.0 - (i / (sphereCount - 1.0)) * 2.0;
+          var r = Math.sqrt(Math.max(0.0, 1.0 - yNorm * yNorm));
+          var theta = phi * i;
+          x = Math.cos(theta) * r;
+          y = yNorm;
+          z = Math.sin(theta) * r;
+          isHalo[i] = 0.0;
+        } else {
+          // Halo ambiental y estelar que cubre todo el ancho/alto del monitor
+          var u = Math.random();
+          var v = Math.random();
+          var theta2 = u * 2.0 * Math.PI;
+          var phi2 = Math.acos(2.0 * v - 1.0);
+          var haloR = 2.4 + Math.random() * 4.5;
+          x = haloR * Math.sin(phi2) * Math.cos(theta2);
+          y = haloR * Math.sin(phi2) * Math.sin(theta2) * 0.7; // Elíptica
+          z = haloR * Math.cos(phi2);
+          isHalo[i] = 1.0;
+        }
 
         positions[i * 3] = x;
         positions[i * 3 + 1] = y;
@@ -135,13 +148,16 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
 
       geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
       geometry.setAttribute('aRandom', new THREE.BufferAttribute(randoms, 1));
+      geometry.setAttribute('aIsHalo', new THREE.BufferAttribute(isHalo, 1));
 
-      // Shaders con Ruido Simplex 3D y Ruido de Erosión Recursivo (fBm Invertido)
       var vertexShader = [
         'uniform float uTime;',
         'uniform vec2 uMouse;',
+        'uniform float uPixelRatio;',
         'attribute float aRandom;',
+        'attribute float aIsHalo;',
         'varying float vErosion;',
+        'varying float vHalo;',
         'varying float vDist;',
         '',
         'vec3 mod289(vec3 x) { return x - floor(x * (1.0 / 289.0)) * 289.0; }',
@@ -194,9 +210,9 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         '',
         'float recursiveErosion(vec3 p, float t) {',
         '  float f = 0.0;',
-        '  float amp = 0.52;',
-        '  float freq = 0.95;',
-        '  vec3 shift = vec3(t * 0.12, t * 0.16, t * 0.08);',
+        '  float amp = 0.5;',
+        '  float freq = 0.9;',
+        '  vec3 shift = vec3(t * 0.12, t * 0.15, t * 0.08);',
         '  for (int i = 0; i < 4; i++) {',
         '    float n = snoise(p * freq + shift);',
         '    float erosion = 1.0 - abs(n);',
@@ -209,39 +225,58 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         '}',
         '',
         'void main() {',
-        '  float erosion = recursiveErosion(position, uTime * 0.3);',
-        '  vErosion = erosion;',
-        '  float radius = 1.3 + erosion * 0.65;',
-        '  vec3 deformed = normalize(position) * radius;',
+        '  vHalo = aIsHalo;',
+        '  vec3 deformed;',
+        '  if (aIsHalo > 0.5) {',
+        '    // Partículas orbitales del halo exterior',
+        '    float orbitAngle = uTime * 0.03 * (0.5 + aRandom);',
+        '    mat2 rot = mat2(cos(orbitAngle), -sin(orbitAngle), sin(orbitAngle), cos(orbitAngle));',
+        '    vec3 p = position;',
+        '    p.xz = rot * p.xz;',
+        '    p.y += sin(uTime * 0.2 + aRandom * 6.28) * 0.25;',
+        '    deformed = p;',
+        '    vErosion = 0.5 + 0.5 * sin(uTime * 0.5 + aRandom * 10.0);',
+        '  } else {',
+        '    // Esfera central con erosión recursiva orgánica',
+        '    float erosion = recursiveErosion(position, uTime * 0.25);',
+        '    vErosion = erosion;',
+        '    float radius = 1.6 + erosion * 0.85;',
+        '    deformed = normalize(position) * radius;',
+        '  }',
         '',
-        '  deformed.x += uMouse.x * 0.15;',
-        '  deformed.y += uMouse.y * 0.15;',
+        '  // Respuesta sutil al cursor del mouse',
+        '  deformed.x += uMouse.x * 0.25;',
+        '  deformed.y += uMouse.y * 0.25;',
         '',
         '  vec4 mvPosition = modelViewMatrix * vec4(deformed, 1.0);',
         '  vDist = -mvPosition.z;',
         '  gl_Position = projectionMatrix * mvPosition;',
-        '  gl_PointSize = max(1.5, (16.0 / -mvPosition.z));',
+        '  float baseSize = aIsHalo > 0.5 ? 24.0 : 38.0;',
+        '  gl_PointSize = max(2.5, (baseSize * uPixelRatio) / -mvPosition.z);',
         '}'
       ].join('\\n');
 
       var fragmentShader = [
         'varying float vErosion;',
+        'varying float vHalo;',
         'varying float vDist;',
-        'uniform vec3 uBaseColor;',
-        'uniform vec3 uAmberColor;',
-        'uniform vec3 uBrightColor;',
         '',
         'void main() {',
         '  vec2 pt = gl_PointCoord - vec2(0.5);',
         '  float d = length(pt);',
         '  if (d > 0.5) discard;',
-        '  float alpha = smoothstep(0.5, 0.08, d);',
+        '  float alpha = smoothstep(0.5, 0.04, d);',
         '',
-        '  vec3 col = mix(uBaseColor, uAmberColor, smoothstep(0.35, 0.7, vErosion));',
-        '  col = mix(col, uBrightColor, smoothstep(0.7, 0.98, vErosion));',
-        '  col *= clamp(0.3 + (4.8 - vDist) * 0.22, 0.2, 1.15);',
+        '  // Paleta Naranja Ámbar Brillante de Alta Visibilidad',
+        '  vec3 deepAmber   = vec3(0.92, 0.35, 0.05); // #EA580C Ámbar profundo',
+        '  vec3 brightAmber = vec3(0.98, 0.55, 0.12); // #F97316 Naranja PIDE brillante',
+        '  vec3 goldenPeak  = vec3(1.00, 0.88, 0.55); // #FED7AA Núcleo dorado',
         '',
-        '  gl_FragColor = vec4(col, alpha * 0.88);',
+        '  vec3 col = mix(deepAmber, brightAmber, smoothstep(0.25, 0.65, vErosion));',
+        '  col = mix(col, goldenPeak, smoothstep(0.65, 0.95, vErosion));',
+        '',
+        '  float opacity = vHalo > 0.5 ? 0.75 : 0.92;',
+        '  gl_FragColor = vec4(col, alpha * opacity);',
         '}'
       ].join('\\n');
 
@@ -249,15 +284,13 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         uniforms: {
           uTime: { value: 0 },
           uMouse: { value: new THREE.Vector2(0, 0) },
-          uBaseColor: { value: new THREE.Vector3(${baseColorHex}) },
-          uAmberColor: { value: new THREE.Vector3(${amberColorHex}) },
-          uBrightColor: { value: new THREE.Vector3(${brightColorHex}) }
+          uPixelRatio: { value: Math.min(window.devicePixelRatio, 2) }
         },
         vertexShader: vertexShader,
         fragmentShader: fragmentShader,
         transparent: true,
         depthWrite: false,
-        blending: THREE.NormalBlending
+        blending: THREE.AdditiveBlending // Destello luminoso sobre negro OLED
       });
 
       var points = new THREE.Points(geometry, material);
@@ -271,7 +304,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         renderer.setSize(w, h);
       });
 
-      function render(now) {
+      renderLoop = function(now) {
         if (isPaused) return;
         var delta = (now - lastTimestamp) * 0.001;
         lastTimestamp = now;
@@ -283,15 +316,15 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         material.uniforms.uTime.value = time;
         material.uniforms.uMouse.value.set(mouse.x, mouse.y);
 
-        points.rotation.y = time * 0.08;
-        points.rotation.x = time * 0.04 + mouse.y * 0.15;
-        points.rotation.z = mouse.x * 0.1;
+        points.rotation.y = time * 0.06;
+        points.rotation.x = time * 0.03 + mouse.y * 0.1;
+        points.rotation.z = mouse.x * 0.08;
 
         renderer.render(scene, camera);
-        animFrameId = requestAnimationFrame(render);
-      }
+        animFrameId = requestAnimationFrame(renderLoop);
+      };
 
-      animFrameId = requestAnimationFrame(render);
+      animFrameId = requestAnimationFrame(renderLoop);
     }
 
     // =========================================================================
@@ -344,17 +377,17 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         '  return f;',
         '}',
         'void main() {',
-        '  float erosion = recursiveErosion(aPosition, uTime * 0.4);',
+        '  float erosion = recursiveErosion(aPosition, uTime * 0.35);',
         '  vErosion = erosion;',
-        '  vec3 pos = normalize(aPosition) * (1.1 + erosion * 0.5);',
-        '  float rotY = uTime * 0.1;',
+        '  vec3 pos = normalize(aPosition) * (1.35 + erosion * 0.7);',
+        '  float rotY = uTime * 0.08;',
         '  mat2 rY = mat2(cos(rotY), -sin(rotY), sin(rotY), cos(rotY));',
         '  pos.xz = rY * pos.xz;',
-        '  vec2 proj = pos.xy / (pos.z + 2.8);',
+        '  vec2 proj = pos.xy / (pos.z + 3.2);',
         '  proj.x *= uResolution.y / uResolution.x;',
-        '  proj += uMouse * 0.08;',
-        '  gl_Position = vec4(proj * 1.4, 0.0, 1.0);',
-        '  gl_PointSize = max(1.5, 9.0 / (pos.z + 2.8));',
+        '  proj += uMouse * 0.1;',
+        '  gl_Position = vec4(proj * 1.5, 0.0, 1.0);',
+        '  gl_PointSize = max(3.0, 22.0 / (pos.z + 3.2));',
         '}'
       ].join('\\n');
 
@@ -364,12 +397,13 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         'void main() {',
         '  vec2 pt = gl_PointCoord - vec2(0.5);',
         '  if (length(pt) > 0.5) discard;',
-        '  vec3 charcoal = vec3(${baseColorHex});',
-        '  vec3 amber = vec3(${amberColorHex});',
-        '  vec3 bright = vec3(${brightColorHex});',
-        '  vec3 col = mix(charcoal, amber, smoothstep(0.3, 0.65, vErosion));',
-        '  col = mix(col, bright, smoothstep(0.65, 0.95, vErosion));',
-        '  gl_FragColor = vec4(col, 0.85);',
+        '  float alpha = smoothstep(0.5, 0.05, length(pt));',
+        '  vec3 deepAmber = vec3(0.92, 0.35, 0.05);',
+        '  vec3 brightAmber = vec3(0.98, 0.55, 0.12);',
+        '  vec3 goldenPeak = vec3(1.0, 0.88, 0.55);',
+        '  vec3 col = mix(deepAmber, brightAmber, smoothstep(0.2, 0.65, vErosion));',
+        '  col = mix(col, goldenPeak, smoothstep(0.65, 0.95, vErosion));',
+        '  gl_FragColor = vec4(col, alpha * 0.9);',
         '}'
       ].join('\\n');
 
@@ -388,7 +422,7 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
       gl.linkProgram(prog);
       gl.useProgram(prog);
 
-      var pCount = 12000;
+      var pCount = 18000;
       var pts = new Float32Array(pCount * 3);
       var phi = Math.PI * (3.0 - Math.sqrt(5.0));
       for (var i = 0; i < pCount; i++) {
@@ -413,9 +447,9 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
       var uRes = gl.getUniformLocation(prog, 'uResolution');
 
       gl.enable(gl.BLEND);
-      gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+      gl.blendFunc(gl.SRC_ALPHA, gl.ONE); // Additive blending luminoso
 
-      function loop(now) {
+      renderLoop = function(now) {
         if (isPaused) return;
         var delta = (now - lastTimestamp) * 0.001;
         lastTimestamp = now;
@@ -432,10 +466,10 @@ export function getRecursiveErosionSource(options: RecursiveErosionSourceOptions
         gl.uniform2f(uRes, canvas.width, canvas.height);
 
         gl.drawArrays(gl.POINTS, 0, pCount);
-        animFrameId = requestAnimationFrame(loop);
-      }
+        animFrameId = requestAnimationFrame(renderLoop);
+      };
 
-      animFrameId = requestAnimationFrame(loop);
+      animFrameId = requestAnimationFrame(renderLoop);
     }
   })();
   <\/script>

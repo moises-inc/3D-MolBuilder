@@ -27,22 +27,20 @@ export const RecursiveErosionBackground: React.FC<RecursiveErosionBackgroundProp
 
   return (
     <div
-      className={`fixed inset-0 pointer-events-none overflow-hidden -z-10 bg-[#09090b] ${className}`}
+      className={`fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#09090b] ${className}`}
       aria-hidden="true"
     >
       <iframe
         title="Recursive Erosion 3D Background"
         srcDoc={htmlSource}
-        sandbox="allow-scripts"
+        sandbox="allow-scripts allow-same-origin"
         tabIndex={-1}
         className="w-full h-full border-0 pointer-events-none select-none block"
         style={{
           filter: `hue-rotate(${hue}deg) saturate(${saturation}) brightness(${brightness})`,
-          opacity: 0.88,
+          opacity: 1,
         }}
       />
-      {/* Sutil viñeta y gradiente de atenuación para garantizar contraste del texto */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#09090b]/85 via-transparent to-[#09090b]/40 pointer-events-none" />
     </div>
   );
 };

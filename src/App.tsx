@@ -330,7 +330,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-oled text-slate-100 selection:bg-orange-500 selection:text-black">
+    <div className="relative flex flex-col min-h-screen bg-transparent text-slate-100 selection:bg-orange-500 selection:text-black">
       <RecursiveErosionBackground mode="dark" hue={-30} saturation={1.2} brightness={0.9} />
       {clientRole === 'master' ? (
         <ProjectorView
