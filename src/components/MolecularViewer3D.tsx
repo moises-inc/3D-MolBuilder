@@ -121,13 +121,27 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     mainKeyLight.position.set(5, 8, 7);
     scene.add(mainKeyLight);
 
-    const cyanRimLight = new THREE.DirectionalLight(0x5de1e5, 0.7);
+    const cyanRimLight = new THREE.DirectionalLight(0x5de1e5, 0.5);
     cyanRimLight.position.set(-6, -4, -5);
     scene.add(cyanRimLight);
 
-    const amberFillLight = new THREE.DirectionalLight(0xefb65f, 0.45);
-    amberFillLight.position.set(0, -6, 5);
+    const amberFillLight = new THREE.DirectionalLight(0xf97316, 0.6);
+    amberFillLight.position.set(4, -5, 5);
     scene.add(amberFillLight);
+
+    // Subtle charcoal / amber wireframe grid floor
+    const grid = new THREE.GridHelper(14, 28, 0xf97316, 0x27272a);
+    grid.position.y = -2.6;
+    if (Array.isArray(grid.material)) {
+      grid.material.forEach((m) => {
+        m.transparent = true;
+        m.opacity = 0.16;
+      });
+    } else {
+      grid.material.transparent = true;
+      grid.material.opacity = 0.16;
+    }
+    scene.add(grid);
 
     // Molecule group
     const moleculeGroup = new THREE.Group();
@@ -511,20 +525,20 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
       {/* Top HUD Controls */}
       <div className="absolute top-3 left-3 right-3 flex items-center justify-between pointer-events-auto">
-        <div className="flex items-center gap-2 bg-black/85 backdrop-blur-md px-3 py-1.5 rounded-lg border border-oled-border text-xs text-slate-200 shadow-lg flex-wrap">
-          <Sparkles className="w-4 h-4 text-pide-cyan animate-pulse" />
+        <div className="flex items-center gap-2 bg-oled-panel backdrop-blur-md px-3 py-1.5 rounded-lg border border-oled-border text-xs text-slate-200 shadow-lg flex-wrap">
+          <Sparkles className="w-4 h-4 text-orange-400 animate-pulse" />
           <span className="font-mono font-bold text-white">{molecule.formula}</span>
           <span className="text-slate-600">|</span>
           <span className="text-slate-300 font-medium">{molecule.didactica.geometriaMolecular}</span>
           <span className="text-slate-600">|</span>
-          <span className={`px-1.5 py-0.5 rounded text-[10px] font-bold ${molecule.didactica.polaridad === 'polar' ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/30' : 'bg-slate-700/40 text-slate-300 border border-slate-600/30'}`}>
+          <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${molecule.didactica.polaridad === 'polar' ? 'bg-orange-950/60 text-orange-300 border border-orange-500/40' : 'bg-zinc-800/80 text-zinc-300 border border-zinc-700/50'}`}>
             {molecule.didactica.polaridad.toUpperCase()}
           </span>
           {hasVseprLobes && (
             <>
               <span className="text-slate-600">|</span>
-              <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-cyan-950/80 border border-cyan-400/60 text-cyan-300 text-[10px] font-mono font-bold shadow-[0_0_10px_rgba(93,225,229,0.3)] animate-pulse">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-400" />
+              <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-950/80 border border-orange-400/60 text-orange-300 text-[10px] font-mono font-bold shadow-[0_0_12px_rgba(249,115,22,0.35)] animate-pulse">
+                <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
                 Lóbulos RPECV Visibles
               </span>
             </>
@@ -532,12 +546,12 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
         </div>
 
         {/* Action button bar */}
-        <div className="flex items-center gap-1.5 bg-black/85 backdrop-blur-md p-1 rounded-lg border border-oled-border shadow-lg">
+        <div className="flex items-center gap-1.5 bg-oled-panel backdrop-blur-md p-1 rounded-lg border border-oled-border shadow-lg">
           <button
             onClick={() => setAutoRotate(!autoRotate)}
             title={autoRotate ? 'Pausar Rotación' : 'Reanudar Rotación'}
             className={`p-1.5 rounded-md transition-colors ${
-              autoRotate ? 'bg-cyan-500/20 text-pide-cyan border border-cyan-500/40' : 'text-slate-400 hover:text-white hover:bg-white/10'
+              autoRotate ? 'bg-orange-500/20 text-orange-400 border border-orange-500/40' : 'text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
             <RotateCw className="w-4 h-4" />
@@ -547,7 +561,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
             onClick={() => setShowLabels(!showLabels)}
             title={showLabels ? 'Ocultar Etiquetas' : 'Mostrar Etiquetas'}
             className={`p-1.5 rounded-md transition-colors ${
-              showLabels ? 'bg-amber-500/20 text-pide-amber border border-amber-500/40' : 'text-slate-400 hover:text-white hover:bg-white/10'
+              showLabels ? 'bg-amber-500/20 text-orange-400 border border-orange-500/40' : 'text-slate-400 hover:text-white hover:bg-white/10'
             }`}
           >
             <Tag className="w-4 h-4" />
@@ -582,7 +596,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           <button
             onClick={handleCaptureSnapshot}
             title="Capturar Foto HD de la Molécula"
-            className="p-1.5 rounded-md text-slate-400 hover:text-pide-cyan hover:bg-white/10 transition-colors"
+            className="p-1.5 rounded-md text-slate-400 hover:text-orange-400 hover:bg-white/10 transition-colors"
           >
             <Camera className="w-4 h-4" />
           </button>
@@ -590,13 +604,13 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       </div>
 
       {/* Bottom Mode Switcher HUD */}
-      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-black/85 backdrop-blur-md p-1 rounded-lg border border-oled-border shadow-lg">
+      <div className="absolute bottom-3 left-3 flex items-center gap-1.5 bg-oled-panel backdrop-blur-md p-1 rounded-lg border border-oled-border shadow-lg">
         <button
           onClick={() => setViewMode('ball-and-stick')}
           className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
             viewMode === 'ball-and-stick'
-              ? 'bg-cyan-500 text-black font-semibold shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-white/10'
+              ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-black font-extrabold shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/10'
           }`}
         >
           Esferas y Varillas (CPK)
@@ -605,8 +619,8 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           onClick={() => setViewMode('space-filling')}
           className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
             viewMode === 'space-filling'
-              ? 'bg-cyan-500 text-black font-semibold shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-white/10'
+              ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-black font-extrabold shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/10'
           }`}
         >
           Esferas Compactas (VDW)
@@ -615,8 +629,8 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           onClick={() => setViewMode('wireframe')}
           className={`px-2.5 py-1 text-xs rounded font-medium transition-all ${
             viewMode === 'wireframe'
-              ? 'bg-cyan-500 text-black font-semibold shadow-sm'
-              : 'text-slate-400 hover:text-white hover:bg-white/10'
+              ? 'bg-gradient-to-r from-orange-500 to-amber-600 text-black font-extrabold shadow-sm'
+              : 'text-slate-300 hover:text-white hover:bg-white/10'
           }`}
         >
           Estructura Malla 3D
@@ -625,8 +639,8 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
       {/* Bottom Right Atom Inspector Tooltip */}
       {hoveredAtom && (
-        <div className="absolute bottom-3 right-3 bg-black/95 backdrop-blur-md px-3.5 py-2 rounded-lg border border-cyan-500/40 text-xs text-slate-200 shadow-2xl animate-fade-in pointer-events-none">
-          <div className="flex items-center gap-2 font-mono font-bold text-pide-cyan">
+        <div className="absolute bottom-3 right-3 bg-zinc-950/95 backdrop-blur-md px-3.5 py-2 rounded-lg border border-orange-500/40 text-xs text-slate-200 shadow-2xl animate-fade-in pointer-events-none">
+          <div className="flex items-center gap-2 font-mono font-bold text-orange-400">
             <span 
               className="w-3 h-3 rounded-full border border-white/50" 
               style={{ backgroundColor: hoveredAtom.color }} 

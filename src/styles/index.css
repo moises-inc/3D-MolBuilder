@@ -3,13 +3,14 @@
 @tailwind utilities;
 
 :root {
-  --bg-oled: #000000;
-  --panel-oled: #080c0e;
-  --card-oled: #0e161b;
-  --line-oled: #1c2b33;
-  --line-highlight: #2a3e49;
+  --bg-oled: #09090b;
+  --panel-oled: rgba(18, 18, 22, 0.85);
+  --card-oled: #121216;
+  --line-oled: rgba(249, 115, 22, 0.2);
+  --line-highlight: rgba(249, 115, 22, 0.35);
   --cyan-pide: #5de1e5;
-  --amber-pide: #efb65f;
+  --amber-pide: #F97316;
+  --amber-dark: #EA580C;
   --emerald-pide: #38ef7d;
   --rose-pide: #ff4d6d;
   --uss-blue: #00205B;
@@ -27,6 +28,27 @@ body {
   overflow-x: hidden;
 }
 
+/* Explicit custom utility classes requested */
+.bg-oled {
+  background-color: #09090b !important;
+}
+
+.bg-oled-panel {
+  background-color: rgba(18, 18, 22, 0.85) !important;
+}
+
+.border-oled-border {
+  border-color: rgba(249, 115, 22, 0.2) !important;
+}
+
+.text-pide-amber {
+  color: #F97316 !important;
+}
+
+.shadow-amber-glow {
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.15) !important;
+}
+
 /* Monospace font for data chips and metrics */
 .font-mono-num {
   font-family: 'IBM Plex Mono', monospace;
@@ -35,18 +57,18 @@ body {
 
 /* Glassmorphism custom utilities */
 .glass-panel {
-  background: rgba(12, 18, 22, 0.85);
+  background: rgba(18, 18, 22, 0.85);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--line-oled);
 }
 
 .glass-panel-elevated {
-  background: rgba(16, 25, 31, 0.92);
+  background: rgba(24, 24, 27, 0.92);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--line-highlight);
-  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.7);
+  box-shadow: 0 12px 36px -8px rgba(0, 0, 0, 0.8);
 }
 
 /* Neon glow accents */
@@ -55,7 +77,7 @@ body {
 }
 
 .glow-amber {
-  box-shadow: 0 0 20px rgba(239, 182, 95, 0.2);
+  box-shadow: 0 0 20px rgba(249, 115, 22, 0.25);
 }
 
 .glow-emerald {
@@ -73,16 +95,17 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-  background: #040708;
+  background: #09090b;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #1c2b33;
+  background: #27272a;
   border-radius: 3px;
+  border: 1px solid rgba(249, 115, 22, 0.15);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #2a3e49;
+  background: rgba(249, 115, 22, 0.4);
 }
 
 /* Pulsing alert animation for low timer */

@@ -6,11 +6,11 @@ export default {
     extend: {
       colors: {
         oled: {
-          bg: '#000000',
-          card: '#080c0e',
-          panel: '#0d1519',
-          border: '#1a272f',
-          subtle: '#121f26',
+          bg: '#09090b',
+          card: '#121216',
+          panel: 'rgba(18, 18, 22, 0.85)',
+          border: 'rgba(249, 115, 22, 0.2)',
+          subtle: '#18181b',
         },
         uss: {
           blue: '#00205B',
@@ -20,7 +20,9 @@ export default {
         pide: {
           cyan: '#5de1e5',
           cyanGlow: 'rgba(93, 225, 229, 0.25)',
-          amber: '#efb65f',
+          amber: '#F97316',
+          amberDark: '#EA580C',
+          amberGlow: 'rgba(249, 115, 22, 0.2)',
           emerald: '#38ef7d',
           rose: '#ff4d6d',
         },
@@ -29,9 +31,13 @@ export default {
           hydrogen: '#FFFFFF',
           oxygen: '#EF4444',
           nitrogen: '#3B82F6',
-          chlorine: '#22C55E',
-          sulfur: '#EAB308',
+          chlorine: '#10B981',
+          sulfur: '#F59E0B',
         }
+      },
+      boxShadow: {
+        'amber-glow': '0 0 20px rgba(249, 115, 22, 0.15)',
+        'amber-lg': '0 0 30px rgba(249, 115, 22, 0.25)',
       },
       fontFamily: {
         mono: ['"IBM Plex Mono"', 'SFMono-Regular', 'Menlo', 'monospace'],

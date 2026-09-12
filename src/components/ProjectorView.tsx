@@ -22,6 +22,7 @@ import {
 import { TeamScore } from '../types/game';
 import { MOLECULES_DATASET } from '../data/moleculesDataset';
 import { ActivityEvent, ConnectionStatus, NetworkDiagnostics, socketSync } from '../utils/socketSync';
+import { ShaderBackground } from './ShaderBackground';
 
 interface ProjectorViewProps {
   teams: TeamScore[];
@@ -104,7 +105,8 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
   };
 
   return (
-    <div className="min-h-screen bg-black text-slate-100 flex flex-col selection:bg-cyan-500 selection:text-black">
+    <div className="relative min-h-screen bg-oled text-slate-100 flex flex-col selection:bg-orange-500 selection:text-black">
+      <ShaderBackground />
       {/* Projector Top Master Bar */}
       <header className="w-full bg-black/90 backdrop-blur-md border-b border-oled-border sticky top-0 z-30 px-6 py-3">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
@@ -117,10 +119,10 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
             />
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-mono text-lg font-extrabold text-pide-cyan tracking-wider">
+                <span className="font-mono text-lg font-extrabold text-orange-400 tracking-wider">
                   3D MolBuilder
                 </span>
-                <span className="text-[10px] px-2 py-0.5 bg-cyan-950/60 text-cyan-300 font-mono font-bold rounded-full border border-cyan-800/60 uppercase">
+                <span className="text-[10px] px-2 py-0.5 bg-orange-950/60 text-orange-300 font-mono font-bold rounded-full border border-orange-500/50 uppercase">
                   Marcador Central
                 </span>
               </div>
@@ -195,9 +197,9 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
       {/* Main Projector Content */}
       <main className="flex-1 max-w-7xl w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
         {/* LAN Connection Guidance Banner for Mesas */}
-        <div className="lg:col-span-12 p-3.5 bg-cyan-950/30 border border-cyan-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg shadow-cyan-500/5">
+        <div className="lg:col-span-12 p-3.5 bg-zinc-950/80 border border-orange-500/30 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-3 shadow-lg shadow-orange-500/5">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 rounded-xl bg-cyan-950/60 border border-cyan-800/60 text-pide-cyan shrink-0">
+            <div className="p-2.5 rounded-xl bg-orange-950/50 border border-orange-500/40 text-orange-400 shrink-0">
               <Globe className="w-5 h-5" />
             </div>
             <div>
@@ -206,7 +208,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               </span>
               <p className="text-xs text-slate-300 mt-0.5">
                 En cualquier navegador de la misma red Wi-Fi ingresa a:{' '}
-                <span className="font-mono font-extrabold text-cyan-300 bg-black/60 px-2.5 py-1 rounded-lg border border-cyan-500/50 text-sm inline-block ml-1">
+                <span className="font-mono font-extrabold text-orange-400 bg-black/80 px-2.5 py-1 rounded-lg border border-orange-500/50 text-sm inline-block ml-1">
                   {stationConnectUrl}
                 </span>
               </p>
@@ -215,7 +217,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
           <div className="flex items-center gap-2 shrink-0">
             <button
               onClick={handleCopyStationUrl}
-              className="px-3 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 text-cyan-300 text-xs font-mono rounded-lg flex items-center gap-1.5 transition-colors"
+              className="px-3 py-1.5 bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/40 text-orange-300 text-xs font-mono rounded-lg flex items-center gap-1.5 transition-colors"
               title="Copiar URL para mesas"
             >
               {copiedUrl ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
@@ -223,7 +225,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
             </button>
             <button
               onClick={onOpenSettings}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 text-xs font-mono rounded-lg transition-colors"
+              className="px-3 py-1.5 bg-zinc-800 hover:bg-zinc-700 border border-zinc-700 text-slate-300 text-xs font-mono rounded-lg transition-colors"
             >
               Ajustes de Red
             </button>
@@ -232,7 +234,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
         {/* Metric Highlights Strip (Top row across lg:col-span-12) */}
         <div className="lg:col-span-12 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-oled-card p-4 rounded-2xl border border-oled-border flex items-center gap-3">
-            <div className="p-3 rounded-xl bg-cyan-950/40 border border-cyan-800/40 text-pide-cyan">
+            <div className="p-3 rounded-xl bg-orange-950/40 border border-orange-500/40 text-orange-400">
               <Trophy className="w-6 h-6" />
             </div>
             <div>

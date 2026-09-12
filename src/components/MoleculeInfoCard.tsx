@@ -87,14 +87,14 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
           <span className="px-2.5 py-1 bg-slate-800 text-slate-200 text-xs rounded border border-slate-700 font-medium">
             {molecule.classification}
           </span>
-          <span className="px-2.5 py-1 bg-cyan-950/70 text-pide-cyan text-xs font-semibold rounded border border-cyan-700/50 flex items-center gap-1.5">
-            <Compass className="w-3.5 h-3.5" />
+          <span className="px-2.5 py-1 bg-orange-950/40 text-orange-300 text-xs font-semibold rounded border border-orange-500/30 flex items-center gap-1.5">
+            <Compass className="w-3.5 h-3.5 text-orange-400" />
             <span>Geometría: {molecule.didactica.geometriaMolecular}</span>
           </span>
           <span className={`px-2.5 py-1 text-xs font-semibold rounded border flex items-center gap-1.5 ${
             molecule.didactica.polaridad === 'polar'
-              ? 'bg-amber-950/50 text-amber-300 border-amber-700/50'
-              : 'bg-blue-950/50 text-blue-300 border-blue-700/50'
+              ? 'bg-orange-950/50 text-orange-300 border-orange-500/40'
+              : 'bg-zinc-800/60 text-zinc-300 border-zinc-700/50'
           }`}>
             <Zap className="w-3.5 h-3.5" />
             <span>{molecule.didactica.polaridad === 'polar' ? 'Polar (μ > 0 D)' : 'Apolar (μ = 0 D)'}</span>
@@ -108,7 +108,7 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
           onClick={() => setActiveTab('didactic')}
           className={`flex-1 py-3 px-4 font-bold flex items-center justify-center gap-2 border-b-2 transition-all ${
             activeTab === 'didactic'
-              ? 'border-pide-cyan text-pide-cyan bg-cyan-950/25 shadow-inner'
+              ? 'border-orange-500 text-orange-400 bg-orange-950/20 shadow-inner'
               : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
@@ -120,11 +120,11 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
           onClick={() => setActiveTab('trivia')}
           className={`flex-1 py-3 px-4 font-bold flex items-center justify-center gap-2 border-b-2 transition-all relative ${
             activeTab === 'trivia'
-              ? 'border-pide-amber text-pide-amber bg-amber-950/25 shadow-inner'
+              ? 'border-orange-500 text-orange-400 bg-orange-950/20 shadow-inner'
               : 'border-transparent text-slate-400 hover:text-slate-200'
           }`}
         >
-          <HelpCircle className="w-4 h-4 text-pide-amber" />
+          <HelpCircle className="w-4 h-4 text-orange-400" />
           <span>Desafío Trivia USS (+100 pts)</span>
           {triviaAnswered && (
             <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
@@ -138,7 +138,7 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
           <div className="space-y-5">
             {/* Fundamento Químico & Geometría RPECV */}
             <div className="bg-oled-panel p-4 rounded-xl border border-oled-border space-y-3">
-              <div className="flex items-center gap-2 text-xs font-bold text-pide-cyan uppercase tracking-wider">
+              <div className="flex items-center gap-2 text-xs font-bold text-orange-400 uppercase tracking-wider">
                 <Atom className="w-4 h-4" />
                 <span>Estructura Química Fundamental & Modelo RPECV</span>
               </div>
@@ -255,7 +255,7 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
                 const isCorrect = index === molecule.trivia.respuestaCorrecta;
                 const showFeedback = triviaSubmitted || triviaAnswered;
 
-                let buttonClass = 'border-oled-border bg-oled-panel text-slate-200 hover:border-cyan-500 hover:bg-slate-900';
+                let buttonClass = 'border-oled-border bg-oled-panel text-slate-200 hover:border-orange-500 hover:bg-zinc-900';
 
                 if (showFeedback) {
                   if (isCorrect) {
@@ -291,8 +291,8 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
 
             {/* Explicación científica tras responder */}
             {(triviaSubmitted || triviaAnswered) && (
-              <div className="p-4 bg-oled-panel rounded-xl border border-cyan-500/40 text-xs sm:text-sm space-y-2 animate-fade-in shadow-xl">
-                <div className="flex items-center gap-2 font-bold text-pide-cyan text-xs sm:text-sm uppercase tracking-wider">
+              <div className="p-4 bg-oled-panel rounded-xl border border-orange-500/40 text-xs sm:text-sm space-y-2 animate-fade-in shadow-xl">
+                <div className="flex items-center gap-2 font-bold text-orange-400 text-xs sm:text-sm uppercase tracking-wider">
                   <Lightbulb className="w-4 h-4" />
                   <span>Explicación Científica (Docentes USS):</span>
                 </div>

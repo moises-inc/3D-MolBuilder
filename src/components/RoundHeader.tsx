@@ -68,13 +68,13 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
     ? 'text-red-400 animate-pulse'
     : isWarning
     ? 'text-amber-400'
-    : 'text-cyan-400';
+    : 'text-orange-400';
 
   const timerBarClass = isUrgent
     ? 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.8)]'
     : isWarning
     ? 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]'
-    : 'bg-cyan-400 shadow-[0_0_10px_rgba(93,225,229,0.6)]';
+    : 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]';
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -93,7 +93,7 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
               alt="Universidad San Sebastián" 
               className="h-9 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.45)] drop-shadow-[0_2px_6px_rgba(0,32,91,0.6)] select-none"
             />
-            <span className="font-mono text-base font-bold text-pide-cyan tracking-wider select-none">
+            <span className="font-mono text-base font-bold text-orange-400 tracking-wider select-none">
               3D MolBuilder
             </span>
           </div>

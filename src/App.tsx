@@ -11,6 +11,7 @@ import { LeaderboardModal } from './components/LeaderboardModal';
 import { SettingsModal } from './components/SettingsModal';
 import { SyncQRModal, SyncQRData } from './components/SyncQRModal';
 import { ProjectorView } from './components/ProjectorView';
+import { ShaderBackground } from './components/ShaderBackground';
 import { socketSync, ClientRole, ConnectionStatus, ActivityEvent } from './utils/socketSync';
 import { sounds } from './utils/soundEffects';
 import confetti from 'canvas-confetti';
@@ -329,7 +330,8 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-black text-slate-100 selection:bg-cyan-500 selection:text-black">
+    <div className="relative flex flex-col min-h-screen bg-oled text-slate-100 selection:bg-orange-500 selection:text-black">
+      <ShaderBackground />
       {clientRole === 'master' ? (
         <ProjectorView
           teams={teams}

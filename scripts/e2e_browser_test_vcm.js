@@ -143,7 +143,7 @@ async function runE2ETests() {
       // 1 casilla = 25% (25 pts de 100 base)
       await checkButtons.nth(0).click();
       await page1.waitForTimeout(300);
-      const scoreText25 = await page1.locator('span.text-base.font-mono.font-extrabold.text-pide-cyan').first().innerText();
+      const scoreText25 = await page1.locator('span.text-base.font-mono.font-extrabold').first().innerText();
       recordAssertion('Kit Físico: 25% con 1 casilla (25 pts)', scoreText25.includes('25'), `Puntaje parcial leído: ${scoreText25}`);
       await takeCapture(page1, '04_molbuilder_kit_parcial_25.png');
 
@@ -151,7 +151,7 @@ async function runE2ETests() {
         // 2 casillas = 50% (50 pts de 100 base)
         await checkButtons.nth(1).click();
         await page1.waitForTimeout(300);
-        const scoreText50 = await page1.locator('span.text-base.font-mono.font-extrabold.text-pide-cyan').first().innerText();
+        const scoreText50 = await page1.locator('span.text-base.font-mono.font-extrabold').first().innerText();
         recordAssertion('Kit Físico: 50% con 2 casillas (50 pts)', scoreText50.includes('50'), `Puntaje parcial leído: ${scoreText50}`);
         await takeCapture(page1, '05_molbuilder_kit_parcial_50.png');
       }
@@ -162,7 +162,7 @@ async function runE2ETests() {
         await page1.waitForTimeout(200);
         await checkButtons.nth(3).click();
         await page1.waitForTimeout(300);
-        const scoreText100 = await page1.locator('span.text-base.font-mono.font-extrabold.text-pide-cyan').first().innerText();
+        const scoreText100 = await page1.locator('span.text-base.font-mono.font-extrabold').first().innerText();
         recordAssertion('Kit Físico: 100% con 4 casillas (100 pts)', scoreText100.includes('100'), `Puntaje parcial leído: ${scoreText100}`);
         await takeCapture(page1, '06_molbuilder_kit_completo_100.png');
       }

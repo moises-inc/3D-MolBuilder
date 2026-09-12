@@ -165,6 +165,27 @@ Todas las capturas se encuentran almacenadas y disponibles en [`docs/vcm_qa_capt
   3. **Unidad Debye (`D`) y Símbolo Dipolar `μ`:** Normalización estricta de la unidad de momento dipolar en `MoleculeInfoCard.tsx` (`Molécula Polar (μ > 0 D)` y `Molécula Apolar (μ = 0 D)`) y justificaciones (`μ = 0 D`, `Δχ = 0.35`).
   4. **Unidades de Calor Específico y Grados:** Actualización de calor específico a `J/(g·°C)` e inclusión del símbolo `°` en todos los ángulos (`104.5°`, `109.5°`, `180°`, `120°`, `107.3°`).
 
+### Parche 6: Rediseño Visual Sobrio Negro OLED & Naranja Ámbar (Con Preservación CPK)
+- **Archivos Modificados / Creados:** `src/components/ShaderBackground.tsx`, `config/tailwind.config.js`, `src/styles/index.css`, `src/components/MolecularViewer3D.tsx`, `src/components/MoleculeInfoCard.tsx`, `src/components/KitValidationPanel.tsx`, `src/components/ProjectorView.tsx`, `src/components/RoundHeader.tsx`, `src/App.tsx`, `scripts/e2e_browser_test_vcm.js`.
+- **Mejoras Implementadas:**
+  1. **Fondo Procedural Shader Canvas 2D (`ShaderBackground.tsx`):**
+     - Ondas armónicas lentas en tonos carbón oscuro con sutiles destellos naranja ámbar (`rgba(249, 115, 22, 0.06)`).
+     - Respuesta interactiva fluida a la posición del cursor con atenuación física.
+     - **Ahorro de batería y recursos en notebooks escolares:** Pausa automática del ciclo `requestAnimationFrame` mediante listeners del evento `visibilitychange` (`document.hidden`), evitando consumo innecesario de GPU cuando la pestaña pasa a segundo plano.
+  2. **Paleta Sobria Negro OLED & Naranja Ámbar:**
+     - Fondo base Negro OLED (`#09090b`), tarjetas en Carbón Mate (`#121216`), paneles en vidrio esmerilado translúcido (`rgba(18, 18, 22, 0.85)` con `backdrop-blur-md`), y bordes refinados en Naranja Ámbar (`rgba(249, 115, 22, 0.2)`).
+     - Botones principales de acción con gradiente activo `from-orange-500 to-amber-600` y efectos de sombra volumétrica `shadow-amber-glow`.
+  3. **Preservación Invariante del Estándar CPK en Three.js:**
+     - **Garantía cromática científica:** Los colores atómicos internacionales CPK en `moleculesDataset.ts` y Three.js permanecen intactos (Oxígeno `#EF4444`, Hidrógeno `#FFFFFF`, Carbono `#262626`, Nitrógeno `#3B82F6`, Cloro `#10B981`, Azufre `#F59E0B`).
+     - Incorporación de una grilla de suelo en Three.js (`GridHelper`) en carbón y ámbar tenue en `y = -2.6` para otorgar profundidad espacial.
+     - Luz de contorno cálida (rim lighting) en `THREE.DirectionalLight(0xf97316, 0.6)` que realza la silueta de los enlaces y átomos sobre el fondo negro profundo sin alterar sus tonalidades CPK.
+  4. **Adaptación de Interfaces de Alumno y Proyector Master:**
+     - `MoleculeInfoCard.tsx`: Pestañas en ámbar, insignia de momento dipolar en Debye (`μ > 0 D` / `μ = 0 D`) y contenedor de trivia estilizado.
+     - `KitValidationPanel.tsx`: Widget de puntaje acumulado en tiempo real, casillas de conteo de piezas con bordes ámbar y botón de validación de ronda.
+     - `ProjectorView.tsx`: Fondo con `ShaderBackground`, marcador central a 1080p con podio de equipos y métricas de red LAN escolar integradas.
+  5. **Verificación Automatizada E2E:**
+     - Ejecución de `scripts/e2e_browser_test_vcm.js` con las 26 aserciones aprobadas al 100% (26/26 PASS), 0 excepciones de página y sincronización completa de las 24 capturas de alta definición en `docs/vcm_qa_captures/`.
+
 ---
 
 ## 🎓 6. Veredicto Final y Recomendación para la Jefatura

@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-09-12T19:50:42.526Z",
+  "timestamp": "2026-09-12T20:07:38.375Z",
   "tool": "Playwright Real Browser E2E Suite",
   "environment": {
     "chromiumPath": "/home/moises/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
@@ -27,178 +27,178 @@
       "name": "MolBuilder: Carga inicial Ronda 1 (Agua H₂O)",
       "passed": true,
       "details": "Título Agua y fórmula H₂O detectados",
-      "timestamp": "2026-09-12T19:48:15.938Z"
+      "timestamp": "2026-09-12T20:05:45.145Z"
     },
     {
       "name": "Three.js: Modo Esferas Compactas (VDW)",
       "passed": true,
       "details": "Botón clickeado y vista actualizada",
-      "timestamp": "2026-09-12T19:48:29.883Z"
+      "timestamp": "2026-09-12T20:05:57.251Z"
     },
     {
       "name": "Three.js: Modo Estructura Malla 3D",
       "passed": true,
       "details": "Modo Wireframe activado",
-      "timestamp": "2026-09-12T19:48:37.071Z"
+      "timestamp": "2026-09-12T20:06:02.550Z"
     },
     {
       "name": "RPECV: Lóbulos de densidad electrónica en H₂O",
       "passed": true,
       "details": "Badge RPECV presente en HUD superior",
-      "timestamp": "2026-09-12T19:48:42.782Z"
+      "timestamp": "2026-09-12T20:06:06.368Z"
     },
     {
       "name": "Kit Físico: 25% con 1 casilla (25 pts)",
       "passed": true,
       "details": "Puntaje parcial leído: 25",
-      "timestamp": "2026-09-12T19:48:47.529Z"
+      "timestamp": "2026-09-12T20:06:10.871Z"
     },
     {
       "name": "Kit Físico: 50% con 2 casillas (50 pts)",
       "passed": true,
       "details": "Puntaje parcial leído: 50",
-      "timestamp": "2026-09-12T19:48:55.491Z"
+      "timestamp": "2026-09-12T20:06:15.357Z"
     },
     {
       "name": "Kit Físico: 100% con 4 casillas (100 pts)",
       "passed": true,
       "details": "Puntaje parcial leído: 100",
-      "timestamp": "2026-09-12T19:49:07.481Z"
+      "timestamp": "2026-09-12T20:06:24.764Z"
     },
     {
       "name": "Trivia USS: Respuesta correcta A (+100 pts)",
       "passed": true,
       "details": "Explicación didáctica y badge verde visible",
-      "timestamp": "2026-09-12T19:49:26.233Z"
+      "timestamp": "2026-09-12T20:06:34.943Z"
     },
     {
       "name": "MolBuilder: TrophyModal y Fanfarria activa",
       "passed": true,
       "details": "Modal de trofeo y confeti desplegado",
-      "timestamp": "2026-09-12T19:49:36.525Z"
+      "timestamp": "2026-09-12T20:06:42.101Z"
     },
     {
       "name": "Ronda 2: Dióxido de Carbono (CO₂)",
       "passed": true,
       "details": "Compuesto cargado correctamente",
-      "timestamp": "2026-09-12T19:49:43.124Z"
+      "timestamp": "2026-09-12T20:06:47.266Z"
     },
     {
       "name": "Ronda 3: Metano (CH₄)",
       "passed": true,
       "details": "Compuesto cargado",
-      "timestamp": "2026-09-12T19:49:45.174Z"
+      "timestamp": "2026-09-12T20:06:49.738Z"
     },
     {
       "name": "Ronda 4: Amoníaco (NH₃) + Lóbulos RPECV",
       "passed": true,
       "details": "Compuesto y lóbulo apical presentes",
-      "timestamp": "2026-09-12T19:49:50.457Z"
+      "timestamp": "2026-09-12T20:06:54.602Z"
     },
     {
       "name": "Ronda 5: Etanol (C₂H₆O)",
       "passed": true,
       "details": "Navegación exitosa",
-      "timestamp": "2026-09-12T19:49:59.418Z"
+      "timestamp": "2026-09-12T20:07:03.325Z"
     },
     {
       "name": "Ronda 6: Acetona (C₃H₆O)",
       "passed": true,
       "details": "Navegación exitosa",
-      "timestamp": "2026-09-12T19:50:02.721Z"
+      "timestamp": "2026-09-12T20:07:05.667Z"
     },
     {
       "name": "Ronda 7: Ácido Acético (C₂H₄O₂)",
       "passed": true,
       "details": "Navegación exitosa",
-      "timestamp": "2026-09-12T19:50:05.345Z"
+      "timestamp": "2026-09-12T20:07:08.219Z"
     },
     {
       "name": "Ronda 8: Acetato de Etilo (C₄H₈O₂)",
       "passed": true,
       "details": "Desafío final alcanzado",
-      "timestamp": "2026-09-12T19:50:07.942Z"
+      "timestamp": "2026-09-12T20:07:10.819Z"
     },
     {
       "name": "Proyector Master: Vista de Marcador Central",
       "passed": true,
       "details": "Badge Marcador Central detectado en header",
-      "timestamp": "2026-09-12T19:50:12.597Z"
+      "timestamp": "2026-09-12T20:07:14.936Z"
     },
     {
       "name": "Proyector Master: Tabla de Posiciones y Equipos",
       "passed": true,
       "details": "Equipos en ranking en tiempo real",
-      "timestamp": "2026-09-12T19:50:12.619Z"
+      "timestamp": "2026-09-12T20:07:15.025Z"
     },
     {
       "name": "PIDE Core: Carga inicial Tabla Periódica",
       "passed": true,
       "details": "Hero y tabla interactiva renderizados",
-      "timestamp": "2026-09-12T19:50:19.820Z"
+      "timestamp": "2026-09-12T20:07:20.270Z"
     },
     {
       "name": "PIDE Core: Enlace a Taller VcM 3D MolBuilder",
       "passed": true,
       "details": "Botón de acceso directo presente en sidebar",
-      "timestamp": "2026-09-12T19:50:20.517Z"
+      "timestamp": "2026-09-12T20:07:20.432Z"
     },
     {
       "name": "PIDE Core: Módulo Enlaces Químicos",
       "passed": true,
       "details": "BondAnalyzer desplegado",
-      "timestamp": "2026-09-12T19:50:22.733Z"
+      "timestamp": "2026-09-12T20:07:22.713Z"
     },
     {
       "name": "PIDE Core: Módulo Espectroscopía",
       "passed": true,
       "details": "Espectro de emisión NIST activo",
-      "timestamp": "2026-09-12T19:50:25.252Z"
+      "timestamp": "2026-09-12T20:07:24.679Z"
     },
     {
       "name": "PIDE Core: Módulo Estructuras 3D",
       "passed": true,
       "details": "Orbitales y celdas unitarias WebGL",
-      "timestamp": "2026-09-12T19:50:27.651Z"
+      "timestamp": "2026-09-12T20:07:26.661Z"
     },
     {
       "name": "PIDE Core: Módulo Comparador y Tendencias",
       "passed": true,
       "details": "Gráficas multivariables activas",
-      "timestamp": "2026-09-12T19:50:30.067Z"
+      "timestamp": "2026-09-12T20:07:28.653Z"
     },
     {
       "name": "PIDE Core: Layout responsivo a 1366x768",
       "passed": true,
       "details": "Ajuste fluido de contenedores glassmorphism",
-      "timestamp": "2026-09-12T19:50:33.333Z"
+      "timestamp": "2026-09-12T20:07:31.511Z"
     },
     {
       "name": "MolBuilder: Layout responsivo a 1366x768",
       "passed": true,
       "details": "Visor 3D y panel kit físico adaptados",
-      "timestamp": "2026-09-12T19:50:37.325Z"
+      "timestamp": "2026-09-12T20:07:34.986Z"
     }
   ],
   "consoleLogs": [
     {
       "type": "warning",
-      "text": "[.WebGL-0x3744001adc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "text": "[.WebGL-0xa400c1de00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
       "url": "http://localhost:5174/"
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x3744001adc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "text": "[.WebGL-0xa400c1de00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
       "url": "http://localhost:5174/"
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x3744001adc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "text": "[.WebGL-0xa400c1de00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
       "url": "http://localhost:5174/"
     },
     {
       "type": "warning",
-      "text": "[.WebGL-0x3744001adc00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+      "text": "[.WebGL-0xa400c1de00]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
       "url": "http://localhost:5174/"
     }
   ],

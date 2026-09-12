@@ -216,18 +216,18 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
           </div>
 
           {/* Tips Armado */}
-          <div className="bg-cyan-950/20 border border-cyan-800/30 p-2.5 rounded text-slate-300 text-[11px] leading-relaxed">
-            <strong className="text-pide-cyan font-bold block mb-0.5">Tip del Monitor:</strong>
+          <div className="bg-orange-950/20 border border-orange-500/30 p-2.5 rounded text-slate-300 text-[11px] leading-relaxed">
+            <strong className="text-orange-400 font-bold block mb-0.5">Tip del Monitor:</strong>
             {molecule.kitFisico.tipsArmado}
           </div>
         </div>
 
         {/* Real-Time Partial Score Widget */}
-        <div className="bg-black/70 p-3 rounded-lg border border-oled-border flex items-center justify-between">
+        <div className="bg-black/80 p-3 rounded-lg border border-orange-500/30 flex items-center justify-between shadow-sm">
           <div className="flex flex-col">
             <span className="text-[10px] uppercase font-mono text-slate-400">Puntaje parcial acumulado:</span>
             <div className="flex items-baseline gap-1.5 mt-0.5">
-              <span className="text-base font-mono font-extrabold text-pide-cyan">
+              <span className="text-base font-mono font-extrabold text-pide-cyan text-orange-400">
                 {partialBaseScore}
               </span>
               <span className="text-xs text-slate-400 font-mono">/ {basePoints} pts base</span>
@@ -252,7 +252,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
             <span className="text-[11px] uppercase font-mono font-bold text-slate-300 block">
               Validación de Mesa ({checkedCount}/4 ítems):
             </span>
-            <span className="text-[10px] font-mono text-slate-400">
+            <span className="text-[10px] font-mono text-orange-400/90 font-bold">
               {pointsPerItem} pts c/u (25%)
             </span>
           </div>
@@ -263,7 +263,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               className={`w-full p-2.5 rounded-lg border text-left flex items-center gap-2.5 transition-all ${
                 checkedItems.spheresVerified 
                   ? 'bg-emerald-950/30 border-emerald-500/50 text-emerald-200' 
-                  : 'bg-oled-panel border-oled-border text-slate-300 hover:border-slate-500'
+                  : 'bg-oled-panel border-orange-500/30 text-slate-300 hover:border-orange-500/60'
               }`}
             >
               {checkedItems.spheresVerified ? (
@@ -272,7 +272,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
               <span className="flex-1">Conteo exacto de esferas CPK utilizadas</span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/60 text-orange-400 border border-orange-500/30 shrink-0">
                 +{pointsPerItem} pts
               </span>
             </button>
@@ -282,7 +282,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               className={`w-full p-2.5 rounded-lg border text-left flex items-center gap-2.5 transition-all ${
                 checkedItems.connectorsVerified 
                   ? 'bg-emerald-950/30 border-emerald-500/50 text-emerald-200' 
-                  : 'bg-oled-panel border-oled-border text-slate-300 hover:border-slate-500'
+                  : 'bg-oled-panel border-orange-500/30 text-slate-300 hover:border-orange-500/60'
               }`}
             >
               {checkedItems.connectorsVerified ? (
@@ -291,7 +291,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
               <span className="flex-1">Conectores correctos (rígidos en simples, flexibles en dobles)</span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/60 text-orange-400 border border-orange-500/30 shrink-0">
                 +{pointsPerItem} pts
               </span>
             </button>
@@ -301,7 +301,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               className={`w-full p-2.5 rounded-lg border text-left flex items-center gap-2.5 transition-all ${
                 checkedItems.geometryVerified 
                   ? 'bg-emerald-950/30 border-emerald-500/50 text-emerald-200' 
-                  : 'bg-oled-panel border-oled-border text-slate-300 hover:border-slate-500'
+                  : 'bg-oled-panel border-orange-500/30 text-slate-300 hover:border-orange-500/60'
               }`}
             >
               {checkedItems.geometryVerified ? (
@@ -310,7 +310,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
               <span className="flex-1">Geometría espacial 3D coincide con el modelo digital</span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/60 text-orange-400 border border-orange-500/30 shrink-0">
                 +{pointsPerItem} pts
               </span>
             </button>
@@ -320,7 +320,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               className={`w-full p-2.5 rounded-lg border text-left flex items-center gap-2.5 transition-all ${
                 checkedItems.noDanglingBonds 
                   ? 'bg-emerald-950/30 border-emerald-500/50 text-emerald-200' 
-                  : 'bg-oled-panel border-oled-border text-slate-300 hover:border-slate-500'
+                  : 'bg-oled-panel border-orange-500/30 text-slate-300 hover:border-orange-500/60'
               }`}
             >
               {checkedItems.noDanglingBonds ? (
@@ -329,7 +329,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
                 <Square className="w-4 h-4 text-slate-500 shrink-0" />
               )}
               <span className="flex-1">Sin orificios vacíos indebidos o enlaces flotantes</span>
-              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/40 text-slate-400 border border-white/5 shrink-0">
+              <span className="font-mono text-[10px] px-1.5 py-0.5 rounded bg-black/60 text-orange-400 border border-orange-500/30 shrink-0">
                 +{pointsPerItem} pts
               </span>
             </button>
@@ -356,10 +356,10 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
               : successAnimation
               ? 'bg-emerald-400 text-black scale-[0.98]'
               : checkedCount === 4
-              ? 'bg-gradient-to-r from-emerald-400 via-cyan-400 to-blue-500 hover:from-emerald-300 hover:to-blue-400 text-black font-extrabold shadow-[0_0_20px_rgba(93,225,229,0.4)]'
+              ? 'bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-black font-extrabold shadow-[0_0_20px_rgba(249,115,22,0.4)]'
               : checkedCount > 0
-              ? 'bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-300 hover:to-blue-400 text-black font-bold'
-              : 'bg-slate-800 text-slate-400 hover:text-white border border-slate-700'
+              ? 'bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-black font-bold'
+              : 'bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-700'
           }`}
         >
           <Send className="w-4 h-4" />
