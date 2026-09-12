@@ -1,0 +1,248 @@
+{
+  "timestamp": "2026-09-12T16:47:14.911Z",
+  "tool": "Playwright Real Browser E2E Suite",
+  "environment": {
+    "chromiumPath": "/home/moises/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
+    "viewportsTested": [
+      "1920x1080 (PC Proyector)",
+      "1366x768 (Notebook Escolar)"
+    ],
+    "urlsTested": [
+      "http://localhost:5174",
+      "http://localhost:5174/?role=master",
+      "http://localhost:5173"
+    ]
+  },
+  "metrics": {
+    "totalAssertions": 26,
+    "passedAssertions": 26,
+    "failedAssertions": 0,
+    "consoleErrorsCount": 7,
+    "pageErrorsCount": 0,
+    "networkErrorsCount": 0,
+    "capturesCount": 24
+  },
+  "assertions": [
+    {
+      "name": "MolBuilder: Carga inicial Ronda 1 (Agua H₂O)",
+      "passed": true,
+      "details": "Título Agua y fórmula H₂O detectados",
+      "timestamp": "2026-09-12T16:45:06.005Z"
+    },
+    {
+      "name": "Three.js: Modo Esferas Compactas (VDW)",
+      "passed": true,
+      "details": "Botón clickeado y vista actualizada",
+      "timestamp": "2026-09-12T16:45:19.249Z"
+    },
+    {
+      "name": "Three.js: Modo Estructura Malla 3D",
+      "passed": true,
+      "details": "Modo Wireframe activado",
+      "timestamp": "2026-09-12T16:45:26.745Z"
+    },
+    {
+      "name": "RPECV: Lóbulos de densidad electrónica en H₂O",
+      "passed": true,
+      "details": "Badge RPECV presente en HUD superior",
+      "timestamp": "2026-09-12T16:45:31.654Z"
+    },
+    {
+      "name": "Kit Físico: 25% con 1 casilla (25 pts)",
+      "passed": true,
+      "details": "Puntaje parcial leído: 25",
+      "timestamp": "2026-09-12T16:45:37.687Z"
+    },
+    {
+      "name": "Kit Físico: 50% con 2 casillas (50 pts)",
+      "passed": true,
+      "details": "Puntaje parcial leído: 50",
+      "timestamp": "2026-09-12T16:45:45.832Z"
+    },
+    {
+      "name": "Kit Físico: 100% con 4 casillas (100 pts)",
+      "passed": true,
+      "details": "Puntaje parcial leído: 100",
+      "timestamp": "2026-09-12T16:45:59.718Z"
+    },
+    {
+      "name": "Trivia USS: Respuesta correcta A (+100 pts)",
+      "passed": true,
+      "details": "Explicación didáctica y badge verde visible",
+      "timestamp": "2026-09-12T16:46:14.534Z"
+    },
+    {
+      "name": "MolBuilder: TrophyModal y Fanfarria activa",
+      "passed": true,
+      "details": "Modal de trofeo y confeti desplegado",
+      "timestamp": "2026-09-12T16:46:23.634Z"
+    },
+    {
+      "name": "Ronda 2: Dióxido de Carbono (CO₂)",
+      "passed": true,
+      "details": "Compuesto cargado correctamente",
+      "timestamp": "2026-09-12T16:46:28.831Z"
+    },
+    {
+      "name": "Ronda 3: Metano (CH₄)",
+      "passed": true,
+      "details": "Compuesto cargado",
+      "timestamp": "2026-09-12T16:46:30.618Z"
+    },
+    {
+      "name": "Ronda 4: Amoníaco (NH₃) + Lóbulos RPECV",
+      "passed": true,
+      "details": "Compuesto y lóbulo apical presentes",
+      "timestamp": "2026-09-12T16:46:35.086Z"
+    },
+    {
+      "name": "Ronda 5: Etanol (C₂H₆O)",
+      "passed": true,
+      "details": "Navegación exitosa",
+      "timestamp": "2026-09-12T16:46:41.445Z"
+    },
+    {
+      "name": "Ronda 6: Acetona (C₃H₆O)",
+      "passed": true,
+      "details": "Navegación exitosa",
+      "timestamp": "2026-09-12T16:46:43.298Z"
+    },
+    {
+      "name": "Ronda 7: Ácido Acético (C₂H₄O₂)",
+      "passed": true,
+      "details": "Navegación exitosa",
+      "timestamp": "2026-09-12T16:46:45.510Z"
+    },
+    {
+      "name": "Ronda 8: Acetato de Etilo (C₄H₈O₂)",
+      "passed": true,
+      "details": "Desafío final alcanzado",
+      "timestamp": "2026-09-12T16:46:47.513Z"
+    },
+    {
+      "name": "Proyector Master: Vista de Marcador Central",
+      "passed": true,
+      "details": "Badge Marcador Central detectado en header",
+      "timestamp": "2026-09-12T16:46:51.292Z"
+    },
+    {
+      "name": "Proyector Master: Tabla de Posiciones y Equipos",
+      "passed": true,
+      "details": "Equipos en ranking en tiempo real",
+      "timestamp": "2026-09-12T16:46:51.300Z"
+    },
+    {
+      "name": "PIDE Core: Carga inicial Tabla Periódica",
+      "passed": true,
+      "details": "Hero y tabla interactiva renderizados",
+      "timestamp": "2026-09-12T16:46:55.936Z"
+    },
+    {
+      "name": "PIDE Core: Enlace a Taller VcM 3D MolBuilder",
+      "passed": true,
+      "details": "Botón de acceso directo presente en sidebar",
+      "timestamp": "2026-09-12T16:46:56.052Z"
+    },
+    {
+      "name": "PIDE Core: Módulo Enlaces Químicos",
+      "passed": true,
+      "details": "BondAnalyzer desplegado",
+      "timestamp": "2026-09-12T16:46:58.109Z"
+    },
+    {
+      "name": "PIDE Core: Módulo Espectroscopía",
+      "passed": true,
+      "details": "Espectro de emisión NIST activo",
+      "timestamp": "2026-09-12T16:47:00.416Z"
+    },
+    {
+      "name": "PIDE Core: Módulo Estructuras 3D",
+      "passed": true,
+      "details": "Orbitales y celdas unitarias WebGL",
+      "timestamp": "2026-09-12T16:47:02.184Z"
+    },
+    {
+      "name": "PIDE Core: Módulo Comparador y Tendencias",
+      "passed": true,
+      "details": "Gráficas multivariables activas",
+      "timestamp": "2026-09-12T16:47:04.353Z"
+    },
+    {
+      "name": "PIDE Core: Layout responsivo a 1366x768",
+      "passed": true,
+      "details": "Ajuste fluido de contenedores glassmorphism",
+      "timestamp": "2026-09-12T16:47:07.128Z"
+    },
+    {
+      "name": "MolBuilder: Layout responsivo a 1366x768",
+      "passed": true,
+      "details": "Visor 3D y panel kit físico adaptados",
+      "timestamp": "2026-09-12T16:47:12.128Z"
+    }
+  ],
+  "consoleLogs": [
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x22400988800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "url": "http://localhost:5174/"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x22400988800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "url": "http://localhost:5174/"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x22400988800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels",
+      "url": "http://localhost:5174/"
+    },
+    {
+      "type": "warning",
+      "text": "[.WebGL-0x22400988800]GL Driver Message (OpenGL, Performance, GL_CLOSE_PATH_NV, High): GPU stall due to ReadPixels (this message will no longer repeat)",
+      "url": "http://localhost:5174/"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://localhost:5173/"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)",
+      "url": "http://localhost:5173/"
+    },
+    {
+      "type": "error",
+      "text": "Failed to load resource: the server responded with a status of 404 (Not Found)",
+      "url": "http://localhost:5173/"
+    }
+  ],
+  "pageErrors": [],
+  "networkErrors": [],
+  "captures": [
+    "01_molbuilder_ronda1_h2o_cpk.png",
+    "02_molbuilder_ronda1_h2o_vdw.png",
+    "03_molbuilder_ronda1_h2o_malla.png",
+    "04_molbuilder_kit_parcial_25.png",
+    "05_molbuilder_kit_parcial_50.png",
+    "06_molbuilder_kit_completo_100.png",
+    "07_molbuilder_trivia_tab.png",
+    "08_molbuilder_trivia_correcta.png",
+    "09_molbuilder_fanfarria_trophy_modal.png",
+    "10_molbuilder_ronda2_co2.png",
+    "11_molbuilder_ronda3_ch4.png",
+    "12_molbuilder_ronda4_nh3_lobulos.png",
+    "13_molbuilder_ronda5_etanol.png",
+    "14_molbuilder_ronda6_acetona.png",
+    "15_molbuilder_ronda7_acido_acetico.png",
+    "16_molbuilder_ronda8_acetato_etilo.png",
+    "17_molbuilder_proyector_master_1080p.png",
+    "18_pide_tabla_periodica_1080p.png",
+    "19_pide_enlaces_quimicos.png",
+    "20_pide_espectroscopia.png",
+    "21_pide_estructuras_3d.png",
+    "22_pide_comparador_tendencias.png",
+    "23_pide_notebook_escolar_1366x768.png",
+    "24_molbuilder_notebook_escolar_1366x768.png"
+  ]
+}

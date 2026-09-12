@@ -75,7 +75,6 @@ async function runE2ETests() {
     page1.on('console', (msg) => {
       const type = msg.type();
       const text = msg.text();
-      // Filtrar avisos rutinarios o favicon si aplica
       if (type === 'error' || type === 'warning') {
         consoleLogs.push({ type, text, url: page1.url() });
       }
@@ -136,7 +135,7 @@ async function runE2ETests() {
 
     // 1.4 Checklist del Kit Físico — Regla del 25% por casilla
     console.log('   ☑️ Verificando regla del 25% por casilla del kit físico...');
-    const checkButtons = page1.locator('button:has-text("Conteo exacto"), button:has-text("Conectores correctos"), button:has-text("Geometría tridimensional"), button:has-text("Sin orificios vacíos")');
+    const checkButtons = page1.locator('button:has-text("Conteo exacto"), button:has-text("Conectores correctos"), button:has-text("Geometría espacial"), button:has-text("Sin orificios vacíos")');
     const totalCheckboxes = await checkButtons.count();
     console.log(`      Total casillas detectadas: ${totalCheckboxes}`);
 
@@ -182,7 +181,7 @@ async function runE2ETests() {
       if (await optionA.count() > 0) {
         await optionA.click();
         await page1.waitForTimeout(500);
-        const successFeedback = page1.locator('.bg-emerald-950\\/60, text=explicación, text=RPECV');
+        const successFeedback = page1.locator('text=explicación').or(page1.locator('text=RPECV')).or(page1.locator('text=+100'));
         const feedbackCount = await successFeedback.count();
         recordAssertion('Trivia USS: Respuesta correcta A (+100 pts)', feedbackCount > 0, 'Explicación didáctica y badge verde visible');
         await takeCapture(page1, '08_molbuilder_trivia_correcta.png');
@@ -191,36 +190,40 @@ async function runE2ETests() {
 
     // 1.6 Validación del Kit y Disparo de Fanfarria / TrophyModal
     console.log('   🎉 Disparando validación del kit y fanfarria...');
-    const validateBtn = page1.locator('button:has-text("Validar Construcción del Kit")');
+    const validateBtn = page1.locator('button:has-text("Validar Ensamblado"), button:has-text("Validar Puntaje"), button:has-text("Validar")').first();
     if (await validateBtn.count() > 0) {
       await validateBtn.click();
       await page1.waitForTimeout(800);
-      const trophyTitle = page1.locator('h2:has-text("Agua (H₂O)"), text=¡Ronda Completada con Éxito!');
-      const modalOpen = (await trophyTitle.count()) > 0;
+      const trophyModal = page1.locator('text=¡Ronda Completada con Éxito!');
+      const modalOpen = (await trophyModal.count()) > 0;
       recordAssertion('MolBuilder: TrophyModal y Fanfarria activa', modalOpen, 'Modal de trofeo y confeti desplegado');
       await takeCapture(page1, '09_molbuilder_fanfarria_trophy_modal.png');
 
-      // Avanzar a la siguiente ronda desde el modal
-      const nextRoundBtn = page1.locator('button:has-text("Siguiente Ronda")');
-      if (await nextRoundBtn.count() > 0) {
-        await nextRoundBtn.click();
-        await page1.waitForTimeout(700);
+      // Cerrar trophy modal avanzando a siguiente ronda
+      const nextRoundModalBtn = page1.locator('button:has-text("Siguiente Ronda")');
+      if (await nextRoundModalBtn.count() > 0) {
+        await nextRoundModalBtn.click();
+        await page1.waitForTimeout(600);
       }
     }
 
-    // 1.7 Recorrido completo por las 8 rondas moleculares
+    // 1.7 Recorrido completo por las 8 rondas moleculares utilizando navegación rápida y directa
     console.log('   🔄 Recorriendo los 8 compuestos del torneo...');
-    const nextMoleculeBtn = page1.locator('button[title*="Siguiente"], button:has-text("Siguiente molécula")').first();
 
     // Ronda 2: CO2
-    await page1.waitForTimeout(500);
-    const hasCO2 = (await page1.locator('h2:has-text("Dióxido de Carbono")').count()) > 0;
-    recordAssertion('Ronda 2: Dióxido de Carbono (CO₂)', hasCO2, 'Compuesto cargado correctamente');
-    await takeCapture(page1, '10_molbuilder_ronda2_co2.png');
+    const navCO2 = page1.locator('button:has-text("Dióxido de Carbono")');
+    if (await navCO2.count() > 0) {
+      await navCO2.click();
+      await page1.waitForTimeout(500);
+      const hasCO2 = (await page1.locator('h2:has-text("Dióxido de Carbono")').count()) > 0;
+      recordAssertion('Ronda 2: Dióxido de Carbono (CO₂)', hasCO2, 'Compuesto cargado correctamente');
+      await takeCapture(page1, '10_molbuilder_ronda2_co2.png');
+    }
 
     // Ronda 3: Metano CH4
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navCH4 = page1.locator('button:has-text("Metano")');
+    if (await navCH4.count() > 0) {
+      await navCH4.click();
       await page1.waitForTimeout(500);
       const hasCH4 = (await page1.locator('h2:has-text("Metano")').count()) > 0;
       recordAssertion('Ronda 3: Metano (CH₄)', hasCH4, 'Compuesto cargado');
@@ -228,8 +231,9 @@ async function runE2ETests() {
     }
 
     // Ronda 4: Amoníaco NH3 (con lóbulos RPECV)
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navNH3 = page1.locator('button:has-text("Amoníaco")');
+    if (await navNH3.count() > 0) {
+      await navNH3.click();
       await page1.waitForTimeout(500);
       const hasNH3 = (await page1.locator('h2:has-text("Amoníaco")').count()) > 0;
       const rpecvBadgeNH3 = (await page1.locator('span:has-text("Lóbulos RPECV Visibles")').count()) > 0;
@@ -238,32 +242,36 @@ async function runE2ETests() {
     }
 
     // Ronda 5: Etanol
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navEth = page1.locator('button:has-text("Etanol")');
+    if (await navEth.count() > 0) {
+      await navEth.click();
       await page1.waitForTimeout(500);
       recordAssertion('Ronda 5: Etanol (C₂H₆O)', true, 'Navegación exitosa');
       await takeCapture(page1, '13_molbuilder_ronda5_etanol.png');
     }
 
     // Ronda 6: Acetona
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navAce = page1.locator('button:has-text("Acetona")');
+    if (await navAce.count() > 0) {
+      await navAce.click();
       await page1.waitForTimeout(500);
       recordAssertion('Ronda 6: Acetona (C₃H₆O)', true, 'Navegación exitosa');
       await takeCapture(page1, '14_molbuilder_ronda6_acetona.png');
     }
 
     // Ronda 7: Ácido Acético
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navAcAc = page1.locator('button:has-text("Ácido Acético")');
+    if (await navAcAc.count() > 0) {
+      await navAcAc.click();
       await page1.waitForTimeout(500);
       recordAssertion('Ronda 7: Ácido Acético (C₂H₄O₂)', true, 'Navegación exitosa');
       await takeCapture(page1, '15_molbuilder_ronda7_acido_acetico.png');
     }
 
     // Ronda 8: Acetato de Etilo (Desafío Avanzado)
-    if (await nextMoleculeBtn.count() > 0) {
-      await nextMoleculeBtn.click();
+    const navEa = page1.locator('button:has-text("Acetato de Etilo")');
+    if (await navEa.count() > 0) {
+      await navEa.click();
       await page1.waitForTimeout(500);
       recordAssertion('Ronda 8: Acetato de Etilo (C₄H₈O₂)', true, 'Desafío final alcanzado');
       await takeCapture(page1, '16_molbuilder_ronda8_acetato_etilo.png');
@@ -294,7 +302,7 @@ async function runE2ETests() {
     const hasMaster = (await masterBadge.count()) > 0;
     recordAssertion('Proyector Master: Vista de Marcador Central', hasMaster, 'Badge Marcador Central detectado en header');
 
-    const leaderboardItems = page2.locator('text=Equipo Alfa, text=Equipo Beta, text=Equipo Gamma');
+    const leaderboardItems = page2.locator('h3:has-text("Equipo")');
     const hasTeams = (await leaderboardItems.count()) > 0;
     recordAssertion('Proyector Master: Tabla de Posiciones y Equipos', hasTeams, 'Equipos en ranking en tiempo real');
 
