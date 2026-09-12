@@ -512,7 +512,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
                   isSelected
                     ? 'bg-amber-400 text-black border-white shadow-lg scale-125 z-20'
                     : isHovered
-                    ? 'bg-cyan-400 text-black border-white shadow-md scale-110 z-10'
+                    ? 'bg-amber-400 text-black border-white shadow-md scale-110 z-10'
                     : 'bg-black/75 text-white/95 border-white/20 backdrop-blur-sm'
                 }`}
               >

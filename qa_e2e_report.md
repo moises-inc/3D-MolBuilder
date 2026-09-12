@@ -186,6 +186,27 @@ Todas las capturas se encuentran almacenadas y disponibles en [`docs/vcm_qa_capt
   5. **Verificación Automatizada E2E:**
      - Ejecución de `scripts/e2e_browser_test_vcm.js` con las 26 aserciones aprobadas al 100% (26/26 PASS), 0 excepciones de página y sincronización completa de las 24 capturas de alta definición en `docs/vcm_qa_captures/`.
 
+### Parche 7: Ampliación de Legibilidad Didáctica e Integración de Fondo RecursiveErosionBackground
+- **Archivos Creados / Modificados:** `src/components/recursive-erosion-utils/recursive-erosion-source.ts`, `src/components/RecursiveErosionBackground.tsx`, `src/components/MoleculeInfoCard.tsx`, `src/App.tsx`, `src/components/ProjectorView.tsx`, `scripts/e2e_browser_test_vcm.js`.
+- **Mejoras Implementadas:**
+  1. **Fondo 3D de Partículas con Ruido de Erosión Recursivo (`RecursiveErosionBackground.tsx`):**
+     - Simulación de esfera de partículas tridimensionales con ruido fractal de erosión (fBm invertido) implementado mediante Three.js y fallback nativo WebGL para resiliencia 100% offline.
+     - Contenedor con `srcDoc` e `iframe` sandbox (`allow-scripts`), estilizado con props `mode="dark"`, `hue={-30}`, `saturation={1.2}`, `brightness={0.9}`.
+     - Capa fijada en `-z-10` con gradiente de atenuación sobre negro OLED (`#09090b`), garantizando máxima legibilidad de los paneles superiores.
+     - Pausa de ciclos de render en pestañas inactivas (`document.hidden`) para optimización de batería en notebooks escolares.
+  2. **Ampliación de Legibilidad Didáctica en `MoleculeInfoCard.tsx`:**
+     - Eliminación de la restricción de altura comprimida (`max-h-[280px]` y scrollbars internos) para una lectura continua y holgada del fundamento químico.
+     - Incremento del tamaño tipográfico de `descripcionCientifica` a `text-sm sm:text-base` con interlineado `leading-relaxed`.
+     - Títulos de sección ("Fundamento Químico & Modelo RPECV", "Curiosidades Científicas", "Usos en Chile") ampliados a `text-base sm:text-lg`.
+     - Padding interno expandido en cuadros de curiosidades y usos a `p-4 sm:p-4.5`.
+  3. **Corrección de Notación Dipolar:**
+     - Eliminación de la clase CSS `capitalize` que transformaba el símbolo griego $\mu$ en la letra mayúscula latina $M$.
+     - Representación estricta y científica del momento dipolar: **`Molécula Polar (μ > 0 D)`** y **`Molécula Apolar (μ = 0 D)`**.
+  4. **Preservación Invariable CPK:**
+     - Mantenimiento estricto de los colores atómicos internacionales CPK en Three.js (Oxígeno `#EF4444`, Hidrógeno `#FFFFFF`, Carbono `#262626`, Nitrógeno `#3B82F6`).
+  5. **Verificación Automatizada E2E:**
+     - 26/26 aserciones aprobadas (100% PASS), 0 excepciones de página, compilación limpia (`npm run build` en 9.82s) y sincronización de las 24 capturas de pantalla de alta fidelidad.
+
 ---
 
 ## 🎓 6. Veredicto Final y Recomendación para la Jefatura

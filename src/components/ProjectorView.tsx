@@ -22,7 +22,7 @@ import {
 import { TeamScore } from '../types/game';
 import { MOLECULES_DATASET } from '../data/moleculesDataset';
 import { ActivityEvent, ConnectionStatus, NetworkDiagnostics, socketSync } from '../utils/socketSync';
-import { ShaderBackground } from './ShaderBackground';
+import { RecursiveErosionBackground } from './RecursiveErosionBackground';
 
 interface ProjectorViewProps {
   teams: TeamScore[];
@@ -106,7 +106,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
 
   return (
     <div className="relative min-h-screen bg-oled text-slate-100 flex flex-col selection:bg-orange-500 selection:text-black">
-      <ShaderBackground />
+      <RecursiveErosionBackground mode="dark" hue={-30} saturation={1.2} brightness={0.9} />
       {/* Projector Top Master Bar */}
       <header className="w-full bg-black/90 backdrop-blur-md border-b border-oled-border sticky top-0 z-30 px-6 py-3">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">

@@ -11,7 +11,7 @@ import { LeaderboardModal } from './components/LeaderboardModal';
 import { SettingsModal } from './components/SettingsModal';
 import { SyncQRModal, SyncQRData } from './components/SyncQRModal';
 import { ProjectorView } from './components/ProjectorView';
-import { ShaderBackground } from './components/ShaderBackground';
+import { RecursiveErosionBackground } from './components/RecursiveErosionBackground';
 import { socketSync, ClientRole, ConnectionStatus, ActivityEvent } from './utils/socketSync';
 import { sounds } from './utils/soundEffects';
 import confetti from 'canvas-confetti';
@@ -331,7 +331,7 @@ export const App: React.FC = () => {
 
   return (
     <div className="relative flex flex-col min-h-screen bg-oled text-slate-100 selection:bg-orange-500 selection:text-black">
-      <ShaderBackground />
+      <RecursiveErosionBackground mode="dark" hue={-30} saturation={1.2} brightness={0.9} />
       {clientRole === 'master' ? (
         <ProjectorView
           teams={teams}
@@ -372,7 +372,7 @@ export const App: React.FC = () => {
           />
 
           {/* Main Workspace: Two Clear Structural Sections */}
-          <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 flex flex-col gap-4">
+          <main className="flex-1 max-w-7xl w-full mx-auto p-3 md:p-4 flex flex-col gap-4 relative z-10">
             {/* SECCIÓN SUPERIOR DIDÁCTICA (Ficha molecular amplia y corrida) */}
             <section className="w-full">
               <MoleculeInfoCard
@@ -421,7 +421,7 @@ export const App: React.FC = () => {
                   </div>
 
                   <div className="flex items-center gap-1.5 text-[11px] text-slate-400 font-mono">
-                    <Sparkles className="w-3.5 h-3.5 text-pide-cyan" />
+                    <Sparkles className="w-3.5 h-3.5 text-orange-400" />
                     <span>Rotar: Arrastre | Zoom: Rueda | Clic: Info Átomo</span>
                   </div>
                 </div>
@@ -457,7 +457,7 @@ export const App: React.FC = () => {
                       onClick={() => setCurrentIndex(idx)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
                         isSelected
-                          ? 'bg-cyan-500/20 border-cyan-400 text-cyan-300 shadow-[0_0_12px_rgba(93,225,229,0.3)]'
+                          ? 'bg-orange-500/20 border-orange-400 text-orange-300 shadow-[0_0_12px_rgba(249,115,22,0.3)]'
                           : 'bg-oled-panel border-oled-border text-slate-400 hover:text-white hover:border-slate-600'
                       }`}
                     >

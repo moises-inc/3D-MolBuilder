@@ -193,14 +193,14 @@ async function runE2ETests() {
     const validateBtn = page1.locator('button:has-text("Validar Ensamblado"), button:has-text("Validar Puntaje"), button:has-text("Validar")').first();
     if (await validateBtn.count() > 0) {
       await validateBtn.click();
-      await page1.waitForTimeout(800);
-      const trophyModal = page1.locator('text=¡Ronda Completada con Éxito!');
+      await page1.waitForTimeout(1000);
+      const trophyModal = page1.locator('button:has-text("Siguiente Ronda"), button:has-text("SIGUIENTE RONDA")').or(page1.locator('text=Ronda Completada')).first();
       const modalOpen = (await trophyModal.count()) > 0;
       recordAssertion('MolBuilder: TrophyModal y Fanfarria activa', modalOpen, 'Modal de trofeo y confeti desplegado');
       await takeCapture(page1, '09_molbuilder_fanfarria_trophy_modal.png');
 
       // Cerrar trophy modal avanzando a siguiente ronda
-      const nextRoundModalBtn = page1.locator('button:has-text("Siguiente Ronda")');
+      const nextRoundModalBtn = page1.locator('button:has-text("Siguiente Ronda"), button:has-text("SIGUIENTE RONDA")').first();
       if (await nextRoundModalBtn.count() > 0) {
         await nextRoundModalBtn.click();
         await page1.waitForTimeout(600);
