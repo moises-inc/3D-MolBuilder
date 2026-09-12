@@ -30,7 +30,7 @@ export const ATOM_RADII: Record<ElementSymbol, number> = {
 
 export const MOLECULES_DATASET: MoleculeData[] = [
   // =========================================================================
-  // 1. AGUA (H2O)
+  // 1. AGUA (H₂O)
   // =========================================================================
   {
     id: 'water',
@@ -55,7 +55,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       datosCuriosos: [
         'El hielo flota porque el agua líquida alcanza su máxima densidad a 4 °C; al congelarse, los puentes de hidrógeno forman una red hexagonal abierta y hueca que expande su volumen en un 9%.',
         'Tiene una tensión superficial asombrosamente alta: permite a insectos como los patinadores de agua caminar sobre ella sin romper la superficie.',
-        'Posee un calor específico colosal (4.184 J/g°C), lo que convierte a los océanos terrestres en el mayor amortiguador térmico de nuestro planeta.',
+        'Posee un calor específico colosal (4.184 J/(g·°C)), lo que convierte a los océanos terrestres en el mayor amortiguador térmico de nuestro planeta.',
         'En un solo vaso de agua (250 ml) hay aproximadamente 8.36 × 10²⁴ moléculas, más estrellas de las que existen en todo el universo observable.',
       ],
       usosVidaCotidiana: [
@@ -72,7 +72,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       esferas: { O: 1, H: 2 },
       conectores: { cortosRigidos: 2, largosFlexibles: 0 },
       descripcionConectores: '2 conectores cortos rígidos (enlaces simples O-H).',
-      tipsArmado: '¡No uses orificios a 180°! Utiliza los orificios angulares de la esfera roja del oxígeno para que los dos hidrógenos queden formando una "V" con ángulo de ~105°.',
+      tipsArmado: '¡No uses orificios a 180°! Utiliza los orificios angulares de la esfera roja del oxígeno para que los dos hidrógenos queden formando una "V" con ángulo de ~104.5°.',
     },
     trivia: {
       pregunta: 'Según el modelo de Repulsión de Pares Electrónicos de la Capa de Valencia (RPECV), ¿por qué el ángulo de enlace H-O-H en el agua (104.5°) es menor que el ángulo tetraédrico ideal (109.5°)?',
@@ -88,7 +88,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 2. DIÓXIDO DE CARBONO (CO2)
+  // 2. DIÓXIDO DE CARBONO (CO₂)
   // =========================================================================
   {
     id: 'carbon-dioxide',
@@ -146,7 +146,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 3. METANO (CH4)
+  // 3. METANO (CH₄)
   // =========================================================================
   {
     id: 'methane',
@@ -171,7 +171,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       { id: 'ch4-b4', from: 0, to: 4, order: 1 },
     ],
     didactica: {
-      descripcionCientifica: 'El alcano más simple y modelo canónico de la hibridación sp3 del carbono. Forma cuatro enlaces covalentes simples C-H orientados hacia los vértices de un tetraedro regular perfecto con ángulos de 109.5°. Carece de momento dipolar permanente y solo presenta débiles fuerzas intermoleculares de dispersión de London.',
+      descripcionCientifica: 'El alcano más simple y modelo canónico de la hibridación sp³ del carbono. Forma cuatro enlaces covalentes simples C-H orientados hacia los vértices de un tetraedro regular perfecto con ángulos de 109.5°. Carece de momento dipolar permanente y solo presenta débiles fuerzas intermoleculares de dispersión de London.',
       datosCuriosos: [
         'El gas natural es completamente inodoro; por seguridad domiciliaria se le añade metanotiol (olor a huevo podrido) para que detectemos fugas al instante.',
         'En un plazo de 20 años, calienta la atmósfera 84 veces más que el CO₂, siendo clave en la mitigación del cambio climático.',
@@ -180,13 +180,13 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       ],
       usosVidaCotidiana: [
         'Combustible de calefacción y cocina domiciliaria a través de redes de gas natural.',
-        'Materia prima petroquímica para obtener gas de síntesis (H2 y CO) en la producción de amoníaco.',
+        'Materia prima petroquímica para obtener gas de síntesis (H₂ y CO) en la producción de amoníaco.',
         'Combustible vehicular en flotas de transporte público a Gas Natural Comprimido (GNC).',
         'Biogás renovable generado en biodigestores a partir de purines y residuos agrícolas.',
       ],
       geometriaMolecular: 'Tetraédrica (109.5°)',
       polaridad: 'apolar',
-      justificacionPolaridad: 'Baja diferencia de electronegatividad (Δχ = 0.35) y simetría tetraédrica perfecta Td que anula todo momento dipolar.',
+      justificacionPolaridad: 'Baja diferencia de electronegatividad (Δχ = 0.35) y simetría tetraédrica perfecta Td que anula todo momento dipolar permanente (μ = 0 D).',
     },
     kitFisico: {
       esferas: { C: 1, H: 4 },
@@ -208,7 +208,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 4. AMONÍACO (NH3) — Bonus / Desafío Extra
+  // 4. AMONÍACO (NH₃) — Bonus / Desafío Extra
   // =========================================================================
   {
     id: 'ammonia',
@@ -268,7 +268,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 5. ETANOL (C2H6O)
+  // 5. ETANOL (C₂H₆O)
   // =========================================================================
   {
     id: 'ethanol',
@@ -338,7 +338,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 6. ACETONA (C3H6O / Propan-2-ona)
+  // 6. ACETONA (C₃H₆O / Propan-2-ona)
   // =========================================================================
   {
     id: 'acetone',
@@ -373,7 +373,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       { id: 'ace-b8', from: 3, to: 9, order: 1 }, // C3-H
     ],
     didactica: {
-      descripcionCientifica: 'La cetona alifática más simple. El átomo central de carbono (C2) posee hibridación sp2 formando un centro trigonal plano con ángulos de ~120°, enlazado doblemente a un oxígeno carbonílico y covalentemente a dos grupos metilo (-CH3) tetraédricos (sp3). La alta polarización del doble enlace C=O le otorga un momento dipolar permanente notable (2.88 D).',
+      descripcionCientifica: 'La cetona alifática más simple. El átomo central de carbono (C₂) posee hibridación sp² formando un centro trigonal plano con ángulos de ~120°, enlazado doblemente a un oxígeno carbonílico y covalentemente a dos grupos metilo (-CH₃) tetraédricos (sp³). La alta polarización del doble enlace C=O le otorga un momento dipolar permanente notable (2.88 D).',
       datosCuriosos: [
         'El cuerpo humano genera acetona durante la cetosis (ayuno prolongado o diabetes descompensada), provocando un aliento dulce característico denominado aliento cetónico.',
         'Disuelve el poliestireno expandido (plumavit) de forma casi mágica: disuelve las cadenas poliméricas liberando todo el aire atrapado y colapsando el material en segundos.',
@@ -410,7 +410,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 7. ÁCIDO ACÉTICO (C2H4O2 / Ácido etanoico) — Bonus / Desafío Extra
+  // 7. ÁCIDO ACÉTICO (C₂H₄O₂ / Ácido etanoico) — Bonus / Desafío Extra
   // =========================================================================
   {
     id: 'acetic-acid',
@@ -441,7 +441,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       { id: 'ace-ac-b6', from: 4, to: 7, order: 1 }, // C1-H7
     ],
     didactica: {
-      descripcionCientifica: 'Ácido orgánico débil representativo del grupo carboxilo (-COOH). Consta de un carbono carbonílico sp2 unido mediante enlace doble a un oxígeno y mediante enlace simple a un grupo hidroxilo (-OH) y a un metilo (sp3). La alta polarización del carbonilo favorece la liberación del protón H+, formando el anión acetato estabilizado por resonancia.',
+      descripcionCientifica: 'Ácido orgánico débil representativo del grupo carboxilo (-COOH). Consta de un carbono carbonílico sp² unido mediante enlace doble a un oxígeno y mediante enlace simple a un grupo hidroxilo (-OH) y a un metilo (sp³). La alta polarización del carbonilo favorece la liberación del protón H⁺, formando el anión acetato estabilizado por resonancia.',
       datosCuriosos: [
         'Es el responsable del sabor y aroma agrio del vinagre, que es simplemente una solución de ácido acético al 5% en agua producida por fermentación bacteriana.',
         'El ácido acético puro se congela a solo 16.6 °C; por eso en días frescos de invierno se solidifica en láminas parecidas al hielo y se le llama "ácido acético glacial".',
@@ -478,7 +478,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
 
   // =========================================================================
-  // 8. ACETATO DE ETILO (C4H8O2 / Etanoato de etilo) — Desafío Avanzado
+  // 8. ACETATO DE ETILO (C₄H₈O₂ / Etanoato de etilo) — Desafío Avanzado
   // =========================================================================
   {
     id: 'ethyl-acetate',
@@ -521,7 +521,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       { id: 'ea-b12', from: 10, to: 13, order: 1 }, // C4-H
     ],
     didactica: {
-      descripcionCientifica: 'Éster orgánico producto de la condensación (esterificación de Fischer) entre el ácido acético y el etanol. Su núcleo comprende un grupo carbonilo plano (sp2) unido por un puente de oxígeno éster (-O-) a una cadena etilo. Al no poseer átomos de hidrógeno unidos directamente a oxígenos, no puede formar puentes de hidrógeno consigo mismo, resultando en un punto de ebullición bajo (77 °C) a pesar de sus 14 átomos.',
+      descripcionCientifica: 'Éster orgánico producto de la condensación (esterificación de Fischer) entre el ácido acético y el etanol. Su núcleo comprende un grupo carbonilo plano (sp²) unido por un puente de oxígeno éster (-O-) a una cadena etilo. Al no poseer átomos de hidrógeno unidos directamente a oxígenos, no puede formar puentes de hidrógeno consigo mismo, resultando en un punto de ebullición bajo (77 °C) a pesar de sus 14 átomos.',
       datosCuriosos: [
         'Tiene un agradable e inconfundible aroma a manzana verde, pera y piña; es el compuesto aromatizante natural de muchas frutas y golosinas.',
         'Es el solvente principal en los quitaesmaltes ecológicos "libres de acetona", ya que es mucho más suave para la piel y cutículas.',
@@ -542,7 +542,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       esferas: { C: 4, H: 8, O: 2 },
       conectores: { cortosRigidos: 12, largosFlexibles: 2 },
       descripcionConectores: '14 conectores: 2 flexibles para el doble enlace C=O y 12 cortos rígidos para enlaces simples.',
-      tipsArmado: '¡Desafío Avanzado de 14 átomos! Divide y vencerás: 1° Construye el grupo acetilo izquierdo (CH3-C=O con 2 flexibles en el doble enlace), 2° Conecta el oxígeno puente (-O-), 3° Añade el grupo etilo derecho (-CH2-CH3) en el otro extremo del oxígeno puente. ¡No conectes los dos oxígenos juntos!',
+      tipsArmado: '¡Desafío Avanzado de 14 átomos! Divide y vencerás: 1° Construye el grupo acetilo izquierdo (CH₃-C=O con 2 flexibles en el doble enlace), 2° Conecta el oxígeno puente (-O-), 3° Añade el grupo etilo derecho (-CH₂-CH₃) en el otro extremo del oxígeno puente. ¡No conectes los dos oxígenos juntos!',
     },
     trivia: {
       pregunta: 'A pesar de tener una masa molar significativamente mayor (88 g/mol) que el ácido acético (60 g/mol) y el etanol (46 g/mol), el acetato de etilo hierve a solo 77 °C. ¿A qué se debe esta propiedad física?',

@@ -157,6 +157,14 @@ Todas las capturas se encuentran almacenadas y disponibles en [`docs/vcm_qa_capt
   1. Estandarización de selectores con sintaxis nativa de Playwright `:has-text(...)`.
   2. Normalización de textos dinámicos en el panel de validación (`button:has-text("Validar Ensamblado"), button:has-text("Validar Puntaje")`).
 
+### Parche 5: Perfeccionamiento Tipográfico, Subíndices, Superíndices y Simbología Dipolar
+- **Archivos Modificados:** `src/data/moleculesDataset.ts`, `src/components/MoleculeInfoCard.tsx` y `src/components/MolecularViewer3D.tsx`.
+- **Mejoras Implementadas:**
+  1. **Subíndices y Fórmulas Unicode:** Normalización de todas las fórmulas en variables, comentarios, preguntas y tips (`H₂O`, `CO₂`, `CH₄`, `NH₃`, `NH₄⁺`, `C₂H₆O`, `CH₃-CH₂-OH`, `C₃H₆O`, `C₂H₄O₂`, `C₄H₈O₂`, `CH₃-C=O`, `-CH₂-CH₃`, `H₂ y CO`).
+  2. **Hibridaciones y Superíndices:** Formato tipográfico científico con superíndices (`sp³`, `sp²`, `dsp²`, `sp³d`) en datasets, descripciones y en el tooltip inspector 3D en tiempo real.
+  3. **Unidad Debye (`D`) y Símbolo Dipolar `μ`:** Normalización estricta de la unidad de momento dipolar en `MoleculeInfoCard.tsx` (`Molécula Polar (μ > 0 D)` y `Molécula Apolar (μ = 0 D)`) y justificaciones (`μ = 0 D`, `Δχ = 0.35`).
+  4. **Unidades de Calor Específico y Grados:** Actualización de calor específico a `J/(g·°C)` e inclusión del símbolo `°` en todos los ángulos (`104.5°`, `109.5°`, `180°`, `120°`, `107.3°`).
+
 ---
 
 ## 🎓 6. Veredicto Final y Recomendación para la Jefatura

@@ -634,7 +634,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
             <span>{hoveredAtom.label || hoveredAtom.symbol} ({hoveredAtom.element})</span>
           </div>
           <div className="mt-1 flex gap-3 text-[11px] text-slate-400 font-mono">
-            <span>Hibridación: <strong className="text-white">{hoveredAtom.hybridization}</strong></span>
+            <span>Hibridación: <strong className="text-white">{hoveredAtom.hybridization === 'sp3' ? 'sp³' : hoveredAtom.hybridization === 'sp2' ? 'sp²' : hoveredAtom.hybridization}</strong></span>
             <span>Coord: <strong className="text-slate-300">[{hoveredAtom.x.toFixed(2)}, {hoveredAtom.y.toFixed(2)}, {hoveredAtom.z.toFixed(2)}]</strong></span>
           </div>
         </div>

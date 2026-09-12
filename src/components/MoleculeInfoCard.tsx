@@ -161,7 +161,7 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
                     Polaridad & Momento Dipolar:
                   </span>
                   <p className="text-sm sm:text-base font-bold text-pide-amber mt-1 capitalize">
-                    {molecule.didactica.polaridad === 'polar' ? 'Molécula Polar (μ > 0)' : 'Molécula Apolar (μ = 0)'}
+                    {molecule.didactica.polaridad === 'polar' ? 'Molécula Polar (μ > 0 D)' : 'Molécula Apolar (μ = 0 D)'}
                   </p>
                 </div>
               </div>
