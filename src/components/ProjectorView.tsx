@@ -268,7 +268,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               <Flame className="w-6 h-6" />
             </div>
             <div>
-              <span className="text-[11px] font-mono uppercase text-slate-400 block">Total Rondas</span>
+              <span className="text-[11px] font-mono uppercase text-slate-400 block">Total de Rondas</span>
               <span className="text-2xl font-mono font-extrabold text-white">{totalMolecules}</span>
             </div>
           </div>
@@ -313,7 +313,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
                             </h3>
                             {isLeader && (
                               <span className="text-[10px] px-2 py-0.5 bg-uss-gold/20 text-uss-goldBright font-mono font-bold rounded-full border border-uss-gold/40">
-                                1° LUGAR
+                                1.er LUGAR
                               </span>
                             )}
                           </div>
@@ -391,7 +391,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               {recentEvents.length === 0 ? (
                 <div className="text-center py-10 text-slate-500">
                   <Activity className="w-8 h-8 mx-auto mb-2 opacity-40" />
-                  <p>Esperando primeras validaciones de las mesas...</p>
+                  <p>Esperando las primeras validaciones de las mesas...</p>
                 </div>
               ) : (
                 recentEvents.map((ev) => (
@@ -420,7 +420,7 @@ export const ProjectorView: React.FC<ProjectorViewProps> = ({
               • Cada mesa con su notebook o tablet acumula puntos automáticamente por la red Wi-Fi/LAN local.
             </p>
             <p className="text-slate-400 text-[11px] leading-relaxed">
-              • Si una mesa no tiene señal, haz clic en <strong>"Ingresar Código de Mesa"</strong> arriba para ingresar el código alfanumérico generado en la pantalla del equipo.
+              • Si una mesa no tiene señal, haz clic en <strong>"Ingresar Código de Mesa"</strong> arriba para registrar el código alfanumérico generado en la pantalla del equipo.
             </p>
           </div>
         </section>

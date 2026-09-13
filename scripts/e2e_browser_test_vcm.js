@@ -129,7 +129,7 @@ async function runE2ETests() {
     }
 
     // 1.3 Verificación de Lóbulos RPECV en H2O
-    const rpecvBadgeH2O = page1.locator('span:has-text("Lóbulos RPECV Visibles")');
+    const rpecvBadgeH2O = page1.locator('span:has-text("Lóbulos RPECV")');
     const hasRpecvH2O = (await rpecvBadgeH2O.count()) > 0;
     recordAssertion('RPECV: Lóbulos de densidad electrónica en H₂O', hasRpecvH2O, 'Badge RPECV presente en HUD superior');
 
@@ -236,7 +236,7 @@ async function runE2ETests() {
       await navNH3.click();
       await page1.waitForTimeout(500);
       const hasNH3 = (await page1.locator('h2:has-text("Amoníaco")').count()) > 0;
-      const rpecvBadgeNH3 = (await page1.locator('span:has-text("Lóbulos RPECV Visibles")').count()) > 0;
+      const rpecvBadgeNH3 = (await page1.locator('span:has-text("Lóbulos RPECV")').count()) > 0;
       recordAssertion('Ronda 4: Amoníaco (NH₃) + Lóbulos RPECV', hasNH3 && rpecvBadgeNH3, 'Compuesto y lóbulo apical presentes');
       await takeCapture(page1, '12_molbuilder_ronda4_nh3_lobulos.png');
     }

@@ -44,7 +44,7 @@ El motor gráfico 3D utiliza **Three.js** con `OrbitControls` (amortiguación su
 2. **Modelado Analítico de Enlaces (Cuaterniones):**
    Los enlaces entre átomos no se dibujan mediante coordenadas prefijadas, sino calculando el cuaternión de rotación $q$ entre el vector unitario $(0,1,0)$ y el vector de dirección entre las dos posiciones atómicas $\vec{d} = \vec{p}_2 - \vec{p}_1$:
    $$q = \text{QuaternionFromUnitVectors}((0,1,0), \hat{d})$$
-   Para enlaces dobles (ej. $C=O$ en acetona, ácido acético o $\text{CO}_2$), se aplican desplazamientos perpendiculares analíticos para renderizar dos cilindros paralelos paralelos al eje del enlace.
+   Para enlaces dobles (ej. $C=O$ en acetona, ácido acético o $\text{CO}_2$), se aplican desplazamientos perpendiculares analíticos para renderizar dos cilindros paralelos al eje del enlace.
 
 3. **Modos de Renderizado Dinámico:**
    - **Esferas y Varillas (CPK):** Esferas en escala CPK oficial con cilindros enlazantes.

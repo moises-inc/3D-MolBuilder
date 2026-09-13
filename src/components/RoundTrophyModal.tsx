@@ -109,14 +109,14 @@ export const RoundTrophyModal: React.FC<RoundTrophyModalProps> = ({
             </div>
 
             <div className="bg-oled-panel p-3 rounded-xl border border-oled-border text-center">
-              <span className="text-[10px] uppercase font-mono text-cyan-400 block">Bono Tiempo</span>
+              <span className="text-[10px] uppercase font-mono text-cyan-400 block">Bono de Tiempo</span>
               <span className="text-lg font-mono font-bold text-pide-cyan mt-1 block">
                 +{timeBonus}
               </span>
             </div>
 
             <div className="bg-oled-panel p-3 rounded-xl border border-oled-border text-center">
-              <span className="text-[10px] uppercase font-mono text-amber-400 block">Bono Trivia</span>
+              <span className="text-[10px] uppercase font-mono text-amber-400 block">Bono de Trivia</span>
               <span className="text-lg font-mono font-bold text-pide-amber mt-1 block">
                 +{triviaBonus}
               </span>
@@ -178,7 +178,7 @@ export const RoundTrophyModal: React.FC<RoundTrophyModalProps> = ({
             onClick={onClose}
             className="flex-1 py-2.5 rounded-xl border border-oled-border text-slate-300 hover:text-white hover:bg-white/10 font-semibold text-xs transition-colors"
           >
-            Permanecer en Molécula
+            Permanecer en la Molécula
           </button>
 
           {hasNextRound ? (

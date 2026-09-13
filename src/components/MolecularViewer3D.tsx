@@ -30,17 +30,35 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
   const sceneRef = useRef<THREE.Scene | null>(null);
   const cameraRef = useRef<THREE.PerspectiveCamera | null>(null);
   const controlsRef = useRef<OrbitControls | null>(null);
+  const gridRef = useRef<THREE.GridHelper | null>(null);
   const moleculeGroupRef = useRef<THREE.Group | null>(null);
   const atomMeshesRef = useRef<Map<string, THREE.Mesh>>(new Map());
   const raycasterRef = useRef<THREE.Raycaster>(new THREE.Raycaster());
   const mouseRef = useRef<THREE.Vector2>(new THREE.Vector2());
+  const labelNodesRef = useRef<Map<string, HTMLDivElement>>(new Map());
+  const tempVec = useRef<THREE.Vector3>(new THREE.Vector3()).current;
+
+  // Refs to avoid tearing down the WebGL scene when props change
+  const moleculeRef = useRef<MoleculeData>(molecule);
+  useEffect(() => {
+    moleculeRef.current = molecule;
+  }, [molecule]);
+
+  const onSelectAtomRef = useRef(onSelectAtom);
+  useEffect(() => {
+    onSelectAtomRef.current = onSelectAtom;
+  }, [onSelectAtom]);
 
   // Viewer state
   const [viewMode, setViewMode] = useState<'ball-and-stick' | 'space-filling' | 'wireframe'>('ball-and-stick');
   const [autoRotate, setAutoRotate] = useState<boolean>(true);
   const [showLabels, setShowLabels] = useState<boolean>(true);
+  const showLabelsRef = useRef<boolean>(showLabels);
+  useEffect(() => {
+    showLabelsRef.current = showLabels;
+  }, [showLabels]);
+
   const [hoveredAtom, setHoveredAtom] = useState<Atom3D | null>(null);
-  const [labelPositions, setLabelPositions] = useState<Array<{ id: string; label: string; x: number; y: number; visible: boolean; symbol: string }>>([]);
 
   // Snapshot functionality
   const handleCaptureSnapshot = useCallback(() => {
@@ -69,7 +87,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     if (controlsRef.current) controlsRef.current.update();
   }, []);
 
-  // Setup Three.js scene
+  // Setup Three.js scene (Runs ONCE on mount to prevent context recreation and memory leaks)
   useEffect(() => {
     const container = mountRef.current;
     if (!container) return;
@@ -142,6 +160,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       grid.material.opacity = 0.16;
     }
     scene.add(grid);
+    gridRef.current = grid;
 
     // Molecule group
     const moleculeGroup = new THREE.Group();
@@ -157,35 +176,33 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
         controlsRef.current.update();
       }
 
-      // Update 2D projected label positions
-      if (showLabels && cameraRef.current && container) {
-        const positions: Array<{ id: string; label: string; x: number; y: number; visible: boolean; symbol: string }> = [];
+      // Direct DOM update for 2D projected atom labels (Zero React re-renders per frame)
+      if (showLabelsRef.current && cameraRef.current && container) {
         const rect = container.getBoundingClientRect();
+        const currentMol = moleculeRef.current;
+        const groupMat = moleculeGroupRef.current?.matrixWorld;
 
-        molecule.atoms.forEach((atom) => {
-          const v = new THREE.Vector3(atom.x, atom.y, atom.z);
-          // Transform by molecule group matrix if rotated
-          if (moleculeGroupRef.current) {
-            v.applyMatrix4(moleculeGroupRef.current.matrixWorld);
+        currentMol.atoms.forEach((atom) => {
+          const domEl = labelNodesRef.current.get(atom.id);
+          if (!domEl) return;
+
+          tempVec.set(atom.x, atom.y, atom.z);
+          if (groupMat) {
+            tempVec.applyMatrix4(groupMat);
           }
-          v.project(cameraRef.current!);
+          tempVec.project(cameraRef.current!);
 
-          // Only show if in front of camera
-          const isVisible = v.z < 1;
-          const x = ((v.x + 1) * rect.width) / 2;
-          const y = ((-v.y + 1) * rect.height) / 2;
+          const isVisible = tempVec.z < 1;
+          const x = ((tempVec.x + 1) * rect.width) / 2;
+          const y = ((-tempVec.y + 1) * rect.height) / 2;
 
-          positions.push({
-            id: atom.id,
-            label: atom.label || atom.symbol,
-            symbol: atom.symbol,
-            x,
-            y,
-            visible: isVisible && x >= 0 && x <= rect.width && y >= 0 && y <= rect.height,
-          });
+          if (isVisible && x >= 0 && x <= rect.width && y >= 0 && y <= rect.height) {
+            domEl.style.transform = `translate(${x}px, ${y}px) translate(-50%, -50%)`;
+            domEl.style.display = 'block';
+          } else {
+            domEl.style.display = 'none';
+          }
         });
-
-        setLabelPositions(positions);
       }
 
       renderer.render(scene, camera);
@@ -221,7 +238,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       if (intersects.length > 0) {
         const hitMesh = intersects[0].object as THREE.Mesh;
         const atomId = hitMesh.userData?.atomId;
-        const atom = molecule.atoms.find((a) => a.id === atomId);
+        const atom = moleculeRef.current.atoms.find((a) => a.id === atomId);
         setHoveredAtom(atom || null);
       } else {
         setHoveredAtom(null);
@@ -242,10 +259,10 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       if (intersects.length > 0) {
         const hitMesh = intersects[0].object as THREE.Mesh;
         const atomId = hitMesh.userData?.atomId;
-        const atom = molecule.atoms.find((a) => a.id === atomId);
-        if (onSelectAtom) onSelectAtom(atom || null);
+        const atom = moleculeRef.current.atoms.find((a) => a.id === atomId);
+        if (onSelectAtomRef.current) onSelectAtomRef.current(atom || null);
       } else {
-        if (onSelectAtom) onSelectAtom(null);
+        if (onSelectAtomRef.current) onSelectAtomRef.current(null);
       }
     };
 
@@ -258,9 +275,19 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
       container.removeEventListener('mousemove', handlePointerMove);
       container.removeEventListener('click', handleClick);
       controls.dispose();
+      if (gridRef.current) {
+        gridRef.current.geometry.dispose();
+        if (Array.isArray(gridRef.current.material)) {
+          gridRef.current.material.forEach((m) => m.dispose());
+        } else {
+          gridRef.current.material.dispose();
+        }
+      }
       renderer.dispose();
+      renderer.forceContextLoss?.();
+      scene.clear();
     };
-  }, [molecule, onSelectAtom]);
+  }, []);
 
   // Update controls autoRotate dynamically
   useEffect(() => {
@@ -274,29 +301,34 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     const group = moleculeGroupRef.current;
     if (!group) return;
 
+    // Helper to safely dispose an Object3D hierarchy
+    const disposeHierarchy = (obj: THREE.Object3D) => {
+      if (obj instanceof THREE.Mesh) {
+        if (obj.geometry) obj.geometry.dispose();
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((m) => m.dispose());
+        } else if (obj.material) {
+          obj.material.dispose();
+        }
+      }
+    };
+
     // Clear previous objects
     while (group.children.length > 0) {
       const obj = group.children[0];
       group.remove(obj);
-      if (obj instanceof THREE.Mesh) {
-        obj.geometry.dispose();
-        if (Array.isArray(obj.material)) {
-          obj.material.forEach((m) => m.dispose());
-        } else {
-          obj.material.dispose();
-        }
-      }
+      disposeHierarchy(obj);
     }
     atomMeshesRef.current.clear();
 
     const isSpaceFilling = viewMode === 'space-filling';
     const isWireframe = viewMode === 'wireframe';
 
-    // Sphere geometry (cached base)
+    // Sphere geometry (cached base shared across atoms, prevents buffer leaks)
     const sphereSegments = isWireframe ? 16 : 32;
     const sphereGeoBase = new THREE.SphereGeometry(1, sphereSegments, sphereSegments);
 
-    // 1. Create Atoms
+    // 1. Create Atoms (sharing base geometry with scale transforms)
     molecule.atoms.forEach((atom) => {
       let r = atom.radius;
       if (isSpaceFilling) {
@@ -333,7 +365,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
         });
       }
 
-      const atomMesh = new THREE.Mesh(sphereGeoBase.clone(), material);
+      const atomMesh = new THREE.Mesh(sphereGeoBase, material);
       atomMesh.scale.set(r, r, r);
       atomMesh.position.set(atom.x, atom.y, atom.z);
       atomMesh.userData = { atomId: atom.id, atom };
@@ -460,9 +492,9 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
         // Oxygen atom
         const oAtom = molecule.atoms.find((a) => a.symbol === 'O') || molecule.atoms[0];
         const oPos = new THREE.Vector3(oAtom.x, oAtom.y, oAtom.z);
-        // 2 Tetrahedral lobes pointing in -Y tilted symmetrically along +Z and -Z
-        const dir1 = new THREE.Vector3(0, -0.65, 0.76).normalize();
-        const dir2 = new THREE.Vector3(0, -0.65, -0.76).normalize();
+        // 2 Lóbulos RPECV con repulsión ensanchada a 114° (LP-LP > LP-BP > BP-BP)
+        const dir1 = new THREE.Vector3(0, -0.5446, 0.8387).normalize();
+        const dir2 = new THREE.Vector3(0, -0.5446, -0.8387).normalize();
 
         const lobeMesh1 = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
         lobeMesh1.position.copy(oPos);
@@ -482,6 +514,16 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
     box.getCenter(center);
     group.position.sub(center); // perfectly center molecule at (0, 0, 0)
 
+    // Comprehensive cleanup function to avoid GPU/WebGL leaks on unmount or re-render
+    return () => {
+      while (group.children.length > 0) {
+        const obj = group.children[0];
+        group.remove(obj);
+        disposeHierarchy(obj);
+      }
+      sphereGeoBase.dispose();
+      atomMeshesRef.current.clear();
+    };
   }, [molecule, viewMode]);
 
   const hasVseprLobes = molecule.id === 'water' || molecule.id === 'ammonia';
@@ -494,20 +536,21 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
         className="w-full h-full cursor-grab active:cursor-grabbing relative min-h-[380px]"
       />
 
-      {/* Floating 2D Billboards for Atom Labels */}
+      {/* Floating 2D Billboards for Atom Labels (Direct DOM positioned) */}
       {showLabels && (
         <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          {labelPositions.map((pos) => {
-            if (!pos.visible) return null;
-            const isHovered = hoveredAtom?.id === pos.id;
-            const isSelected = selectedAtom?.id === pos.id;
+          {molecule.atoms.map((atom) => {
+            const isHovered = hoveredAtom?.id === atom.id;
+            const isSelected = selectedAtom?.id === atom.id;
 
             return (
               <div
-                key={pos.id}
-                style={{
-                  transform: `translate(${pos.x}px, ${pos.y}px) translate(-50%, -50%)`,
+                key={atom.id}
+                ref={(el) => {
+                  if (el) labelNodesRef.current.set(atom.id, el);
+                  else labelNodesRef.current.delete(atom.id);
                 }}
+                style={{ display: 'none' }}
                 className={`absolute transition-transform duration-75 text-[11px] font-mono font-bold px-1.5 py-0.5 rounded-full border ${
                   isSelected
                     ? 'bg-amber-400 text-black border-white shadow-lg scale-125 z-20'
@@ -516,7 +559,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
                     : 'bg-black/75 text-white/95 border-white/20 backdrop-blur-sm'
                 }`}
               >
-                {pos.label}
+                {atom.label || atom.symbol}
               </div>
             );
           })}
@@ -532,14 +575,14 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           <span className="text-slate-300 font-medium">{molecule.didactica.geometriaMolecular}</span>
           <span className="text-slate-600">|</span>
           <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${molecule.didactica.polaridad === 'polar' ? 'bg-orange-950/60 text-orange-300 border border-orange-500/40' : 'bg-zinc-800/80 text-zinc-300 border border-zinc-700/50'}`}>
-            {molecule.didactica.polaridad.toUpperCase()}
+            {molecule.didactica.polaridad === 'polar' ? 'POLAR (μ > 0 D)' : 'APOLAR (μ = 0 D)'}
           </span>
           {hasVseprLobes && (
             <>
               <span className="text-slate-600">|</span>
               <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-orange-950/80 border border-orange-400/60 text-orange-300 text-[10px] font-mono font-bold shadow-[0_0_12px_rgba(249,115,22,0.35)] animate-pulse">
                 <span className="w-1.5 h-1.5 rounded-full bg-orange-400" />
-                Lóbulos RPECV Visibles
+                Lóbulos RPECV (Pares No Enlazantes)
               </span>
             </>
           )}
@@ -569,7 +612,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
           <button
             onClick={() => handleZoom('in')}
-            title="Acercar (Zoom In)"
+            title="Acercar cámara (zoom)"
             className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <ZoomIn className="w-4 h-4" />
@@ -577,7 +620,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
           <button
             onClick={() => handleZoom('out')}
-            title="Alejar (Zoom Out)"
+            title="Alejar cámara (zoom)"
             className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
           >
             <ZoomOut className="w-4 h-4" />
@@ -595,7 +638,7 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
 
           <button
             onClick={handleCaptureSnapshot}
-            title="Capturar Foto HD de la Molécula"
+            title="Capturar imagen HD de la molécula"
             className="p-1.5 rounded-md text-slate-400 hover:text-orange-400 hover:bg-white/10 transition-colors"
           >
             <Camera className="w-4 h-4" />

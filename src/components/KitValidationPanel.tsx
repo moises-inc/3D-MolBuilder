@@ -106,7 +106,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
     if (disabled) return;
 
     if (checkedCount === 0) {
-      setValidationError('¡Debes verificar al menos 1 condición del kit físico antes de validar!');
+      setValidationError('¡Debes verificar al menos una condición del kit físico antes de validar!');
       return;
     }
 
@@ -217,7 +217,7 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
 
           {/* Tips Armado */}
           <div className="bg-orange-950/20 border border-orange-500/30 p-2.5 rounded text-slate-300 text-[11px] leading-relaxed">
-            <strong className="text-orange-400 font-bold block mb-0.5">Tip del Monitor:</strong>
+            <strong className="text-orange-400 font-bold block mb-0.5">Consejo del Monitor:</strong>
             {molecule.kitFisico.tipsArmado}
           </div>
         </div>

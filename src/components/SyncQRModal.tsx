@@ -79,7 +79,7 @@ export const SyncQRModal: React.FC<SyncQRModalProps> = ({
 
     const trimmed = inputCode.trim();
     if (!trimmed) {
-      setRedeemError('Por favor ingresa un código de 6 dígitos o pega el contenido del QR.');
+      setRedeemError('Por favor, ingresa un código de 6 caracteres o pega el contenido del QR.');
       return;
     }
 
@@ -172,7 +172,7 @@ export const SyncQRModal: React.FC<SyncQRModalProps> = ({
                 {mode === 'show' ? 'Código de Mesa & Respaldo QR' : 'Ingresar Código de Mesa'}
               </h3>
               <p className="text-[11px] text-slate-400 font-mono">
-                {mode === 'show' ? 'Modo Fallback Offline Sin Red' : 'Acreditación Manual al Marcador'}
+                {mode === 'show' ? 'Modo de Respaldo sin Conexión (Offline)' : 'Acreditación Manual al Marcador'}
               </p>
             </div>
           </div>

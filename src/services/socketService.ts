@@ -109,6 +109,7 @@ export class SocketService {
   private clientId: string;
 
   private broadcastChannel: BroadcastChannel | null = null;
+  private processedLocalMessageIds: Set<string> = new Set();
 
   private tournamentState: TournamentSyncState = {
     teams: [...DEFAULT_TEAMS],
@@ -163,12 +164,18 @@ export class SocketService {
   }
 
   private broadcastLocally(type: string, payload: unknown) {
+    const timestamp = Date.now();
+    const messageId = `${this.clientId}-${timestamp}-${Math.random().toString(36).substring(2, 7)}`;
     const envelope = {
       type,
       payload,
       senderId: this.clientId,
-      timestamp: Date.now(),
+      timestamp,
+      messageId,
     };
+
+    // Marcar el mensaje propio como procesado para no re-procesarlo si rebota
+    this.processedLocalMessageIds.add(messageId);
 
     if (this.broadcastChannel) {
       try {
@@ -187,13 +194,27 @@ export class SocketService {
     }
   }
 
-  private handleLocalBusMessage(data: { type: string; payload: unknown; senderId?: string }) {
+  private handleLocalBusMessage(data: { type: string; payload: unknown; senderId?: string; timestamp?: number; messageId?: string }) {
     if (!data || !data.type) return;
+
+    // Deduplicación para evitar que el mismo mensaje se aplique dos veces
+    // (por ejemplo si la pestaña recibe BroadcastChannel Y storage event simultáneamente)
+    const msgId = data.messageId || `${data.senderId || 'unknown'}-${data.timestamp || 0}-${data.type}`;
+    if (this.processedLocalMessageIds.has(msgId)) {
+      return;
+    }
+    this.processedLocalMessageIds.add(msgId);
+    if (this.processedLocalMessageIds.size > 100) {
+      const firstKey = this.processedLocalMessageIds.values().next().value;
+      if (firstKey) this.processedLocalMessageIds.delete(firstKey);
+    }
 
     switch (data.type) {
       case 'score-updated': {
         const payload = data.payload as ScorePayload;
-        this.applyScoreUpdateLocally(payload);
+        if (payload && typeof payload === 'object') {
+          this.applyScoreUpdateLocally(payload);
+        }
         break;
       }
       case 'tournament-updated': {
@@ -209,7 +230,9 @@ export class SocketService {
       }
       case 'display-victory-fanfare': {
         const payload = data.payload as VictoryPayload;
-        this.victoryListeners.forEach((fn) => fn(payload));
+        if (payload && typeof payload === 'object') {
+          this.victoryListeners.forEach((fn) => fn(payload));
+        }
         break;
       }
       case 'sync-tournament': {
@@ -234,7 +257,9 @@ export class SocketService {
   }
 
   private applyScoreUpdateLocally(payload: ScorePayload) {
+    if (!payload || typeof payload !== 'object') return;
     const { teamId, scoreDelta, completedMoleculeId, timeBonus, triviaBonus, totalEarned } = payload;
+    if (!teamId) return;
     const earned = totalEarned || scoreDelta || 0;
 
     this.tournamentState.teams = this.tournamentState.teams.map((t) => {

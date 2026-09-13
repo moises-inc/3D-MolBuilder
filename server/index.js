@@ -18,6 +18,14 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const distPath = path.resolve(__dirname, '../dist');
 
+// Prevenir caídas del proceso Node.js por excepciones no capturadas
+process.on('uncaughtException', (err) => {
+  console.error('[Server UncaughtException]', err);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[Server UnhandledRejection]', reason);
+});
+
 const app = express();
 const httpServer = createServer(app);
 const PORT = process.env.PORT || 3001;
@@ -120,125 +128,187 @@ io.on('connection', (socket) => {
 
   // Asignar rol: 'master' (proyector) o 'station' (mesa de equipo)
   socket.on('join-role', (payload) => {
-    socket.data.role = payload?.role || 'station';
-    socket.data.teamId = payload?.teamId || null;
-    socket.data.clientName = payload?.clientName || 'Cliente';
+    try {
+      socket.data.role = (payload && payload.role) ? String(payload.role) : 'station';
+      socket.data.teamId = (payload && payload.teamId) ? String(payload.teamId) : null;
+      socket.data.clientName = (payload && payload.clientName) ? String(payload.clientName) : 'Cliente';
 
-    console.log(`[Socket.io] 👤 Rol asignado a ${socket.id}: ${socket.data.role} ${socket.data.teamId ? `(${socket.data.teamId})` : ''}`);
+      if (socket.data.role === 'master') {
+        socket.join('master');
+      } else {
+        socket.join('station');
+      }
 
-    io.emit('client-joined', {
-      clientId: socket.id,
-      role: socket.data.role,
-      teamId: socket.data.teamId,
-      totalConnected: tournamentState.connectedClients,
-    });
+      console.log(`[Socket.io] 👤 Rol asignado a ${socket.id}: ${socket.data.role} ${socket.data.teamId ? `(${socket.data.teamId})` : ''}`);
+
+      io.emit('client-joined', {
+        clientId: socket.id,
+        role: socket.data.role,
+        teamId: socket.data.teamId,
+        totalConnected: tournamentState.connectedClients,
+      });
+    } catch (err) {
+      console.error('[Socket.io] Error en join-role:', err.message);
+    }
   });
 
   // Actualización de puntaje desde una mesa
   socket.on('score-updated', (payload) => {
-    const { teamId, scoreDelta, completedMoleculeId, timeBonus, triviaBonus, totalEarned } = payload;
-    console.log(`[Socket.io] 🏆 Puntaje recibido para ${teamId}: +${totalEarned || scoreDelta} pts`);
-
-    // Actualizar estado en memoria
-    tournamentState.teams = tournamentState.teams.map((t) => {
-      if (t.id === teamId) {
-        const completed = completedMoleculeId && !t.completedMolecules.includes(completedMoleculeId)
-          ? [...t.completedMolecules, completedMoleculeId]
-          : t.completedMolecules;
-        return {
-          ...t,
-          score: t.score + (totalEarned || scoreDelta || 0),
-          completedMolecules: completed,
-        };
+    try {
+      if (!payload || typeof payload !== 'object') {
+        console.warn(`[Socket.io] ⚠️ Payload inválido en score-updated desde ${socket.id}`);
+        return;
       }
-      return t;
-    });
+      const teamId = String(payload.teamId || '').trim();
+      const scoreDelta = Number(payload.scoreDelta) || 0;
+      const totalEarned = Number(payload.totalEarned) || scoreDelta;
+      const completedMoleculeId = payload.completedMoleculeId ? String(payload.completedMoleculeId) : undefined;
+      const timeBonus = Number(payload.timeBonus) || 0;
+      const triviaBonus = Number(payload.triviaBonus) || 0;
 
-    const team = tournamentState.teams.find((t) => t.id === teamId);
-    const eventItem = {
-      id: `ev-${Date.now()}`,
-      teamId,
-      teamName: team ? team.name : teamId,
-      text: `+${totalEarned || scoreDelta} pts en ${completedMoleculeId || 'ronda'} (Tiempo: +${timeBonus || 0}, Trivia: +${triviaBonus || 0})`,
-      timestamp: new Date().toLocaleTimeString(),
-      type: 'score',
-    };
+      if (!teamId || isNaN(totalEarned)) {
+        console.warn(`[Socket.io] ⚠️ Datos incompletos en score-updated desde ${socket.id}`);
+        return;
+      }
 
-    tournamentState.recentEvents = [eventItem, ...tournamentState.recentEvents.slice(0, 19)];
+      console.log(`[Socket.io] 🏆 Puntaje recibido para ${teamId}: +${totalEarned} pts`);
 
-    // Re-transmitir a todos los clientes (incluyendo la pantalla principal)
-    io.emit('tournament-updated', tournamentState);
-    io.emit('score-broadcast', {
-      teamId,
-      scoreDelta: totalEarned || scoreDelta,
-      updatedTeam: team,
-      event: eventItem,
-    });
+      // Actualizar estado en memoria
+      tournamentState.teams = tournamentState.teams.map((t) => {
+        if (t.id === teamId) {
+          const completed = completedMoleculeId && !t.completedMolecules.includes(completedMoleculeId)
+            ? [...t.completedMolecules, completedMoleculeId]
+            : t.completedMolecules;
+          return {
+            ...t,
+            score: t.score + totalEarned,
+            completedMolecules: completed,
+          };
+        }
+        return t;
+      });
+
+      const team = tournamentState.teams.find((t) => t.id === teamId);
+      const eventItem = {
+        id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+        teamId,
+        teamName: team ? team.name : teamId,
+        text: `+${totalEarned} pts en ${completedMoleculeId || 'ronda'} (Tiempo: +${timeBonus}, Trivia: +${triviaBonus})`,
+        timestamp: new Date().toLocaleTimeString(),
+        type: 'score',
+      };
+
+      tournamentState.recentEvents = [eventItem, ...tournamentState.recentEvents.slice(0, 19)];
+
+      // Re-transmitir a todos los clientes (incluyendo la pantalla principal)
+      io.emit('tournament-updated', tournamentState);
+      io.emit('score-broadcast', {
+        teamId,
+        scoreDelta: totalEarned,
+        updatedTeam: team,
+        event: eventItem,
+      });
+    } catch (err) {
+      console.error('[Socket.io] Error en score-updated:', err.message);
+    }
   });
 
   // Disparar fanfarria de victoria y confeti en la pantalla principal
   socket.on('trigger-victory-fanfare', (payload) => {
-    console.log(`[Socket.io] 🎉 Fanfarria solicitada por ${payload?.teamId || socket.id}`);
-    io.emit('display-victory-fanfare', payload);
+    try {
+      if (!payload || typeof payload !== 'object') return;
+      console.log(`[Socket.io] 🎉 Fanfarria solicitada por ${payload.teamId || socket.id}`);
+      io.emit('display-victory-fanfare', payload);
+    } catch (err) {
+      console.error('[Socket.io] Error en trigger-victory-fanfare:', err.message);
+    }
   });
 
   // Sincronización manual o forzada de equipos desde el modal de ajustes
   socket.on('sync-tournament', (newTeams) => {
-    if (Array.isArray(newTeams)) {
-      tournamentState.teams = newTeams;
-      io.emit('tournament-updated', tournamentState);
+    try {
+      if (Array.isArray(newTeams) && newTeams.length > 0) {
+        tournamentState.teams = newTeams.map((t) => ({
+          id: String(t.id || `team-${Date.now()}`),
+          name: String(t.name || 'Equipo'),
+          score: Number(t.score) || 0,
+          completedMolecules: Array.isArray(t.completedMolecules) ? t.completedMolecules : [],
+          color: t.color || '#5de1e5',
+        }));
+        io.emit('tournament-updated', tournamentState);
+      }
+    } catch (err) {
+      console.error('[Socket.io] Error en sync-tournament:', err.message);
     }
   });
 
   // Canjear código de mesa (Fallback manual por código de 6 caracteres o QR)
   socket.on('redeem-code', (payload) => {
-    const { teamId, score, moleculeId, code } = payload;
-    console.log(`[Socket.io] 🎟️ Código canjeado: ${code} para ${teamId} (+${score} pts)`);
-
-    tournamentState.teams = tournamentState.teams.map((t) => {
-      if (t.id === teamId) {
-        const completed = moleculeId && !t.completedMolecules.includes(moleculeId)
-          ? [...t.completedMolecules, moleculeId]
-          : t.completedMolecules;
-        return {
-          ...t,
-          score: t.score + (score || 0),
-          completedMolecules: completed,
-        };
+    try {
+      if (!payload || typeof payload !== 'object') {
+        console.warn(`[Socket.io] ⚠️ Payload inválido en redeem-code desde ${socket.id}`);
+        return;
       }
-      return t;
-    });
+      const teamId = String(payload.teamId || '').trim();
+      const score = Number(payload.score) || 0;
+      const moleculeId = payload.moleculeId ? String(payload.moleculeId) : 'ronda';
+      const code = String(payload.code || 'MANUAL').trim();
 
-    const team = tournamentState.teams.find((t) => t.id === teamId);
-    const eventItem = {
-      id: `ev-${Date.now()}`,
-      teamId,
-      teamName: team ? team.name : teamId,
-      text: `Canje manual [${code}]: +${score} pts en ${moleculeId}`,
-      timestamp: new Date().toLocaleTimeString(),
-      type: 'redeem',
-    };
-    tournamentState.recentEvents = [eventItem, ...tournamentState.recentEvents.slice(0, 19)];
+      if (!teamId || isNaN(score)) return;
 
-    io.emit('tournament-updated', tournamentState);
-    io.emit('display-victory-fanfare', {
-      teamId,
-      moleculeId,
-      scoreEarned: score,
-      teamName: team?.name,
-    });
+      console.log(`[Socket.io] 🎟️ Código canjeado: ${code} para ${teamId} (+${score} pts)`);
+
+      tournamentState.teams = tournamentState.teams.map((t) => {
+        if (t.id === teamId) {
+          const completed = moleculeId && !t.completedMolecules.includes(moleculeId)
+            ? [...t.completedMolecules, moleculeId]
+            : t.completedMolecules;
+          return {
+            ...t,
+            score: t.score + score,
+            completedMolecules: completed,
+          };
+        }
+        return t;
+      });
+
+      const team = tournamentState.teams.find((t) => t.id === teamId);
+      const eventItem = {
+        id: `ev-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`,
+        teamId,
+        teamName: team ? team.name : teamId,
+        text: `Canje manual [${code}]: +${score} pts en ${moleculeId}`,
+        timestamp: new Date().toLocaleTimeString(),
+        type: 'redeem',
+      };
+      tournamentState.recentEvents = [eventItem, ...tournamentState.recentEvents.slice(0, 19)];
+
+      io.emit('tournament-updated', tournamentState);
+      io.emit('display-victory-fanfare', {
+        teamId,
+        moleculeId,
+        scoreEarned: score,
+        teamName: team?.name,
+      });
+    } catch (err) {
+      console.error('[Socket.io] Error en redeem-code:', err.message);
+    }
   });
 
   // Reiniciar torneo
   socket.on('reset-tournament', () => {
-    console.log('[Socket.io] 🔄 Reinicio total del torneo solicitado');
-    tournamentState.teams = tournamentState.teams.map((t) => ({
-      ...t,
-      score: 0,
-      completedMolecules: [],
-    }));
-    tournamentState.recentEvents = [];
-    io.emit('tournament-updated', tournamentState);
+    try {
+      console.log('[Socket.io] 🔄 Reinicio total del torneo solicitado');
+      tournamentState.teams = tournamentState.teams.map((t) => ({
+        ...t,
+        score: 0,
+        completedMolecules: [],
+      }));
+      tournamentState.recentEvents = [];
+      io.emit('tournament-updated', tournamentState);
+    } catch (err) {
+      console.error('[Socket.io] Error en reset-tournament:', err.message);
+    }
   });
 
   socket.on('disconnect', () => {

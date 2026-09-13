@@ -302,7 +302,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
             {diagnostics.detectedIps.length > 0 && (
               <div className="pt-2 border-t border-oled-border/60">
                 <span className="text-[10px] uppercase font-mono text-slate-400 block mb-1.5">
-                  IPs detectadas en el Servidor (haz clic para conectar):
+                  Direcciones IP detectadas en el Servidor (haz clic para conectar):
                 </span>
                 <div className="flex flex-wrap gap-1.5">
                   {diagnostics.detectedIps.map((ip) => (

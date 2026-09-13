@@ -20,14 +20,14 @@ import { Atom, Award, Info, Sparkles } from 'lucide-react';
 const INITIAL_TEAMS: TeamScore[] = [
   {
     id: 'team-alfa',
-    name: 'Equipo Alfa — 3° Medio',
+    name: 'Equipo Alfa — 3.° Medio',
     score: 0,
     completedMolecules: [],
     color: '#5de1e5',
   },
   {
     id: 'team-beta',
-    name: 'Equipo Beta — 4° Medio',
+    name: 'Equipo Beta — 4.° Medio',
     score: 0,
     completedMolecules: [],
     color: '#efb65f',
@@ -106,15 +106,18 @@ export const App: React.FC = () => {
     });
 
     const unsubVictory = (payload: { teamId: string; moleculeId: string; scoreEarned: number; teamName?: string }) => {
-      sounds.playSuccess();
-      try {
-        confetti({
-          particleCount: 160,
-          spread: 90,
-          origin: { y: 0.6 },
-        });
-      } catch {
-        // Ignore in environments without canvas
+      // En modo proyector (master) celebrar siempre; en mesas escolares, celebrar si es el equipo activo
+      if (clientRole === 'master' || payload.teamId === activeTeamId) {
+        sounds.playSuccess();
+        try {
+          confetti({
+            particleCount: 160,
+            spread: 90,
+            origin: { y: 0.6 },
+          });
+        } catch {
+          // Ignore in environments without canvas
+        }
       }
     };
 
@@ -125,7 +128,7 @@ export const App: React.FC = () => {
       unsubTournament();
       cleanupVictory();
     };
-  }, [clientRole]);
+  }, [clientRole, activeTeamId]);
 
   useEffect(() => {
     socketSync.setRole(clientRole, activeTeamId);
@@ -157,9 +160,9 @@ export const App: React.FC = () => {
     setSelectedAtom(null);
   }, [currentIndex, currentMolecule]);
 
-  // Countdown timer effect
+  // Countdown timer effect (depende de timerActive; usa functional update para evitar recrear el intervalo cada segundo)
   useEffect(() => {
-    if (timerActive && timeLeft > 0) {
+    if (timerActive) {
       timerRef.current = window.setInterval(() => {
         setTimeLeft((prev) => {
           if (prev <= 1) {
@@ -179,7 +182,7 @@ export const App: React.FC = () => {
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [timerActive, timeLeft]);
+  }, [timerActive]);
 
   const handleToggleTimer = useCallback(() => {
     setTimerActive((prev) => !prev);
