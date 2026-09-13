@@ -47,14 +47,14 @@ let tournamentState = {
   teams: [
     {
       id: 'team-alfa',
-      name: 'Equipo Alfa — 3° Medio',
+      name: 'Equipo Alfa — 3.° Medio',
       score: 0,
       completedMolecules: [],
       color: '#5de1e5',
     },
     {
       id: 'team-beta',
-      name: 'Equipo Beta — 4° Medio',
+      name: 'Equipo Beta — 4.° Medio',
       score: 0,
       completedMolecules: [],
       color: '#efb65f',
@@ -207,6 +207,8 @@ io.on('connection', (socket) => {
         scoreDelta: totalEarned,
         updatedTeam: team,
         event: eventItem,
+        requestId: payload.requestId,
+        clientTimestamp: payload.clientTimestamp,
       });
     } catch (err) {
       console.error('[Socket.io] Error en score-updated:', err.message);

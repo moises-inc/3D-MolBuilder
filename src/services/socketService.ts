@@ -71,14 +71,14 @@ export interface NetworkDiagnostics {
 const DEFAULT_TEAMS: TeamScore[] = [
   {
     id: 'team-alfa',
-    name: 'Equipo Alfa — 3° Medio',
+    name: 'Equipo Alfa — 3.° Medio',
     score: 0,
     completedMolecules: [],
     color: '#5de1e5',
   },
   {
     id: 'team-beta',
-    name: 'Equipo Beta — 4° Medio',
+    name: 'Equipo Beta — 4.° Medio',
     score: 0,
     completedMolecules: [],
     color: '#efb65f',
