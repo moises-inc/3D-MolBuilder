@@ -16,6 +16,8 @@ export const CPK_COLORS: Record<ElementSymbol, string> = {
   N: '#3B82F6',
   Cl: '#10B981',
   S: '#F59E0B',
+  Cu: '#B87333',
+  Ag: '#C0C0C0',
 };
 
 // Radios relativos de esferas 3D en Three.js
@@ -26,536 +28,1235 @@ export const ATOM_RADII: Record<ElementSymbol, number> = {
   N: 0.42,
   Cl: 0.48,
   S: 0.46,
+  Cu: 0.55,
+  Ag: 0.58,
 };
 
 export const MOLECULES_DATASET: MoleculeData[] = [
-  // =========================================================================
-  // 1. AGUA (H₂O)
-  // =========================================================================
   {
-    id: 'water',
-    name: 'Agua',
-    iupacName: 'Oxidano',
-    formula: 'H₂O',
-    molarMass: 18.015,
-    classification: 'Solvente inorgánico polar',
-    difficultyLevel: 'facil',
-    timeLimitSeconds: 60,
-    atoms: [
-      { id: 'h2o-o', element: 'O', symbol: 'O', label: 'O', x: 0.000, y: -0.391, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp3' },
-      { id: 'h2o-h1', element: 'H', symbol: 'H', label: 'H1', x: 0.758, y: 0.195, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'h2o-h2', element: 'H', symbol: 'H', label: 'H2', x: -0.758, y: 0.195, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "ozone",
+    "name": "Ozono",
+    "iupacName": "Trioxígeno",
+    "formula": "O₃",
+    "molarMass": 47.998,
+    "classification": "Alótropo del oxígeno / Gas triatómico oxidante",
+    "difficultyLevel": "intermedio",
+    "timeLimitSeconds": 90,
+    "atoms": [
+      {
+        "id": "o3-o2",
+        "element": "O",
+        "symbol": "O",
+        "label": "O(cen)",
+        "x": 0.0,
+        "y": 0.446,
+        "z": 0.0,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "o3-o1",
+        "element": "O",
+        "symbol": "O",
+        "label": "O1",
+        "x": 1.089,
+        "y": -0.223,
+        "z": 0.0,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "o3-o3",
+        "element": "O",
+        "symbol": "O",
+        "label": "O2",
+        "x": -1.089,
+        "y": -0.223,
+        "z": 0.0,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      }
     ],
-    bonds: [
-      { id: 'h2o-b1', from: 0, to: 1, order: 1 },
-      { id: 'h2o-b2', from: 0, to: 2, order: 1 },
+    "bonds": [
+      {
+        "id": "o3-b1",
+        "from": 0,
+        "to": 1,
+        "order": 2
+      },
+      {
+        "id": "o3-b2",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Molécula triatómica dipolar unida por dos enlaces covalentes polares O-H. El oxígeno posee dos pares de electrones no enlazantes que ejercen una fuerte repulsión sobre los pares enlazantes, comprimiendo el ángulo tetraédrico de 109.5° a 104.5°. Es la base de la vida y el solvente universal gracias a su capacidad de formar redes tridimensionales de puentes de hidrógeno.',
-      datosCuriosos: [
-        'El hielo flota porque el agua líquida alcanza su máxima densidad a 4 °C; al congelarse, los puentes de hidrógeno forman una red hexagonal abierta y hueca que expande su volumen en un 9%.',
-        'Tiene una tensión superficial asombrosamente alta: permite a insectos como los patinadores de agua caminar sobre ella sin romper la superficie.',
-        'Posee un calor específico excepcionalmente alto (4.184 J/(g·°C)), lo que convierte a los océanos terrestres en el mayor amortiguador térmico de nuestro planeta.',
-        'En un solo vaso de agua (250 mL) hay aproximadamente 8.36 × 10²⁴ moléculas, cifra que supera el número estimado de estrellas en todo el universo observable.',
+    "didactica": {
+      "descripcionCientifica": "Forma alotrópica triatómica del oxígeno molecular constituida por enlaces covalentes resonantes (orden de enlace 1.5). El átomo de oxígeno central presenta hibridación sp² con dos pares electrónicos enlazantes y un par solitario en disposición angular (116.8°), lo que rompe la simetría y le otorga un momento dipolar permanente. Es un agente oxidante muy poderoso que absorbe la radiación ultravioleta perjudicial en la estratosfera terrestre.",
+      "datosCuriosos": [
+        "La capa de ozono estratosférica (entre 15 y 35 km de altitud) absorbe entre el 97% y el 99% de la radiación UV de alta frecuencia (UV-B y UV-C), haciendo posible la vida en la superficie terrestre.",
+        "En Chile, por su proximidad a la Antártica, la disminución estacional del ozono en el vórtice polar durante la primavera austral generó históricamente altos índices de radiación UV en ciudades australes como Punta Arenas.",
+        "Su nombre deriva del griego 'ozein' (oler), debido a su aroma acre y picante similar al cloro, detectable por el olfato humano en concentraciones tan diminutas como 0.01 ppm tras tormentas eléctricas.",
+        "A nivel del suelo (troposfera) actúa como un peligroso contaminante secundario del smog fotoquímico urbano, originado por reacciones fotocatalizadas entre óxidos de nitrógeno y compuestos orgánicos volátiles."
       ],
-      usosVidaCotidiana: [
-        'Solvente vital en todos los fluidos biológicos (citoplasma celular, plasma sanguíneo y linfa).',
-        'Vehículo y medio de reacción fundamental en farmacología y formulación de jarabes y soluciones.',
-        'Termorregulación biológica corporal a través de la evaporación por sudoración.',
-        'Generación de energía limpia en centrales hidroeléctricas del centro-sur de Chile y producción de vapor en turbinas industriales.',
+      "usosVidaCotidiana": [
+        "Desinfección y purificación avanzada de agua potable y piscinas sin dejar residuos organoclorados ni sabor residual.",
+        "Ozonoterapia médica controlada en el tratamiento coadyuvante de úlceras crónicas y desinfección en odontología.",
+        "Tratamiento de aguas residuales industriales y efluentes mineros en Chile para destruir cianuro y degradar materia orgánica.",
+        "Esterilización de cámaras frigoríficas y conservación de frutas de exportación en la industria agrofrutícola chilena al neutralizar el etileno."
       ],
-      geometriaMolecular: 'Angular (104.5°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'Momento dipolar neto elevado (μ = 1.85 D) generado por la asimetría angular y la fuerte diferencia de electronegatividad entre el oxígeno (3.44) y el hidrógeno (2.20).',
+      "geometriaMolecular": "Angular (116.8°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Momento dipolar permanente (μ = 0.53 D). El par de electrones no enlazante del oxígeno central rompe la simetría lineal forzando un ángulo de 116.8°; la resonancia genera cargas formales (+1 en el oxígeno central y -1/2 en cada oxígeno terminal) que producen un dipolo neto sustancial."
     },
-    kitFisico: {
-      esferas: { O: 1, H: 2 },
-      conectores: { cortosRigidos: 2, largosFlexibles: 0 },
-      descripcionConectores: '2 conectores cortos rígidos (enlaces simples O-H).',
-      tipsArmado: '¡No uses orificios a 180°! Utiliza los orificios angulares de la esfera roja del oxígeno para que los dos hidrógenos queden formando una "V" con ángulo de ~104.5°.',
+    "kitFisico": {
+      "esferas": {
+        "O": 3
+      },
+      "conectores": {
+        "cortosRigidos": 1,
+        "largosFlexibles": 2
+      },
+      "descripcionConectores": "3 conectores: 2 largos flexibles para modelar el doble enlace representativo O=O y 1 corto rígido para el enlace simple O-O (estructura de resonancia de Lewis).",
+      "tipsArmado": "¡No armes una molécula lineal ni un ciclo triangular! Elige la esfera roja central con orificios angulares a ~120°. Coloca los 2 conectores flexibles en una dirección (doble enlace resonante) y el conector rígido en la otra (enlace simple) para fijar el ángulo abierto de 117°."
     },
-    trivia: {
-      pregunta: 'Según el modelo de Repulsión de Pares Electrónicos de la Capa de Valencia (RPECV), ¿por qué el ángulo de enlace H-O-H en el agua (104.5°) es menor que el ángulo tetraédrico ideal (109.5°)?',
-      opciones: [
-        'Porque los dos pares de electrones no enlazantes del oxígeno ocupan más espacio y ejercen mayor repulsión que los pares enlazantes, comprimiendo el ángulo.',
-        'Porque los dos átomos de hidrógeno presentan cargas parciales opuestas y experimentan atracción mutua en el espacio.',
-        'Porque el oxígeno presenta hibridación sp con geometría lineal, pero sufre deformaciones por enlaces iónicos.',
-        'Porque el núcleo del átomo de oxígeno absorbe electrones de los enlaces covalentes, reduciendo su longitud.',
+    "trivia": {
+      "pregunta": "¿Por qué la molécula de ozono (O₃) posee una geometría angular (~116.8°) y un momento dipolar neto (μ = 0.53 D), a pesar de estar formada exclusivamente por átomos del mismo elemento (oxígeno)?",
+      "opciones": [
+        "Porque el átomo de oxígeno central presenta hibridación sp² con un par de electrones no enlazante y carga formal positiva que quiebra la simetría molecular.",
+        "Porque los tres átomos de oxígeno se disponen en un anillo triangular equilátero con enlaces iónicos alternados.",
+        "Porque los enlaces O-O son covalentes apolares y la molécula adopta una geometría lineal simétrica a 180°.",
+        "Porque el oxígeno central cede electrones de valencia al núcleo de los oxígenos terminales formando enlaces dativos."
       ],
-      respuestaCorrecta: 0,
-      explicacion: 'En el modelo RPECV, los pares de electrones no enlazantes interactúan solo con un núcleo atómico y están más deslocalizados, por lo que su orden de repulsión es: par no enlazante - par no enlazante > par no enlazante - par enlazante > par enlazante - par enlazante. Esta asimetría comprime los enlaces O-H de 109.5° a 104.5°.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "En el modelo RPECV, el ozono corresponde a una geometría electrónica AX₂E: el átomo central posee hibridación sp² con 2 enlaces y un par no enlazante. Dicho par ejerce una intensa repulsión que comprime el ángulo a ~116.8°. Además, las estructuras resonantes de Lewis asignan una carga formal de +1 al oxígeno central y -1/2 a los terminales, generando un momento dipolar neto permanente de μ = 0.53 D."
+    }
   },
-
-  // =========================================================================
-  // 2. DIÓXIDO DE CARBONO (CO₂)
-  // =========================================================================
   {
-    id: 'carbon-dioxide',
-    name: 'Dióxido de Carbono',
-    iupacName: 'Dióxido de carbono',
-    formula: 'CO₂',
-    molarMass: 44.009,
-    classification: 'Óxido no metálico / Gas inorgánico',
-    difficultyLevel: 'facil',
-    timeLimitSeconds: 60,
-    atoms: [
-      { id: 'co2-c', element: 'C', symbol: 'C', label: 'C', x: 0.000, y: 0.000, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp' },
-      { id: 'co2-o1', element: 'O', symbol: 'O', label: 'O1', x: 1.160, y: 0.000, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp2' },
-      { id: 'co2-o2', element: 'O', symbol: 'O', label: 'O2', x: -1.160, y: 0.000, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp2' },
+    "id": "hydrogen-chloride",
+    "name": "Cloruro de Hidrógeno",
+    "iupacName": "Cloruro de hidrógeno",
+    "formula": "HCl",
+    "molarMass": 36.461,
+    "classification": "Haluro de hidrógeno / Ácido binario hidrácido",
+    "difficultyLevel": "facil",
+    "timeLimitSeconds": 60,
+    "atoms": [
+      {
+        "id": "hcl-h",
+        "element": "H",
+        "symbol": "H",
+        "label": "H",
+        "x": -0.637,
+        "y": 0.0,
+        "z": 0.0,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "hcl-cl",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl",
+        "x": 0.637,
+        "y": 0.0,
+        "z": 0.0,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      }
     ],
-    bonds: [
-      { id: 'co2-b1', from: 0, to: 1, order: 2 },
-      { id: 'co2-b2', from: 0, to: 2, order: 2 },
+    "bonds": [
+      {
+        "id": "hcl-b1",
+        "from": 0,
+        "to": 1,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Molécula triatómica lineal con dos dobles enlaces C=O. El carbono central tiene hibridación sp sin pares de electrones no enlazantes, ubicando a los dos oxígenos en extremos diametralmente opuestos (180°). Aunque los enlaces individuales C=O son polares, los dos vectores dipolares poseen igual magnitud y sentido opuesto, anulándose mutuamente.',
-      datosCuriosos: [
-        'A presión atmosférica no tiene fase líquida: pasa directamente de sólido a gas a -78.5 °C, motivo por el cual se le llama "hielo seco".',
-        'Representa más del 95% de las atmósferas de Marte y Venus; en la Tierra es solo ~0.042% (420 ppm), pero resulta indispensable para el efecto invernadero natural que hace habitable el planeta.',
-        'En estado supercrítico (scCO₂, por encima de 31.1 °C y 73.9 bar) disuelve la cafeína de los granos de café sin dejar residuos químicos nocivos.',
-        'La efervescencia de las bebidas gaseosas se rige por la Ley de Henry: al destapar la lata, la presión baja bruscamente y el CO₂ disuelto escapa en burbujas.',
+    "didactica": {
+      "descripcionCientifica": "Compuesto diatómico gaseoso constituido por un enlace covalente simple fuertemente polarizado entre el hidrógeno y el cloro. El cloro posee una electronegatividad (3.16) significativamente superior a la del hidrógeno (2.20), atrayendo la nube electrónica y adquiriendo una densidad de carga parcial negativa (δ⁻). En solución acuosa se ioniza de forma completa y espontánea, dando origen al ácido clorhídrico, uno de los ácidos inorgánicos fuertes más fundamentales.",
+      "datosCuriosos": [
+        "Es el componente ácido principal del jugo gástrico humano (concentración ~0.5% p/v, pH entre 1.5 y 2.0), indispensable para desnaturalizar proteínas y activar la enzima digestiva pepsina.",
+        "En la alquimia clásica se le denominaba 'espíritu de sal' o 'ácido muriático' (del latín muria, salmuera), obtenido por destilación de sal común con sulfato ferroso o ácido sulfúrico.",
+        "Al entrar en contacto con el aire húmedo genera una densa niebla blanca visible: el gas HCl reacciona de inmediato con el vapor de agua formando microgotas de ácido clorhídrico en aerosol.",
+        "Las emisiones de fumarolas de volcanes activos en la cordillera de los Andes en Chile (como el Villarrica y el Láscar) expulsan toneladas diarias de gas HCl a la atmósfera circundante."
       ],
-      usosVidaCotidiana: [
-        'Gasificante y acidulante suave en bebidas gaseosas, cervezas y aguas con gas.',
-        'Agente extintor en incendios eléctricos (clase C) al sofocar el fuego desplazando el oxígeno sin conducir electricidad.',
-        'Refrigeración de vacunas y transporte de muestras biológicas mediante hielo seco.',
-        'Sustrato fotosintético esencial con el cual la flora nativa y los cultivos agrícolas producen glucosa y oxígeno.',
+      "usosVidaCotidiana": [
+        "Ácido muriático doméstico utilizado para la limpieza profunda y remoción de incrustaciones de sarro calcáreo en baños y pisos cerámicos.",
+        "Decapado y desoxidación de planchas de acero en la industria metalmecánica y siderúrgica chilena previo al galvanizado.",
+        "Ajuste y neutralización del pH en el agua de piscinas recreativas e industriales para maximizar la eficacia del cloro desinfectante.",
+        "Reactivo de síntesis farmacológica para convertir aminas insolubles en clorhidratos hidrosolubles asimilables por el cuerpo humano."
       ],
-      geometriaMolecular: 'Lineal (180°)',
-      polaridad: 'apolar',
-      justificacionPolaridad: 'Geometría lineal y centros de carga simétricos: los dos dipolos de enlace C=O se cancelan vectorialmente dando un momento dipolar neto igual a cero (μ = 0 D).',
+      "geometriaMolecular": "Lineal (180°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Momento dipolar neto notable (μ = 1.08 D). La marcada diferencia de electronegatividad (ΔEN = 0.96) concentra la densidad electrónica hacia el átomo de cloro, generando una polarización permanente en el eje intermolecular."
     },
-    kitFisico: {
-      esferas: { C: 1, O: 2 },
-      conectores: { cortosRigidos: 0, largosFlexibles: 4 },
-      descripcionConectores: '4 conectores flexibles largos o curvos (2 para cada enlace doble C=O).',
-      tipsArmado: '¡Cada enlace C=O es un doble enlace! Debes colocar 2 conectores flexibles entre el carbono central y cada oxígeno rojo, asegurando que los tres átomos queden en una línea recta (180°).',
+    "kitFisico": {
+      "esferas": {
+        "H": 1,
+        "Cl": 1
+      },
+      "conectores": {
+        "cortosRigidos": 1,
+        "largosFlexibles": 0
+      },
+      "descripcionConectores": "1 conector corto rígido para representar el enlace covalente polar simple H-Cl.",
+      "tipsArmado": "Molécula diatómica simple. Une la pequeña esfera blanca (hidrógeno) a la esfera verde (cloro) con un único conector corto rígido. Visualiza cómo el conector une dos esferas de tamaños y electronegatividades contrastantes."
     },
-    trivia: {
-      pregunta: 'A pesar de que cada enlace C=O es fuertemente polar por la diferencia de electronegatividad, ¿por qué la molécula de CO₂ es globalmente apolar (μ = 0 D)?',
-      opciones: [
-        'Porque el carbono transfiere completamente sus cuatro electrones al oxígeno, formando un enlace iónico simétrico.',
-        'Porque su geometría lineal (180°) provoca que los dos vectores de momento dipolar de enlace posean igual magnitud y sentido opuesto, cancelándose.',
-        'Porque el carbono central presenta hibridación sp³ con dos pares de electrones no enlazantes que neutralizan las densidades de carga.',
-        'Porque los enlaces dobles impiden cualquier tipo de interacción electrostática entre los átomos.',
+    "trivia": {
+      "pregunta": "El cloruro de hidrógeno es un gas covalente molecular (HCl(g)), pero al burbujear en agua produce una disolución con pH fuertemente ácido denominada ácido clorhídrico (HCl(aq)). ¿Cuál es la explicación físico-química de este comportamiento?",
+      "opciones": [
+        "El enlace covalente polar H-Cl sufre ruptura heterolítica cuantitativa en agua debido a la alta constante dieléctrica del solvente y la fuerte solvatación del protón como ion hidronio (H₃O⁺).",
+        "El gas HCl contiene enlaces iónicos que se destruyen por calor de condensación al entrar en agua.",
+        "El hidrógeno se disocia homolíticamente liberando radicales libres que atacan a los iones oxhidrilo del agua.",
+        "El cloro absorbe electrones de la molécula de agua provocando la precipitación de iones cloruro metálicos."
       ],
-      respuestaCorrecta: 1,
-      explicacion: 'La polaridad molecular es la suma vectorial de los momentos dipolares de enlace. Al poseer el carbono central hibridación sp y geometría lineal (180°), los dos dipolos de enlace C=O apuntan en sentidos diametralmente opuestos, anulándose mutuamente, lo que resulta en un momento dipolar neto nulo (μ = 0 D).',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "El enlace H-Cl es muy polar (μ = 1.08 D). Las moléculas polares de H₂O solvatan la molécula de HCl, facilitando la ionización completa: HCl + H₂O → H₃O⁺ + Cl⁻ (Ka >> 1). Por ello, el HCl en disolución acuosa es un electrolito fuerte prototípico que se disocia al 100%."
+    }
   },
-
-  // =========================================================================
-  // 3. METANO (CH₄)
-  // =========================================================================
   {
-    id: 'methane',
-    name: 'Metano',
-    iupacName: 'Metano',
-    formula: 'CH₄',
-    molarMass: 16.043,
-    classification: 'Hidrocarburo alcano / Gas combustible',
-    difficultyLevel: 'facil',
-    timeLimitSeconds: 60,
-    atoms: [
-      { id: 'ch4-c', element: 'C', symbol: 'C', label: 'C', x: 0.000, y: 0.000, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ch4-h1', element: 'H', symbol: 'H', label: 'H1', x: 0.629, y: 0.629, z: 0.629, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ch4-h2', element: 'H', symbol: 'H', label: 'H2', x: -0.629, y: -0.629, z: 0.629, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ch4-h3', element: 'H', symbol: 'H', label: 'H3', x: -0.629, y: 0.629, z: -0.629, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ch4-h4', element: 'H', symbol: 'H', label: 'H4', x: 0.629, y: -0.629, z: -0.629, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "sulfuric-acid",
+    "name": "Ácido Sulfúrico",
+    "iupacName": "Sulfato de dihidrógeno",
+    "formula": "H₂SO₄",
+    "molarMass": 98.079,
+    "classification": "Oxácido fuerte diprótico / Tetraédrica respecto al S central",
+    "difficultyLevel": "avanzado",
+    "timeLimitSeconds": 120,
+    "atoms": [
+      {
+        "id": "h2so4-s",
+        "element": "S",
+        "symbol": "S",
+        "label": "S",
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.42,
+        "color": "#F59E0B",
+        "radius": 0.46,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "h2so4-o1",
+        "element": "O",
+        "symbol": "O",
+        "label": "O1(=)",
+        "x": 0.0,
+        "y": 1.25,
+        "z": 1.099,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "h2so4-o2",
+        "element": "O",
+        "symbol": "O",
+        "label": "O2(=)",
+        "x": 0.0,
+        "y": -1.25,
+        "z": 1.099,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "h2so4-o3",
+        "element": "O",
+        "symbol": "O",
+        "label": "O3(-)",
+        "x": 1.223,
+        "y": 0.0,
+        "z": -0.57,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "h2so4-o4",
+        "element": "O",
+        "symbol": "O",
+        "label": "O4(-)",
+        "x": -1.223,
+        "y": 0.0,
+        "z": -0.57,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "h2so4-h1",
+        "element": "H",
+        "symbol": "H",
+        "label": "H1",
+        "x": 1.431,
+        "y": 0.932,
+        "z": -0.739,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "h2so4-h2",
+        "element": "H",
+        "symbol": "H",
+        "label": "H2",
+        "x": -1.431,
+        "y": -0.932,
+        "z": -0.739,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      }
     ],
-    bonds: [
-      { id: 'ch4-b1', from: 0, to: 1, order: 1 },
-      { id: 'ch4-b2', from: 0, to: 2, order: 1 },
-      { id: 'ch4-b3', from: 0, to: 3, order: 1 },
-      { id: 'ch4-b4', from: 0, to: 4, order: 1 },
+    "bonds": [
+      {
+        "id": "h2so4-b1",
+        "from": 0,
+        "to": 1,
+        "order": 2
+      },
+      {
+        "id": "h2so4-b2",
+        "from": 0,
+        "to": 2,
+        "order": 2
+      },
+      {
+        "id": "h2so4-b3",
+        "from": 0,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "h2so4-b4",
+        "from": 0,
+        "to": 4,
+        "order": 1
+      },
+      {
+        "id": "h2so4-b5",
+        "from": 3,
+        "to": 5,
+        "order": 1
+      },
+      {
+        "id": "h2so4-b6",
+        "from": 4,
+        "to": 6,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'El alcano más simple y modelo canónico de la hibridación sp³ del carbono. Forma cuatro enlaces covalentes simples C-H orientados hacia los vértices de un tetraedro regular perfecto con ángulos de 109.5°. Carece de momento dipolar permanente y solo presenta débiles fuerzas intermoleculares de dispersión de London.',
-      datosCuriosos: [
-        'El gas natural es completamente inodoro; por seguridad domiciliaria se le añade metanotiol (olor a huevo podrido) para que detectemos fugas al instante.',
-        'En un horizonte de 20 años, posee un potencial de calentamiento global 84 veces mayor que el CO₂, por lo que controlar sus emisiones es prioritario para mitigar el cambio climático.',
-        'Bajo el lecho marino existen "clatratos de metano" (hielo con gas atrapado); ¡si les acercas un fósforo, el hielo se enciende como una antorcha!',
-        'Titán, la luna de Saturno, posee un ciclo meteorológico completo de metano: nubes, lluvia y lagos enteros de metano líquido a -179 °C.',
+    "didactica": {
+      "descripcionCientifica": "Oxácido fuerte poliprótico con azufre central en estado de oxidación +6 con hibridación sp³. Presenta una geometría tetraédrica distorsionada en torno al azufre, enlazado a dos oxígenos terminales mediante enlaces dobles (S=O, 1.42 Å) y a dos grupos hidroxilo mediante enlaces simples (S-OH, 1.57 Å). La fuerte repulsión de los dobles enlaces ensancha el ángulo O=S=O a 123° y comprime el ángulo HO-S-OH a 102°. Es un ácido sumamente ávido de agua y un reactivo clave en la industria química global.",
+      "datosCuriosos": [
+        "Es el compuesto químico más producido a nivel mundial (>260 millones de toneladas anuales), considerado el principal termómetro del desarrollo industrial de una nación.",
+        "En Chile es un insumo estratégico de magnitud colosal: la gran minería de cobre en Antofagasta, Calama y Atacama consume millones de toneladas anuales en los procesos de lixiviación en pilas.",
+        "Las densas nubes de la atmósfera de Venus no están formadas por agua, sino por microgotas concentradas de ácido sulfúrico al 80-85% producidas fotoquímicamente.",
+        "Posee una voracidad deshidratante tan extrema que al verterlo sobre azúcar de mesa (sacarosa) arranca todos los elementos de agua, dejando un cilindro humeante de carbón puro que se expande hacia arriba."
       ],
-      usosVidaCotidiana: [
-        'Combustible de calefacción y cocina domiciliaria a través de redes de gas natural.',
-        'Materia prima petroquímica para obtener gas de síntesis (H₂ y CO) en la producción de amoníaco.',
-        'Combustible vehicular en flotas de transporte público y taxis colectivos a Gas Natural Comprimido (GNC) en regiones de Chile.',
-        'Biogás renovable generado en biodigestores a partir de purines y residuos agrícolas.',
+      "usosVidaCotidiana": [
+        "Electrolito ácido líquido en las baterías recargables de plomo-ácido de vehículos y camiones.",
+        "Lixiviación hidrometalúrgica de minerales oxidados de cobre en la gran minería chilena para producir cátodos de alta pureza (99.99%).",
+        "Fabricación masiva de fertilizantes fosfatados (superfosfatos y sulfato de amonio) indispensables para el agro chileno.",
+        "Refinación de derivados del petróleo, síntesis de detergentes sulfonados y decapado químico de aceros."
       ],
-      geometriaMolecular: 'Tetraédrica (109.5°)',
-      polaridad: 'apolar',
-      justificacionPolaridad: 'Baja diferencia de electronegatividad (Δχ = 0.35) y simetría tetraédrica perfecta Td que anula todo momento dipolar permanente (μ = 0 D).',
+      "geometriaMolecular": "Tetraédrica distorsionada en S (O=S=O: 123°, HO-S-OH: 102°) y Angular en O-H (~106°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Molécula altamente polar (μ = 2.72 D). La coexistencia de dos enlaces dobles S=O axiales fuertemente polarizados y dos enlaces simples polares S-O-H genera una resultante dipolar neta intensa y gran avidez por formar puentes de hidrógeno."
     },
-    kitFisico: {
-      esferas: { C: 1, H: 4 },
-      conectores: { cortosRigidos: 4, largosFlexibles: 0 },
-      descripcionConectores: '4 conectores cortos rígidos (enlaces simples C-H).',
-      tipsArmado: 'Usa los 4 orificios tetraédricos de la esfera negra de carbono. Los hidrógenos no deben quedar alineados ni en cruz plana, sino distribuidos uniformemente en el espacio tridimensional.',
+    "kitFisico": {
+      "esferas": {
+        "S": 1,
+        "O": 4,
+        "H": 2
+      },
+      "conectores": {
+        "cortosRigidos": 4,
+        "largosFlexibles": 4
+      },
+      "descripcionConectores": "8 conectores: 4 largos flexibles (para los 2 enlaces dobles S=O) y 4 cortos rígidos (2 para enlaces simples S-O y 2 para enlaces O-H).",
+      "tipsArmado": "El azufre central es la esfera amarilla con 4 orificios tetraédricos. En dos de ellos inserta parejas de conectores flexibles para los 2 oxígenos terminales con enlace doble S=O. En los otros dos coloca conectores rígidos hacia los oxígenos hidroxílicos, y a estos últimos acopla los dos hidrógenos blancos."
     },
-    trivia: {
-      pregunta: '¿Qué tipo de hibridación orbital experimenta el átomo de carbono en el metano (CH₄) y qué geometría espacial tridimensional adopta para minimizar las repulsiones electrónicas?',
-      opciones: [
-        'Hibridación sp con geometría lineal y ángulos de 180°.',
-        'Hibridación sp² con geometría trigonal plana y ángulos de 120°.',
-        'Hibridación sp³ con geometría tetraédrica y ángulos de 109.5°.',
-        'Hibridación dsp² con geometría cuadrada plana y ángulos de 90°.',
+    "trivia": {
+      "pregunta": "¿Por qué en la regla fundamental de seguridad en el laboratorio de química se insiste tajantemente: 'Nunca des de beber agua al ácido; dale ácido al agua' al diluir ácido sulfúrico concentrado (H₂SO₄ al 98%)?",
+      "opciones": [
+        "Porque la hidratación del H₂SO₄ es extremadamente exotérmica (ΔH ≈ -880 kJ/mol); si se añade agua al ácido, la pequeña masa de agua añadida hierve instantáneamente proyectando gotas cáusticas y ácidas.",
+        "Porque el agua pura descompone al ácido sulfúrico en gas sulfhídrico (H₂S) altamente inflamable.",
+        "Porque el ácido sulfúrico concentrado es más denso que el agua y reacciona liberando gas hidrógeno explosivo.",
+        "Porque los hidrógenos del ácido sulfúrico forman una capa protectora impermeable que rechaza las moléculas de agua."
       ],
-      respuestaCorrecta: 2,
-      explicacion: 'El átomo de carbono combina su orbital 2s con tres orbitales 2p para dar origen a cuatro orbitales híbridos sp³ degenerados y equivalentes. Según el modelo RPECV, cuatro pares de electrones enlazantes se distancian al máximo, orientándose hacia los vértices de un tetraedro regular perfecto (109.47° ~ 109.5°).',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "La disolución del ácido sulfúrico en agua es fuertemente exotérmica. Si se vierte una gota de agua sobre ácido concentrado, la tremenda energía liberada en un volumen diminuto hace hervir el agua instantáneamente, provocando violentas salpicaduras de ácido hirviente hacia el operador. En cambio, verter el ácido lentamente sobre un gran volumen de agua permite que la masa acuosa absorba y disipe gradualmente el calor generado."
+    }
   },
-
-  // =========================================================================
-  // 4. AMONÍACO (NH₃) — Bonus / Desafío Extra
-  // =========================================================================
   {
-    id: 'ammonia',
-    name: 'Amoníaco',
-    iupacName: 'Azano',
-    formula: 'NH₃',
-    molarMass: 17.031,
-    classification: 'Hidruro inorgánico / Base de Lewis',
-    difficultyLevel: 'facil',
-    timeLimitSeconds: 60,
-    atoms: [
-      { id: 'nh3-n', element: 'N', symbol: 'N', label: 'N', x: 0.000, y: 0.000, z: 0.279, color: CPK_COLORS.N, radius: ATOM_RADII.N, hybridization: 'sp3' },
-      { id: 'nh3-h1', element: 'H', symbol: 'H', label: 'H1', x: 0.941, y: 0.000, z: -0.093, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'nh3-h2', element: 'H', symbol: 'H', label: 'H2', x: -0.471, y: 0.815, z: -0.093, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'nh3-h3', element: 'H', symbol: 'H', label: 'H3', x: -0.471, y: -0.815, z: -0.093, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "copper-sulfate",
+    "name": "Sulfato de Cobre(II)",
+    "iupacName": "Tetraoxosulfato(VI) de cobre(II)",
+    "formula": "CuSO₄",
+    "molarMass": 159.609,
+    "classification": "Sal oxisustituida inorgánica / Red iónico-coordinada",
+    "difficultyLevel": "intermedio",
+    "timeLimitSeconds": 90,
+    "atoms": [
+      {
+        "id": "cuso4-cu",
+        "element": "Cu",
+        "symbol": "Cu",
+        "label": "Cu²⁺",
+        "x": 0.0,
+        "y": 0.0,
+        "z": -1.999,
+        "color": "#B87333",
+        "radius": 0.55,
+        "hybridization": "none"
+      },
+      {
+        "id": "cuso4-s",
+        "element": "S",
+        "symbol": "S",
+        "label": "S",
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.4,
+        "color": "#F59E0B",
+        "radius": 0.46,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "cuso4-o1",
+        "element": "O",
+        "symbol": "O",
+        "label": "O1(coord)",
+        "x": 1.2,
+        "y": 0.0,
+        "z": -0.449,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "cuso4-o2",
+        "element": "O",
+        "symbol": "O",
+        "label": "O2(coord)",
+        "x": -1.2,
+        "y": 0.0,
+        "z": -0.449,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "cuso4-o3",
+        "element": "O",
+        "symbol": "O",
+        "label": "O3(=)",
+        "x": 0.0,
+        "y": 1.2,
+        "z": 1.249,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "cuso4-o4",
+        "element": "O",
+        "symbol": "O",
+        "label": "O4(=)",
+        "x": 0.0,
+        "y": -1.2,
+        "z": 1.249,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      }
     ],
-    bonds: [
-      { id: 'nh3-b1', from: 0, to: 1, order: 1 },
-      { id: 'nh3-b2', from: 0, to: 2, order: 1 },
-      { id: 'nh3-b3', from: 0, to: 3, order: 1 },
+    "bonds": [
+      {
+        "id": "cuso4-b1",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      },
+      {
+        "id": "cuso4-b2",
+        "from": 0,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "cuso4-b3",
+        "from": 1,
+        "to": 2,
+        "order": 1
+      },
+      {
+        "id": "cuso4-b4",
+        "from": 1,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "cuso4-b5",
+        "from": 1,
+        "to": 4,
+        "order": 2
+      },
+      {
+        "id": "cuso4-b6",
+        "from": 1,
+        "to": 5,
+        "order": 2
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Molécula formada por un átomo central de nitrógeno con hibridación sp³ unido a tres átomos de hidrógeno mediante enlaces covalentes simples y un par de electrones no enlazantes. Su geometría es piramidal trigonal con un ángulo de 107.3°. Actúa como base de Lewis típica aceptando protones para formar el catión amonio (NH₄⁺).',
-      datosCuriosos: [
-        'El proceso Haber-Bosch para producir amoníaco a partir del aire consume el 1.5% de la energía mundial y sostiene los fertilizantes que alimentan a la mitad del planeta.',
-        'Sufre un efecto túnel cuántico llamado "inversión de paraguas": el nitrógeno oscila a través del plano de hidrógenos 24.000 millones de veces por segundo (24 GHz).',
-        'Antiguamente se usaban "sales aromáticas" de amoníaco para reanimar a personas desmayadas al provocar una violenta inhalación refleja.',
-        'Un solo litro de agua fría puede disolver hasta 1.100 litros de amoníaco gaseoso debido a su extrema afinidad por formar puentes de hidrógeno.',
+    "didactica": {
+      "descripcionCientifica": "Sal inorgánica oxisustituida de cobre formada por la interacción electrostática y de coordinación entre el catión divalente cobre(II) (Cu²⁺, configuración d⁹) y el anión tetraédrico sulfato (SO₄²⁻). El azufre central presenta hibridación sp³ con resonancia equivalente entre sus cuatro oxígenos. En fase sólida o en disolución acuosa, el Cu²⁺ se coordina a oxígenos con distancias características de ~1.96 Å afectadas por la distorsión tetragonal de Jahn-Teller.",
+      "datosCuriosos": [
+        "Su forma mineral hidratada más famosa es la calcantita natural (CuSO₄·5H₂O), un cristal de color azul ultramar brillante hallado en zonas de oxidación de yacimientos chilenos como Chuquicamata.",
+        "A finales del siglo XIX se creó el 'caldo bordelés' (CuSO₄ con cal hidratada), el primer fungicida a gran escala del planeta que salvó a los viñedos franceses de la plaga del mildiu.",
+        "Es el compuesto preferido en laboratorios escolares y universitarios de Chile para cultivo de monocristales triclínicos azules por evaporación lenta.",
+        "El reactivo de Fehling (usado para cuantificar azúcares reductores en orina en el diagnóstico clásico de diabetes) basa su viraje en la reducción de Cu²⁺ azul a óxido de cobre(I) rojo ladrillo."
       ],
-      usosVidaCotidiana: [
-        'Fabricación masiva de fertilizantes nitrogenados (urea, nitrato de amonio).',
-        'Ingrediente activo en desengrasantes domésticos y limpiadores de cristales.',
-        'Refrigerante industrial (R-717) en frigoríficos de fruta y plantas pesqueras chilenas, con nulo impacto en la capa de ozono (ODP = 0).',
-        'Precursor en la manufactura de nylon, tinturas, polímeros y fármacos.',
+      "usosVidaCotidiana": [
+        "Fungicida cúprico agrícola indispensable para la protección foliar de viñas y frutales en valles de la zona central de Chile.",
+        "Alguicida para el tratamiento y clarificación de aguas en piscinas recreativas y tranques de riego agrícola.",
+        "Suplemento mineral traza en nutrición de ganado ovino y bovino para prevenir deficiencias metabólicas de cobre.",
+        "Electrolito base en celdas de electrorefinación y recubrimiento galvánico de piezas metálicas con cobre."
       ],
-      geometriaMolecular: 'Piramidal trigonal (107.3°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'El nitrógeno es fuertemente electronegativo (3.04) y la geometría piramidal genera un momento dipolar neto permanente (μ = 1.47 D) dirigido hacia el par de electrones no enlazantes apical.',
+      "geometriaMolecular": "Tetraédrica en SO₄²⁻ (~109.5°) con coordinación Jahn-Teller al catión Cu²⁺",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Compuesto iónico fuertemente polar con separación formal de cargas divalentes (Cu²⁺ y SO₄²⁻). El par iónico coordinado exhibe un enorme gradiente de potencial electrostático dipolar (μ ≈ 7.8 D en par iónico de fase gaseosa)."
     },
-    kitFisico: {
-      esferas: { N: 1, H: 3 },
-      conectores: { cortosRigidos: 3, largosFlexibles: 0 },
-      descripcionConectores: '3 conectores cortos rígidos (enlaces simples N-H).',
-      tipsArmado: 'Toma la esfera azul de nitrógeno: coloca los 3 conectores en los orificios que apuntan hacia abajo formando una pequeña pirámide tripoidal y deja libre el orificio superior.',
+    "kitFisico": {
+      "esferas": {
+        "Cu": 1,
+        "S": 1,
+        "O": 4
+      },
+      "conectores": {
+        "cortosRigidos": 4,
+        "largosFlexibles": 2
+      },
+      "descripcionConectores": "6 conectores: 2 largos flexibles para los dobles enlaces representativos S=O, 2 cortos rígidos para enlaces S-O y 2 cortos rígidos para la coordinación Cu²⁺···O.",
+      "tipsArmado": "Construye primero el ion sulfato: coloca la esfera amarilla de azufre al centro y únele las 4 esferas rojas de oxígeno en tetraedro (usando flexibles en dos oxígenos). Luego conecta la esfera cobriza de Cobre (Cu) a 2 oxígenos para modelar la coordinación bidentada del par iónico."
     },
-    trivia: {
-      pregunta: 'El átomo central de nitrógeno en el amoníaco (NH₃) posee 4 dominios de electrones de valencia (3 pares enlazantes y 1 par no enlazante). ¿Cuál es su geometría molecular según RPECV?',
-      opciones: [
-        'Trigonal plana, porque tiene 3 enlaces covalentes simples distribuidos a 120°.',
-        'Tetraédrica regular, ya que el par no enlazante cuenta visualmente como un cuarto vértice atómico.',
-        'Geometría en forma de T con dos enlaces a 90° y uno a 180°.',
-        'Piramidal trigonal (tipo AX₃E), con el nitrógeno en la cúspide y un ángulo de enlace comprimido a ~107.3°.',
+    "trivia": {
+      "pregunta": "El sulfato de cobre(II) anhidro (CuSO₄) es un polvo blanquecino, pero al humedecerse o disolverse en agua adquiere de inmediato un color azul intenso característico. ¿Cuál es el fundamento químico-cuántico de esta coloración?",
+      "opciones": [
+        "El desdoblamiento de los orbitales 3d del catión Cu²⁺ (configuración d⁹) en el campo ligando octaédrico distorsionado del agua, permitiendo transiciones electrónicas d-d que absorben radiación roja y transmiten azul.",
+        "La precipitación coloidal de nanopartículas de cobre metálico puro que reflejan luz azul.",
+        "La reducción del átomo de azufre de estado de oxidación +6 a +2 catalizada por el agua.",
+        "Una emisión de fotones azulados producida por la descomposición radiactiva natural del cobre."
       ],
-      respuestaCorrecta: 3,
-      explicacion: 'Se debe distinguir la geometría electrónica (tetraédrica, al considerar los 4 dominios) de la geometría molecular, que describe únicamente la disposición tridimensional de los núcleos atómicos. El par de electrones no enlazante apical rechaza a los pares enlazantes N-H, cerrando los ángulos a 107.3° en una pirámide de base triangular.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "El catión Cu²⁺ tiene subcapa d incompleta ([Ar] 3d⁹). Al rodearse de moléculas de agua (ligandos coordinados), los 5 orbitales d degenerados se desdoblan en niveles energéticos distintos (efecto del campo cristalino / ligando con distorsión Jahn-Teller). La energía requerida para excitar un electrón entre estos niveles d corresponde exactamente a fotones de luz roja (~600-650 nm); al absorberse el rojo, la disolución transmite el color complementario que es el azul brillante."
+    }
   },
-
-  // =========================================================================
-  // 5. ETANOL (C₂H₆O)
-  // =========================================================================
   {
-    id: 'ethanol',
-    name: 'Etanol',
-    iupacName: 'Etanol',
-    formula: 'C₂H₆O',
-    molarMass: 46.069,
-    classification: 'Alcohol alifático primario',
-    difficultyLevel: 'intermedio',
-    timeLimitSeconds: 90,
-    atoms: [
-      { id: 'eth-c1', element: 'C', symbol: 'C', label: 'C1', x: -0.994, y: -0.120, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'eth-c2', element: 'C', symbol: 'C', label: 'C2', x: 0.526, y: -0.120, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'eth-o', element: 'O', symbol: 'O', label: 'O', x: 1.003, y: 1.228, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp3' },
-      { id: 'eth-ho', element: 'H', symbol: 'H', label: 'HO', x: 1.760, y: 0.638, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'eth-h2a', element: 'H', symbol: 'H', label: 'H2a', x: 0.889, y: -0.634, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'eth-h2b', element: 'H', symbol: 'H', label: 'H2b', x: 0.889, y: -0.634, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'eth-h1a', element: 'H', symbol: 'H', label: 'H1a', x: -1.357, y: -1.148, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'eth-h1b', element: 'H', symbol: 'H', label: 'H1b', x: -1.357, y: 0.394, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'eth-h1c', element: 'H', symbol: 'H', label: 'H1c', x: -1.357, y: 0.394, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "water",
+    "name": "Agua",
+    "iupacName": "Oxidano",
+    "formula": "H₂O",
+    "molarMass": 18.015,
+    "classification": "Solvente inorgánico polar / Base hidrolítica universal",
+    "difficultyLevel": "facil",
+    "timeLimitSeconds": 60,
+    "atoms": [
+      {
+        "id": "h2o-o",
+        "element": "O",
+        "symbol": "O",
+        "label": "O",
+        "x": 0.0,
+        "y": -0.391,
+        "z": 0.0,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "h2o-h1",
+        "element": "H",
+        "symbol": "H",
+        "label": "H1",
+        "x": 0.758,
+        "y": 0.195,
+        "z": 0.0,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "h2o-h2",
+        "element": "H",
+        "symbol": "H",
+        "label": "H2",
+        "x": -0.758,
+        "y": 0.195,
+        "z": 0.0,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      }
     ],
-    bonds: [
-      { id: 'eth-b1', from: 0, to: 1, order: 1 }, // C1-C2
-      { id: 'eth-b2', from: 1, to: 2, order: 1 }, // C2-O
-      { id: 'eth-b3', from: 2, to: 3, order: 1 }, // O-H
-      { id: 'eth-b4', from: 1, to: 4, order: 1 }, // C2-H
-      { id: 'eth-b5', from: 1, to: 5, order: 1 }, // C2-H
-      { id: 'eth-b6', from: 0, to: 6, order: 1 }, // C1-H
-      { id: 'eth-b7', from: 0, to: 7, order: 1 }, // C1-H
-      { id: 'eth-b8', from: 0, to: 8, order: 1 }, // C1-H
+    "bonds": [
+      {
+        "id": "h2o-b1",
+        "from": 0,
+        "to": 1,
+        "order": 1
+      },
+      {
+        "id": "h2o-b2",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Alcohol alifático formado por un radical etilo (CH₃-CH₂-) unido covalentemente a un grupo hidroxilo (-OH). Ambos carbonos tienen hibridación sp³ tetraédrica y el oxígeno presenta geometría angular con dos pares de electrones no enlazantes. Es una molécula anfipática con una cabeza polar hidrofílica capaz de donar y aceptar puentes de hidrógeno y una cola hidrocarbonada apolar.',
-      datosCuriosos: [
-        'Al mezclar 50 mL de agua pura con 50 mL de etanol puro, el volumen total obtenido es de solo ~96 mL debido a la contracción por la intensa red de puentes de hidrógeno.',
-        'El alcohol al 70% es mejor bactericida que el alcohol al 96%: el 30% de agua impide que las proteínas bacterianas se coagulen de golpe, permitiendo que el alcohol penetre al interior celular.',
-        'En la nube molecular Sagittarius B2 en el centro de nuestra galaxia flota una reserva gigantesca de etanol con billones de litros de alcohol en fase gaseosa.',
-        'En Brasil, millones de vehículos funcionan exclusivamente con bioetanol de caña de azúcar mediante motores flex-fuel (combustible flexible).',
+    "didactica": {
+      "descripcionCientifica": "Molécula triatómica dipolar fundamental unida por dos enlaces covalentes polares O-H. El átomo de oxígeno posee hibridación sp³ con dos pares electrónicos enlazantes y dos pares de electrones no enlazantes. La intensa repulsión entre los pares solitarios comprime el ángulo tetraédrico ideal de 109.5° a 104.5°. Es el solvente universal de la biología y la geología gracias a su capacidad de formar redes tridimensionales cooperativas de puentes de hidrógeno.",
+      "datosCuriosos": [
+        "El hielo flota sobre el agua líquida porque alcanza su densidad máxima a 3.98 °C; por debajo de esa temperatura, los puentes de hidrógeno se rigidizan en una red hexagonal abierta y hueca que expande su volumen en un 9%.",
+        "Presenta una tensión superficial extraordinariamente alta (72.8 mN/m a 20 °C), lo que permite a insectos como los zapateros caminar sobre ella y posibilita el ascenso por capilaridad en árboles de más de 100 metros de altura.",
+        "Posee un calor específico muy elevado (4.184 J/(g·°C)), lo que convierte a los océanos y a la vasta corriente de Humboldt en Chile en un inmenso estabilizador térmico climático.",
+        "En una sola gota de agua (0.05 mL) hay aproximadamente 1.67 × 10²¹ moléculas, un número muy superior a todos los granos de arena existentes en todas las playas del planeta Tierra."
       ],
-      usosVidaCotidiana: [
-        'Desinfectante antiséptico y formulación de alcohol en gel al 70%.',
-        'Biocombustible vehicular renovable (mezclas E10 y E85).',
-        'Solvente para tinturas medicinales, esencias aromáticas y perfumes.',
-        'Materia prima en formulaciones farmacéuticas, antisépticos y en el tradicional sector vitivinícola chileno.',
+      "usosVidaCotidiana": [
+        "Solvente vital insustituible en todos los medios celulares (citosol, plasma sanguíneo y linfa).",
+        "Medio de transporte, dilución y formulación de fármacos, jarabes y soluciones de rehidratación hospitalaria.",
+        "Termorregulación biológica de mamíferos y seres humanos mediante evaporación superficial por sudoración.",
+        "Generación hidroeléctrica de energía limpia en centrales del centro-sur de Chile y fluido caloportador industrial."
       ],
-      geometriaMolecular: 'Tetraédrica en carbonos (109.5°) y Angular en oxígeno (~108.5°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'Momento dipolar neto significativo (μ = 1.69 D) originado por la asimetría del enlace C-O-H y la polaridad del grupo hidroxilo, confiriéndole miscibilidad total en agua mediante puentes de hidrógeno.',
+      "geometriaMolecular": "Angular (104.5°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Elevado momento dipolar neto (μ = 1.85 D) originado por la fuerte diferencia de electronegatividad (ΔEN = 1.24) sumada vectorialmente en una geometría angular no simétrica."
     },
-    kitFisico: {
-      esferas: { C: 2, H: 6, O: 1 },
-      conectores: { cortosRigidos: 8, largosFlexibles: 0 },
-      descripcionConectores: '8 conectores cortos rígidos (todos enlaces simples).',
-      tipsArmado: 'Estrategia por etapas: 1° Une las 2 esferas de carbono (C-C), 2° Conecta la esfera roja de oxígeno a uno de los carbonos (C-O), 3° Añade un hidrógeno al oxígeno (O-H en ángulo), 4° Distribuye los 5 hidrógenos restantes en los carbonos (3 en el carbono terminal y 2 en el central).',
+    "kitFisico": {
+      "esferas": {
+        "O": 1,
+        "H": 2
+      },
+      "conectores": {
+        "cortosRigidos": 2,
+        "largosFlexibles": 0
+      },
+      "descripcionConectores": "2 conectores cortos rígidos para los dos enlaces simples covalentes O-H.",
+      "tipsArmado": "¡No uses los orificios a 180°! Emplea los orificios angulares de la esfera roja del oxígeno para que los dos hidrógenos blancos queden formando una 'V' abierta con un ángulo aproximado de 104.5°."
     },
-    trivia: {
-      pregunta: '¿Por qué el etanol (CH₃-CH₂-OH) es totalmente miscible en agua en cualquier proporción, mientras que un hidrocarburo similar como el etano (CH₃-CH₃) es prácticamente insoluble?',
-      opciones: [
-        'Porque el grupo hidroxilo (-OH) forma una extensa red de puentes de hidrógeno con el agua mediante su enlace polar O-H y los pares no enlazantes del oxígeno.',
-        'Porque el etanol es una molécula completamente apolar que disuelve al agua mediante interacciones de dispersión de London.',
-        'Porque los carbonos del etanol poseen hibridación sp lineal que ioniza espontáneamente al solvente.',
-        'Porque la cola etilo (-CH₂-CH₃) es de naturaleza hidrofílica y reacciona de forma iónica con los protones del agua.',
+    "trivia": {
+      "pregunta": "Según el modelo de Repulsión de Pares Electrónicos de la Capa de Valencia (RPECV), ¿por qué el ángulo de enlace H-O-H en el agua (104.5°) es notablemente menor que el ángulo tetraédrico regular (109.5°)?",
+      "opciones": [
+        "Porque los dos pares de electrones no enlazantes del oxígeno ocupan más espacio volumétrico y ejercen mayor repulsión que los pares enlazantes, comprimiendo los enlaces O-H.",
+        "Porque los dos átomos de hidrógeno presentan polaridades magnéticas opuestas que los atraen fuertemente en el espacio.",
+        "Porque el oxígeno tiene hibridación sp con tendencia natural a los 180°, deformada por la gravedad terrestre.",
+        "Porque los enlaces O-H son iónicos y los cationes hidrógeno sufren una atracción electrostática intermolecular."
       ],
-      respuestaCorrecta: 0,
-      explicacion: 'La elevada electronegatividad del oxígeno (3.44) frente al hidrógeno (2.20) genera un enlace covalente fuertemente polar. La presencia del átomo de H unido a O y los dos pares de electrones no enlazantes del oxígeno permiten al etanol ser donante y aceptor de puentes de hidrógeno con el agua, superando el carácter hidrofóbico de la cadena hidrocarbonada.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "En el modelo RPECV, los pares no enlazantes interactúan con un solo núcleo atómico (oxígeno) y sus nubes electrónicas son más difusas y voluminosas. La jerarquía repulsiva es: par libre-par libre > par libre-par enlazante > par enlazante-par enlazante. La intensa repulsión entre los dos pares solitarios comprime el ángulo H-O-H desde 109.5° hasta 104.5°."
+    }
   },
-
-  // =========================================================================
-  // 6. ACETONA (C₃H₆O / Propan-2-ona)
-  // =========================================================================
   {
-    id: 'acetone',
-    name: 'Acetona',
-    iupacName: 'Propan-2-ona',
-    formula: 'C₃H₆O',
-    molarMass: 58.080,
-    classification: 'Cetona alifática',
-    difficultyLevel: 'intermedio',
-    timeLimitSeconds: 90,
-    atoms: [
-      { id: 'ace-c2', element: 'C', symbol: 'C', label: 'C=O', x: 0.000, y: 0.421, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp2' },
-      { id: 'ace-o', element: 'O', symbol: 'O', label: 'O', x: 0.000, y: 1.641, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp2' },
-      { id: 'ace-c1', element: 'C', symbol: 'C', label: 'C1', x: -1.281, y: -0.379, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ace-c3', element: 'C', symbol: 'C', label: 'C3', x: 1.281, y: -0.379, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ace-h1a', element: 'H', symbol: 'H', label: 'H1a', x: -1.516, y: 0.685, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-h1b', element: 'H', symbol: 'H', label: 'H1b', x: -1.743, y: -0.668, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-h1c', element: 'H', symbol: 'H', label: 'H1c', x: -1.743, y: -0.668, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-h3a', element: 'H', symbol: 'H', label: 'H3a', x: 1.516, y: 0.685, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-h3b', element: 'H', symbol: 'H', label: 'H3b', x: 1.743, y: -0.668, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-h3c', element: 'H', symbol: 'H', label: 'H3c', x: 1.743, y: -0.668, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "silver-chloride",
+    "name": "Cloruro de Plata",
+    "iupacName": "Cloruro de plata(I)",
+    "formula": "AgCl",
+    "molarMass": 143.321,
+    "classification": "Sal halógena insoluble / Red iónico-covalente polarizable",
+    "difficultyLevel": "facil",
+    "timeLimitSeconds": 60,
+    "atoms": [
+      {
+        "id": "agcl-ag",
+        "element": "Ag",
+        "symbol": "Ag",
+        "label": "Ag⁺",
+        "x": -1.14,
+        "y": 0.0,
+        "z": 0.0,
+        "color": "#C0C0C0",
+        "radius": 0.58,
+        "hybridization": "none"
+      },
+      {
+        "id": "agcl-cl",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl⁻",
+        "x": 1.14,
+        "y": 0.0,
+        "z": 0.0,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      }
     ],
-    bonds: [
-      { id: 'ace-b0', from: 0, to: 1, order: 2 }, // C2=O
-      { id: 'ace-b1', from: 0, to: 2, order: 1 }, // C2-C1
-      { id: 'ace-b2', from: 0, to: 3, order: 1 }, // C2-C3
-      { id: 'ace-b3', from: 2, to: 4, order: 1 }, // C1-H
-      { id: 'ace-b4', from: 2, to: 5, order: 1 }, // C1-H
-      { id: 'ace-b5', from: 2, to: 6, order: 1 }, // C1-H
-      { id: 'ace-b6', from: 3, to: 7, order: 1 }, // C3-H
-      { id: 'ace-b7', from: 3, to: 8, order: 1 }, // C3-H
-      { id: 'ace-b8', from: 3, to: 9, order: 1 }, // C3-H
+    "bonds": [
+      {
+        "id": "agcl-b1",
+        "from": 0,
+        "to": 1,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'La cetona alifática más simple. El átomo central de carbono (C₂) posee hibridación sp² formando un centro trigonal plano con ángulos de ~120°, enlazado doblemente a un oxígeno carbonílico y covalentemente a dos grupos metilo (-CH₃) tetraédricos (sp³). La alta polarización del doble enlace C=O le otorga un momento dipolar permanente notable (2.88 D).',
-      datosCuriosos: [
-        'El cuerpo humano genera acetona durante la cetosis (ayuno prolongado o diabetes descompensada), provocando un aliento dulce característico denominado aliento cetónico.',
-        'Colapsa el poliestireno expandido (plumavit) de forma casi instantánea: disuelve la matriz polimérica liberando más del 95% de aire atrapado en su estructura.',
-        'Es el solvente por excelencia en laboratorios de química orgánica: limpia grasas, se mezcla con agua y se seca a 56 °C sin dejar marcas.',
-        'Durante la Primera Guerra Mundial se obtuvo mediante fermentación bacteriana masiva con Clostridium acetobutylicum para fabricar pólvora cordita.',
+    "didactica": {
+      "descripcionCientifica": "Sal inorgánica binaria de plata y cloro representativa del enlace iónico con marcado carácter covalente polarizable. En fase sólida cristaliza en una red cúbica compacta similar a la del NaCl donde cada ion Ag⁺ está coordinado a 6 iones Cl⁻. Destaca por su extrema insolubilidad en agua (Ksp = 1.77 × 10⁻¹⁰) y por su marcada fotosensibilidad: al recibir fotones UV o de luz visible sufre fotorreducción liberando nanopartículas oscuras de plata metálica.",
+      "datosCuriosos": [
+        "Fue la piedra angular de la fotografía química y analógica durante más de un siglo: sus cristales fotosensibles suspendidos en gelatina formaban la emulsión que retenía la imagen latente.",
+        "A pesar de ser prácticamente insoluble en agua pura (se disuelven solo 1.9 miligramos por litro), se disuelve con rapidez al añadir amoníaco por formación del catión complejo incoloro diamincobreplata [Ag(NH₃)₂]⁺.",
+        "Los lentes fotosensibles fotocromáticos incorporan microcristales de AgCl que se fotorreducen con la radiación solar exterior oscureciéndose en segundos para proteger la vista.",
+        "En la historia minera de Chile, la clorargirita (mineral natural de AgCl llamado 'plata córnea') fue uno de los minerales más ricos y fáciles de fundir descubiertos en el mítico mineral de Chañarcillo en 1832."
       ],
-      usosVidaCotidiana: [
-        'Quitaesmalte de uñas tradicional y removedor de pegamentos de cianoacrilato.',
-        'Limpieza y desengrase de piezas mecánicas e instrumental de laboratorio.',
-        'Disolvente de resinas, lacas, esmaltes sintéticos y pinturas epóxicas.',
-        'Intermedio para la fabricación de metacrilato de metilo (acrílico transparente).',
+      "usosVidaCotidiana": [
+        "Electrodo de referencia Ag/AgCl de uso universal en potenciómetros escolares y sensores de pH electroquímicos.",
+        "Apósitos avanzados y vendas hospitalarias con acción bactericida prolongada para el tratamiento de quemaduras.",
+        "Lentes de anteojos fotocromáticos que se adaptan a la intensidad de la luz solar.",
+        "Método argentométrico de Mohr para la determinación analítica exacta de cloruros en aguas potables y salmueras."
       ],
-      geometriaMolecular: 'Trigonal plana en C=O (120°) y Tetraédrica en metilos (109.5°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'Elevado momento dipolar neto (μ = 2.88 D) debido a la fuerte polarización del doble enlace carbonílico C=O no compensada por los metilos, otorgándole marcado carácter polar aprótico.',
+      "geometriaMolecular": "Lineal en par molecular didáctico / Cúbica centrada en las caras en red sólida",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Compuesto iónico altamente polar (momento dipolar en fase vapor μ ≈ 5.73 D). La enorme diferencia electrostática entre el catión plata y el ion cloruro genera un dipolo neto intenso en el par iónico."
     },
-    kitFisico: {
-      esferas: { C: 3, H: 6, O: 1 },
-      conectores: { cortosRigidos: 8, largosFlexibles: 2 },
-      descripcionConectores: '10 conectores: 2 flexibles para el enlace doble C=O y 8 cortos rígidos para enlaces simples.',
-      tipsArmado: '¡Ojo con el carbono del centro! Debe ser trigonal plano (120°). Únelo al oxígeno rojo usando los 2 tubos flexibles simultáneos para el doble enlace C=O. Luego acopla los 2 carbonos metilo a los lados con sus 3 hidrógenos cada uno.',
+    "kitFisico": {
+      "esferas": {
+        "Ag": 1,
+        "Cl": 1
+      },
+      "conectores": {
+        "cortosRigidos": 1,
+        "largosFlexibles": 0
+      },
+      "descripcionConectores": "1 conector corto rígido para modelar la unión de contacto del par iónico Ag⁺···Cl⁻.",
+      "tipsArmado": "Une la esfera gris plateada de Plata (Ag) a la esfera verde de Cloro (Cl) mediante 1 conector corto rígido. Esta pareja didáctica simboliza la unidad de contacto de la red cristalina sólida."
     },
-    trivia: {
-      pregunta: '¿Qué tipo de hibridación orbital presenta el carbono central del grupo carbonilo (C=O) en la acetona y qué tipos de enlace componen esa unión doble?',
-      opciones: [
-        'Hibridación sp con dos enlaces pi (π) axiales y geometría lineal.',
-        'Hibridación sp² con geometría trigonal plana (120°), formando un enlace sigma (σ) y un enlace pi (π) con el oxígeno.',
-        'Hibridación sp³ con geometría tetraédrica (109.5°), formando dos enlaces sigma (σ) coaxiales.',
-        'Hibridación sp³d con geometría bipiramidal trigonal y enlaces coordinados dativos.',
+    "trivia": {
+      "pregunta": "Al mezclar una disolución acuosa de nitrato de plata (AgNO₃) con una de cloruro de sodio (NaCl), se produce de inmediato un precipitado blanco de cloruro de plata (AgCl) que se oscurece al exponerse a la luz. ¿Qué proceso químico explica este oscurecimiento?",
+      "opciones": [
+        "La fotorreducción de los cationes Ag⁺ inducida por la luz, que promueve la transferencia de un electrón desde el ion Cl⁻ precipitando gránulos microscópicos oscuros de plata metálica neutra (Ag⁰).",
+        "La pérdida inmediata de cloro gaseoso dejando óxido de plata amarillo en suspensión.",
+        "La fusión térmica de los iones plata que forman una película reflectante homogénea.",
+        "La descomposición del precipitado en nitrógeno molecular por absorción de calor ambiental."
       ],
-      respuestaCorrecta: 1,
-      explicacion: 'El carbono carbonílico forma 3 enlaces sigma (σ) coplanares a ~120° empleando orbitales híbridos sp² (dos con carbonos metilo y uno con el oxígeno). Su orbital 2p puro restante se solapa lateralmente con un orbital p del oxígeno para generar el enlace pi (π) característico del doble enlace.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "El AgCl es un compuesto fotosensible. Al absorber fotones de radiación luminosa (hν), un electrón es promovido desde el cloruro hacia el catión plata: Ag⁺ + Cl⁻ + hν → Ag⁰ + ½ Cl₂. Los cúmulos microscópicos de plata metálica elemental (Ag⁰) dispersos en el sólido absorben toda la luz visible confiriendo el color gris-púrpura oscuro característico de la fotografía química tradicional."
+    }
   },
-
-  // =========================================================================
-  // 7. ÁCIDO ACÉTICO (C₂H₄O₂ / Ácido etanoico) — Bonus / Desafío Extra
-  // =========================================================================
   {
-    id: 'acetic-acid',
-    name: 'Ácido Acético',
-    iupacName: 'Ácido etanoico',
-    formula: 'C₂H₄O₂',
-    molarMass: 60.052,
-    classification: 'Ácido carboxílico alifático',
-    difficultyLevel: 'intermedio',
-    timeLimitSeconds: 90,
-    atoms: [
-      { id: 'ace-ac-c2', element: 'C', symbol: 'C', label: 'C=O', x: 0.394, y: 0.403, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp2' },
-      { id: 'ace-ac-o1', element: 'O', symbol: 'O', label: 'O=', x: 0.394, y: 1.613, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp2' },
-      { id: 'ace-ac-o2', element: 'O', symbol: 'O', label: 'O-H', x: 1.594, y: -0.287, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp3' },
-      { id: 'ace-ac-h3', element: 'H', symbol: 'H', label: 'H(O)', x: 2.354, y: 0.263, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-ac-c1', element: 'C', symbol: 'C', label: 'C1', x: -0.916, y: -0.387, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ace-ac-h5', element: 'H', symbol: 'H', label: 'H1a', x: -0.846, y: -1.467, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-ac-h6', element: 'H', symbol: 'H', label: 'H1b', x: -1.486, y: -0.067, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ace-ac-h7', element: 'H', symbol: 'H', label: 'H1c', x: -1.486, y: -0.067, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "chloroform",
+    "name": "Cloroformo",
+    "iupacName": "Triclorometano",
+    "formula": "CHCl₃",
+    "molarMass": 119.378,
+    "classification": "Haloalcano / Tetraédrica distorsionada",
+    "difficultyLevel": "intermedio",
+    "timeLimitSeconds": 90,
+    "atoms": [
+      {
+        "id": "chcl3-c",
+        "element": "C",
+        "symbol": "C",
+        "label": "C",
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.118,
+        "color": "#262626",
+        "radius": 0.45,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "chcl3-h",
+        "element": "H",
+        "symbol": "H",
+        "label": "H",
+        "x": 0.0,
+        "y": 0.0,
+        "z": 1.208,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "chcl3-cl1",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl1",
+        "x": 1.669,
+        "y": 0.0,
+        "z": -0.442,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "chcl3-cl2",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl2",
+        "x": -0.834,
+        "y": 1.445,
+        "z": -0.442,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "chcl3-cl3",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl3",
+        "x": -0.834,
+        "y": -1.445,
+        "z": -0.442,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      }
     ],
-    bonds: [
-      { id: 'ace-ac-b0', from: 0, to: 1, order: 2 }, // C2=O1
-      { id: 'ace-ac-b1', from: 0, to: 2, order: 1 }, // C2-O2
-      { id: 'ace-ac-b2', from: 2, to: 3, order: 1 }, // O2-H3
-      { id: 'ace-ac-b3', from: 0, to: 4, order: 1 }, // C2-C1
-      { id: 'ace-ac-b4', from: 4, to: 5, order: 1 }, // C1-H5
-      { id: 'ace-ac-b5', from: 4, to: 6, order: 1 }, // C1-H6
-      { id: 'ace-ac-b6', from: 4, to: 7, order: 1 }, // C1-H7
+    "bonds": [
+      {
+        "id": "chcl3-b1",
+        "from": 0,
+        "to": 1,
+        "order": 1
+      },
+      {
+        "id": "chcl3-b2",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      },
+      {
+        "id": "chcl3-b3",
+        "from": 0,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "chcl3-b4",
+        "from": 0,
+        "to": 4,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Ácido orgánico débil representativo del grupo carboxilo (-COOH). Consta de un carbono carbonílico sp² unido mediante enlace doble a un oxígeno y mediante enlace simple a un grupo hidroxilo (-OH) y a un metilo (sp³). La alta polarización del carbonilo favorece la liberación del protón H⁺, formando el anión acetato estabilizado por resonancia.',
-      datosCuriosos: [
-        'Es el responsable del sabor y aroma agrio del vinagre, que es simplemente una solución de ácido acético al 5% en agua producida por fermentación bacteriana.',
-        'El ácido acético puro se congela a solo 16.6 °C; por eso en días frescos de invierno se solidifica en láminas parecidas al hielo y se le llama "ácido acético glacial".',
-        'En estado líquido forma pares llamados dímeros cíclicos: dos moléculas se abrazan mutuamente mediante dos puentes de hidrógeno opuestos.',
-        'En la época romana, hervían vino agrio en vasijas de plomo para obtener un jarabe dulce llamado sapa (acetato de plomo), sin saber que era neurotóxico.',
+    "didactica": {
+      "descripcionCientifica": "Haloalcano derivado del metano por sustitución de tres hidrógenos por átomos de cloro. El carbono central presenta hibridación sp³ con geometría tetraédrica asimétrica distorsionada (grupo puntual C₃v). El mayor volumen estérico de los cloros amplía el ángulo Cl-C-Cl a 110.4° y comprime el ángulo H-C-Cl a 108.5°. Debido a la diferencia de electronegatividad entre el enlace C-H y los tres enlaces polares C-Cl, los dipolos de enlace no se cancelan, confiriéndole un momento dipolar permanente neto.",
+      "datosCuriosos": [
+        "En 1847 el médico James Simpson descubrió sus efectos anestésicos; cobró fama mundial cuando la Reina Victoria lo inhaló durante el nacimiento del príncipe Leopoldo en 1853.",
+        "Expuesto al aire y a la luz solar se oxida fotoquímicamente generando fosgeno (COCl₂), un gas extremadamente tóxico y asfixiante empleado como arma química en la Primera Guerra Mundial.",
+        "Es un líquido notablemente denso (d ≈ 1.49 g/cm³, casi 1.5 veces más denso que el agua): al mezclarse con agua en un tubo de decantación forma siempre la fase inferior.",
+        "En el cine se suele mostrar que un trapo con cloroformo duerme a una persona en dos segundos, pero en la realidad clínica se requerían entre 5 y 10 minutos de inhalación continua para inducir anestesia."
       ],
-      usosVidaCotidiana: [
-        'Aderezo culinario y conservante antimicrobiano de encurtidos en forma de vinagre.',
-        'Desincrustante casero ecológico para remover el sarro (carbonato de calcio) de hervidores eléctricos y teteras.',
-        'Fabricación de acetato de celulosa para fibras textiles y monturas de anteojos.',
-        'Síntesis del monómero acetato de vinilo para la fabricación de cola fría (adhesivo PVA).',
+      "usosVidaCotidiana": [
+        "Solvente de extracción y partición de principios activos, alcaloides y antibióticos en la industria químico-farmacéutica.",
+        "Precursor industrial en la síntesis del monómero tetrafluoroetileno para la fabricación de politetrafluoroetileno (Teflón).",
+        "Disolvente deuterado universal (CDCl₃) en espectroscopía de Resonancia Magnética Nuclear (RMN).",
+        "Reactivo químico en la síntesis de refrigerantes hidroclorofluorocarbonados (HCFC-22)."
       ],
-      geometriaMolecular: 'Trigonal plana en C=O (120°), Angular en O-H (~104.5°) y Tetraédrica en metilo (109.5°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'Molécula fuertemente polar (μ = 1.74 D en fase gaseosa) gracias a la asimetría dipolar del grupo carboxilo (-COOH), con un carbonilo aceptor y un hidroxilo donante de puentes de hidrógeno.',
+      "geometriaMolecular": "Tetraédrica distorsionada en C (Cl-C-Cl: 110.4°, H-C-Cl: 108.5°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Momento dipolar permanente significativo (μ = 1.15 D). Los tres dipolos de enlace C-Cl apuntan hacia los vértices de la base clorada y no son contrarrestados por el enlace C-H, generando una resultante neta que apunta hacia los cloros."
     },
-    kitFisico: {
-      esferas: { C: 2, H: 4, O: 2 },
-      conectores: { cortosRigidos: 6, largosFlexibles: 2 },
-      descripcionConectores: '8 conectores: 2 flexibles para el doble enlace C=O y 6 cortos rígidos para enlaces simples.',
-      tipsArmado: 'El carbono carboxílico central se une a 2 oxígenos distintos: uno con doble enlace (2 conectores flexibles) y otro con enlace simple (1 conector rígido). ¡El hidrógeno ácido debe ir conectado al oxígeno simple, no al carbono!',
+    "kitFisico": {
+      "esferas": {
+        "C": 1,
+        "H": 1,
+        "Cl": 3
+      },
+      "conectores": {
+        "cortosRigidos": 4,
+        "largosFlexibles": 0
+      },
+      "descripcionConectores": "4 conectores cortos rígidos para los 4 enlaces simples covalentes tetraédricos.",
+      "tipsArmado": "Toma la esfera negra de carbono (4 orificios tetraédricos). Inserta conectores rígidos en los 4 orificios. En 3 de ellos coloca esferas verdes de cloro formando un trípode piramidal, y en el orificio superior coloca la pequeña esfera blanca de hidrógeno."
     },
-    trivia: {
-      pregunta: 'Al disolverse en agua, el ácido acético (CH₃-COOH) cede el protón H⁺ del grupo hidroxilo. ¿Qué fenómeno electrónico otorga estabilidad a la base conjugada anión acetato (CH₃-COO⁻)?',
-      opciones: [
-        'La precipitación de enlaces metálicos entre los hidrógenos del grupo metilo.',
-        'La absorción de neutrones por parte del carbono carboxílico sp².',
-        'La deslocalización electrónica por resonancia de la carga negativa entre los dos átomos de oxígeno equivalentes.',
-        'La reconfiguración del anión en una geometría lineal con hibridación sp del grupo carboxilo.',
+    "trivia": {
+      "pregunta": "A pesar de poseer una geometría tetraédrica similar a la del metano (CH₄) y tetracloruro de carbono (CCl₄), ¿por qué el cloroformo (CHCl₃) es una molécula netamente polar (μ = 1.15 D) mientras que CH₄ y CCl₄ son apolares (μ = 0 D)?",
+      "opciones": [
+        "Porque la presencia de un enlace C-H y tres enlaces C-Cl rompe la simetría tetraédrica perfecta (C₃v vs Td); los tres dipolos C-Cl no se anulan vectorialmente con el dipolo C-H.",
+        "Porque los tres átomos de cloro forman dobles enlaces resonantes que giran en el plano.",
+        "Porque el átomo de hidrógeno adquiere carga parcial negativa mientras el carbono se neutraliza.",
+        "Porque el cloroformo tiene una geometría plana trigonal donde los cloros se agrupan en un lado."
       ],
-      respuestaCorrecta: 2,
-      explicacion: 'Al perder el protón H⁺, la carga negativa resultante no queda confinada a un solo átomo de oxígeno, sino que se distribuye de manera simétrica y equitativa entre los dos oxígenos a través de un sistema pi deslocalizado por resonancia. Esta deslocalización disminuye la densidad de carga local y estabiliza termodinámicamente al anión acetato.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "La polaridad molecular depende de la suma vectorial de los dipolos de enlace en el espacio 3D. En el tetracloruro de carbono (CCl₄), los 4 enlaces idénticos orientados hacia los vértices de un tetraedro regular cancelan vectorialmente sus dipolos a cero exacto. En el cloroformo (CHCl₃), al sustituirse un cloro por un hidrógeno de mucha menor electronegatividad, se destruye la compensación simétrica y el dipolo neto resultante es de μ = 1.15 D."
+    }
   },
-
-  // =========================================================================
-  // 8. ACETATO DE ETILO (C₄H₈O₂ / Etanoato de etilo) — Desafío Avanzado
-  // =========================================================================
   {
-    id: 'ethyl-acetate',
-    name: 'Acetato de Etilo',
-    iupacName: 'Etanoato de etilo',
-    formula: 'C₄H₈O₂',
-    molarMass: 88.106,
-    classification: 'Éster carboxílico alifático',
-    difficultyLevel: 'avanzado',
-    timeLimitSeconds: 150,
-    atoms: [
-      { id: 'ea-c2', element: 'C', symbol: 'C', label: 'C=O', x: -1.256, y: 0.448, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp2' },
-      { id: 'ea-o1', element: 'O', symbol: 'O', label: 'O=', x: -1.306, y: 1.648, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp2' },
-      { id: 'ea-c1', element: 'C', symbol: 'C', label: 'C1', x: -2.496, y: -0.412, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ea-h3', element: 'H', symbol: 'H', label: 'H1a', x: -2.396, y: -1.492, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-h4', element: 'H', symbol: 'H', label: 'H1b', x: -3.076, y: -0.122, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-h5', element: 'H', symbol: 'H', label: 'H1c', x: -3.076, y: -0.122, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-o2', element: 'O', symbol: 'O', label: '-O-', x: -0.096, y: -0.262, z: 0.000, color: CPK_COLORS.O, radius: ATOM_RADII.O, hybridization: 'sp3' },
-      { id: 'ea-c3', element: 'C', symbol: 'C', label: 'C3', x: 1.134, y: 0.498, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ea-h8', element: 'H', symbol: 'H', label: 'H3a', x: 1.154, y: 1.148, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-h9', element: 'H', symbol: 'H', label: 'H3b', x: 1.154, y: 1.148, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-c4', element: 'C', symbol: 'C', label: 'C4', x: 2.334, y: -0.442, z: 0.000, color: CPK_COLORS.C, radius: ATOM_RADII.C, hybridization: 'sp3' },
-      { id: 'ea-h11', element: 'H', symbol: 'H', label: 'H4a', x: 3.264, y: 0.128, z: 0.000, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-h12', element: 'H', symbol: 'H', label: 'H4b', x: 2.334, y: -1.082, z: 0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
-      { id: 'ea-h13', element: 'H', symbol: 'H', label: 'H4c', x: 2.334, y: -1.082, z: -0.890, color: CPK_COLORS.H, radius: ATOM_RADII.H, hybridization: 's' },
+    "id": "carbon-tetrachloride",
+    "name": "Tetracloruro de Carbono",
+    "iupacName": "Tetraclorometano",
+    "formula": "CCl₄",
+    "molarMass": 153.823,
+    "classification": "Haloalcano simétrico / Tetraédrica regular (109.5°)",
+    "difficultyLevel": "intermedio",
+    "timeLimitSeconds": 90,
+    "atoms": [
+      {
+        "id": "ccl4-c",
+        "element": "C",
+        "symbol": "C",
+        "label": "C",
+        "x": 0.0,
+        "y": 0.0,
+        "z": 0.0,
+        "color": "#262626",
+        "radius": 0.45,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ccl4-cl1",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl1",
+        "x": 1.022,
+        "y": 1.022,
+        "z": 1.022,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ccl4-cl2",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl2",
+        "x": -1.022,
+        "y": -1.022,
+        "z": 1.022,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ccl4-cl3",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl3",
+        "x": -1.022,
+        "y": 1.022,
+        "z": -1.022,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ccl4-cl4",
+        "element": "Cl",
+        "symbol": "Cl",
+        "label": "Cl4",
+        "x": 1.022,
+        "y": -1.022,
+        "z": -1.022,
+        "color": "#10B981",
+        "radius": 0.48,
+        "hybridization": "sp3"
+      }
     ],
-    bonds: [
-      { id: 'ea-b0', from: 0, to: 1, order: 2 },  // C2=O1
-      { id: 'ea-b1', from: 0, to: 2, order: 1 },  // C2-C1
-      { id: 'ea-b2', from: 2, to: 3, order: 1 },  // C1-H
-      { id: 'ea-b3', from: 2, to: 4, order: 1 },  // C1-H
-      { id: 'ea-b4', from: 2, to: 5, order: 1 },  // C1-H
-      { id: 'ea-b5', from: 0, to: 6, order: 1 },  // C2-O2
-      { id: 'ea-b6', from: 6, to: 7, order: 1 },  // O2-C3
-      { id: 'ea-b7', from: 7, to: 8, order: 1 },  // C3-H
-      { id: 'ea-b8', from: 7, to: 9, order: 1 },  // C3-H
-      { id: 'ea-b9', from: 7, to: 10, order: 1 }, // C3-C4
-      { id: 'ea-b10', from: 10, to: 11, order: 1 }, // C4-H
-      { id: 'ea-b11', from: 10, to: 12, order: 1 }, // C4-H
-      { id: 'ea-b12', from: 10, to: 13, order: 1 }, // C4-H
+    "bonds": [
+      {
+        "id": "ccl4-b1",
+        "from": 0,
+        "to": 1,
+        "order": 1
+      },
+      {
+        "id": "ccl4-b2",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      },
+      {
+        "id": "ccl4-b3",
+        "from": 0,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "ccl4-b4",
+        "from": 0,
+        "to": 4,
+        "order": 1
+      }
     ],
-    didactica: {
-      descripcionCientifica: 'Éster orgánico producto de la condensación (esterificación de Fischer) entre el ácido acético y el etanol. Su núcleo comprende un grupo carbonilo plano (sp²) unido por un puente de oxígeno éster (-O-) a una cadena etilo. Al no poseer átomos de hidrógeno unidos directamente a oxígenos, no puede formar puentes de hidrógeno consigo mismo, resultando en un punto de ebullición bajo (77 °C) a pesar de sus 14 átomos.',
-      datosCuriosos: [
-        'Tiene un agradable e inconfundible aroma a manzana verde, pera y piña; es el compuesto aromatizante natural de muchas frutas y golosinas.',
-        'Es el solvente principal en los quitaesmaltes ecológicos "libres de acetona", ya que es mucho más suave para la piel y cutículas.',
-        'En entomología se emplea en los frascos de captura para sacrificar insectos sin endurecer sus patas ni degradar su ADN.',
-        'En la enología y producción de vinos chilenos, pequeñas trazas aportan notas frutales a manzana verde, pero una concentración excesiva delata la alteración bacteriana conocida como "picado del vino".',
+    "didactica": {
+      "descripcionCientifica": "Haloalcano perclorado derivado de la sustitución total de los hidrógenos del metano por cuatro átomos de cloro. El carbono central presenta hibridación sp³ en el centro de un tetraedro regular perfecto de alta simetría (grupo puntual Td) con ángulos de enlace exactos de 109.47°. Aunque cada enlace C-Cl es individualmente muy polar por la diferencia de electronegatividad (ΔEN = 0.61), la disposición espacial tetraédrica anula vectorialmente todos los momentos dipolares, resultando en una molécula rigurosamente apolar.",
+      "datosCuriosos": [
+        "En el siglo XX se utilizó ampliamente en tintorerías para lavado en seco y en extintores de incendios portátiles, hasta que se demostró su alta hepatotoxicidad y su efecto destructor de la capa de ozono.",
+        "Fue prohibido a escala planetaria por el Protocolo de Montreal de 1987 debido a su alto potencial de agotamiento del ozono estratosférico.",
+        "Es un líquido extraordinariamente denso e inmiscible con agua (densidad de 1.59 g/cm³): si se junta con agua forma dos capas separadas donde el agua flota nítidamente en la parte superior.",
+        "A diferencia de los hidrocarburos no es combustible en aire: al calentarse no arde, sino que genera una capa densa de vapor clorado que extingue las llamas por sofocación de oxígeno."
       ],
-      usosVidaCotidiana: [
-        'Disolvente quitaesmalte no agresivo para uñas y barnices.',
-        'Extracción de cafeína en el procesamiento de café y té descafeinados.',
-        'Aromatizante y potenciador de sabor en caramelos, chicles y repostería.',
-        'Solvente en barnices flexográficos, adhesivos sintéticos y tintas de imprenta.',
+      "usosVidaCotidiana": [
+        "Disolvente apolar de referencia en laboratorios para disolver ceras, grasas pesadas, yodo molecular elemental y fósforo blanco.",
+        "Precursor histórico industrial en la fabricación masiva de los clorofluorocarbonos CFC-11 y CFC-12.",
+        "Reactivo sintético en química orgánica en la reacción de halogenación selectiva de Appel para convertir alcoholes en cloruros.",
+        "Líquido patrón de alta densidad y baja viscosidad para calibración de viscosímetros e investigaciones termodinámicas."
       ],
-      geometriaMolecular: 'Trigonal plana en C=O (120°), Angular en O éster (~109.5°) y Tetraédrica en carbonos (109.5°)',
-      polaridad: 'polar',
-      justificacionPolaridad: 'Polaridad neta moderada (μ = 1.78 D) originada por el dipolo del grupo carbonilo C=O y los pares no enlazantes del oxígeno éster, actuando como aceptor de puentes de hidrógeno.',
+      "geometriaMolecular": "Tetraédrica regular (109.5°)",
+      "polaridad": "apolar",
+      "justificacionPolaridad": "Momento dipolar neto exactamente nulo (μ = 0.00 D). La simetría tetraédrica regular perfecta (Td) provoca que los cuatro momentos dipolares de enlace C-Cl idénticos se anulen mutuamente por suma vectorial en las tres dimensiones espaciales."
     },
-    kitFisico: {
-      esferas: { C: 4, H: 8, O: 2 },
-      conectores: { cortosRigidos: 12, largosFlexibles: 2 },
-      descripcionConectores: '14 conectores: 2 flexibles para el doble enlace C=O y 12 cortos rígidos para enlaces simples.',
-      tipsArmado: '¡Desafío Avanzado de 14 átomos! Divide y vencerás: 1° Construye el grupo acetilo izquierdo (CH₃-C=O con 2 flexibles en el doble enlace), 2° Conecta el oxígeno puente (-O-), 3° Añade el grupo etilo derecho (-CH₂-CH₃) en el otro extremo del oxígeno puente. ¡No conectes los dos oxígenos juntos!',
+    "kitFisico": {
+      "esferas": {
+        "C": 1,
+        "Cl": 4
+      },
+      "conectores": {
+        "cortosRigidos": 4,
+        "largosFlexibles": 0
+      },
+      "descripcionConectores": "4 conectores cortos rígidos para los cuatro enlaces simples C-Cl equivalentes en geometría tetraédrica regular.",
+      "tipsArmado": "Toma la esfera negra de carbono (con 4 orificios tetraédricos a 109.5°). Inserta un conector rígido en cada uno de los 4 orificios y monta una esfera verde de cloro en cada punta. Comprueba que al rotar la molécula se ve exactamente igual desde cualquier perspectiva."
     },
-    trivia: {
-      pregunta: 'A pesar de tener una masa molar significativamente mayor (88 g/mol) que el ácido acético (60 g/mol) y el etanol (46 g/mol), el acetato de etilo hierve a solo 77 °C. ¿A qué se debe esta propiedad física?',
-      opciones: [
-        'A que el acetato de etilo es un compuesto iónico que sublima a presiones reducidas.',
-        'A que los enlaces simples C-C se descomponen antes de alcanzar la temperatura de ebullición.',
-        'A que la molécula es completamente plana, lo que impide cualquier interacción electrostática.',
-        'A que no posee átomos de hidrógeno unidos directamente al oxígeno, impidiéndole formar puentes de hidrógeno entre sus propias moléculas.',
+    "trivia": {
+      "pregunta": "El tetracloruro de carbono (CCl₄) contiene cuatro enlaces covalentes fuertemente polares C-Cl, pero su momento dipolar neto experimental es estrictamente cero (μ = 0 D). ¿Qué principio geométrico y vectorial justifica esta propiedad?",
+      "opciones": [
+        "La simetría tetraédrica regular perfecta (Td) orienta los 4 vectores dipolares hacia los vértices de un tetraedro a 109.5°, haciendo que su suma vectorial espacial resulte exactamente igual a cero.",
+        "Los átomos de cloro transfieren sus pares libres al núcleo del carbono cancelando la diferencia de electronegatividad.",
+        "La molécula vibra a una frecuencia que anula el campo eléctrico externo de forma periódica.",
+        "Los enlaces C-Cl se convierten en covalentes apolares por resonancia en el estado fundamental."
       ],
-      respuestaCorrecta: 3,
-      explicacion: 'Tanto el ácido acético como el etanol poseen enlaces O-H que les permiten actuar como donantes y aceptores de puentes de hidrógeno intermoleculares (fuerzas intermoleculares muy intensas que elevan sus puntos de ebullición). El acetato de etilo es un éster cuyos hidrógenos están enlazados exclusivamente a carbonos (C-H); por tanto, entre moléculas de éster solo existen interacciones dipolo-dipolo y de London, mucho más débiles.',
-    },
+      "respuestaCorrecta": 0,
+      "explicacion": "Una molécula con enlaces polares puede ser macroscópicamente apolar si su geometría molecular es simétrica. En el CCl₄, el carbono sp³ se sitúa en el centro de un tetraedro regular: los cuatro dipolos de enlace C-Cl poseen la misma magnitud y se proyectan en ángulos mutuos de 109.5°. La suma vectorial de cuatro vectores de igual magnitud dirigidos a los vértices de un tetraedro regular es algebraicamente idéntica a cero: Σ μ = 0."
+    }
   },
+  {
+    "id": "acetone",
+    "name": "Acetona",
+    "iupacName": "Propan-2-ona",
+    "formula": "C₃H₆O",
+    "molarMass": 58.08,
+    "classification": "Cetona alifática / Carbonilo plano trigonal (sp²)",
+    "difficultyLevel": "intermedio",
+    "timeLimitSeconds": 90,
+    "atoms": [
+      {
+        "id": "ace-c2",
+        "element": "C",
+        "symbol": "C",
+        "label": "C=O",
+        "x": 0.0,
+        "y": 0.421,
+        "z": 0.0,
+        "color": "#262626",
+        "radius": 0.45,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "ace-o",
+        "element": "O",
+        "symbol": "O",
+        "label": "O",
+        "x": 0.0,
+        "y": 1.641,
+        "z": 0.0,
+        "color": "#EF4444",
+        "radius": 0.4,
+        "hybridization": "sp2"
+      },
+      {
+        "id": "ace-c1",
+        "element": "C",
+        "symbol": "C",
+        "label": "C1",
+        "x": -1.281,
+        "y": -0.379,
+        "z": 0.0,
+        "color": "#262626",
+        "radius": 0.45,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ace-c3",
+        "element": "C",
+        "symbol": "C",
+        "label": "C3",
+        "x": 1.281,
+        "y": -0.379,
+        "z": 0.0,
+        "color": "#262626",
+        "radius": 0.45,
+        "hybridization": "sp3"
+      },
+      {
+        "id": "ace-h1a",
+        "element": "H",
+        "symbol": "H",
+        "label": "H1a",
+        "x": -1.516,
+        "y": 0.685,
+        "z": 0.0,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "ace-h1b",
+        "element": "H",
+        "symbol": "H",
+        "label": "H1b",
+        "x": -1.743,
+        "y": -0.668,
+        "z": 0.89,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "ace-h1c",
+        "element": "H",
+        "symbol": "H",
+        "label": "H1c",
+        "x": -1.743,
+        "y": -0.668,
+        "z": -0.89,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "ace-h3a",
+        "element": "H",
+        "symbol": "H",
+        "label": "H3a",
+        "x": 1.516,
+        "y": 0.685,
+        "z": 0.0,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "ace-h3b",
+        "element": "H",
+        "symbol": "H",
+        "label": "H3b",
+        "x": 1.743,
+        "y": -0.668,
+        "z": 0.89,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      },
+      {
+        "id": "ace-h3c",
+        "element": "H",
+        "symbol": "H",
+        "label": "H3c",
+        "x": 1.743,
+        "y": -0.668,
+        "z": -0.89,
+        "color": "#FFFFFF",
+        "radius": 0.25,
+        "hybridization": "s"
+      }
+    ],
+    "bonds": [
+      {
+        "id": "ace-b0",
+        "from": 0,
+        "to": 1,
+        "order": 2
+      },
+      {
+        "id": "ace-b1",
+        "from": 0,
+        "to": 2,
+        "order": 1
+      },
+      {
+        "id": "ace-b2",
+        "from": 0,
+        "to": 3,
+        "order": 1
+      },
+      {
+        "id": "ace-b3",
+        "from": 2,
+        "to": 4,
+        "order": 1
+      },
+      {
+        "id": "ace-b4",
+        "from": 2,
+        "to": 5,
+        "order": 1
+      },
+      {
+        "id": "ace-b5",
+        "from": 2,
+        "to": 6,
+        "order": 1
+      },
+      {
+        "id": "ace-b6",
+        "from": 3,
+        "to": 7,
+        "order": 1
+      },
+      {
+        "id": "ace-b7",
+        "from": 3,
+        "to": 8,
+        "order": 1
+      },
+      {
+        "id": "ace-b8",
+        "from": 3,
+        "to": 9,
+        "order": 1
+      }
+    ],
+    "didactica": {
+      "descripcionCientifica": "La cetona alifática más elemental. Su núcleo comprende un grupo carbonilo central cuyo carbono presenta hibridación sp² con geometría trigonal plana (~120°), enlazado mediante un doble enlace (σ y π) a un oxígeno electronegativo y mediante enlaces simples a dos grupos metilo tetraédricos (-CH₃, sp³). La notable polarización de la unión C=O confiere a la molécula un elevado momento dipolar permanente, haciéndola un solvente polar aprótico arquetípico.",
+      "datosCuriosos": [
+        "El cuerpo humano produce acetona de forma fisiológica durante la cetosis (ayuno prolongado, dietas cetogénicas o diabetes descompensada), expulsándose por la respiración y otorgando el característico 'aliento cetónico'.",
+        "Colapsa el poliestireno expandido (plumavit) de forma casi mágica: disuelve de inmediato la matriz polimérica liberando más del 95% de aire atrapado en su volumen.",
+        "Es el solvente de limpieza por excelencia en laboratorios de química: disuelve grasas, es totalmente miscible con agua y con disolventes orgánicos, y se evapora a 56 °C sin dejar marcas.",
+        "Durante la Primera Guerra Mundial se produjo a escala colosal mediante fermentación bacteriana bacteriana con Clostridium acetobutylicum (proceso Weizmann) para fabricar la pólvora cordita."
+      ],
+      "usosVidaCotidiana": [
+        "Quitaesmalte tradicional de uñas y removedor eficaz de pegamentos instantáneos de cianoacrilato.",
+        "Limpieza y desengrasado profundo de componentes mecánicos, electrónicos y material de laboratorio.",
+        "Disolvente industrial de resinas, lacas, esmaltes sintéticos y pinturas epóxicas.",
+        "Materia prima en la síntesis del monómero metacrilato de metilo (acrílico transparente) y bisfenol A."
+      ],
+      "geometriaMolecular": "Trigonal plana en C=O (120°) y Tetraédrica en metilos (109.5°)",
+      "polaridad": "polar",
+      "justificacionPolaridad": "Elevado momento dipolar neto (μ = 2.88 D) debido a la fuerte polarización del enlace carbonílico C=O (oxígeno con dos pares libres no enlazantes) no compensada por los metilos alifáticos."
+    },
+    "kitFisico": {
+      "esferas": {
+        "C": 3,
+        "H": 6,
+        "O": 1
+      },
+      "conectores": {
+        "cortosRigidos": 8,
+        "largosFlexibles": 2
+      },
+      "descripcionConectores": "10 conectores: 2 largos flexibles para el doble enlace C=O y 8 cortos rígidos para enlaces simples (2 C-C y 6 C-H).",
+      "tipsArmado": "¡Cuidado con el carbono central! Debe tener geometría trigonal plana (120°). Únelo al oxígeno rojo usando los 2 tubos flexibles simultáneos para el doble enlace C=O. Luego acopla los 2 carbonos metilo a los lados (con 3 hidrógenos cada uno)."
+    },
+    "trivia": {
+      "pregunta": "¿Qué tipo de hibridación orbital presenta el carbono central del grupo carbonilo (C=O) en la acetona y qué características geométricas y de enlaces genera?",
+      "opciones": [
+        "Hibridación sp² con geometría trigonal plana (~120°), formando un enlace sigma (σ) y un enlace pi (π) con el oxígeno.",
+        "Hibridación sp con geometría lineal (180°) y dos enlaces pi concéntricos.",
+        "Hibridación sp³ con geometría tetraédrica (109.5°) y dos enlaces sigma coaxiales.",
+        "Hibridación sp³d con geometría bipiramidal trigonal y enlaces dativos coordinados."
+      ],
+      "respuestaCorrecta": 0,
+      "explicacion": "El carbono carbonílico forma 3 enlaces sigma (σ) coplanares a ~120° empleando orbitales híbridos sp² (dos dirigidos a los carbonos de los metilos y uno hacia el oxígeno). El orbital 2p puro restante perpendicular al plano se solapa lateralmente con un orbital p del oxígeno para formar el enlace pi (π) que compone la doble ligadura C=O."
+    }
+  }
 ];
 
 export const getMoleculeById = (id: string): MoleculeData | undefined => {

@@ -31,6 +31,19 @@ const SIMULATED_STATIONS_COUNT = parseInt(process.argv[2] || '10', 10);
 const TEST_DURATION_SECONDS = parseInt(process.argv[3] || '12', 10);
 const TEST_DURATION_MS = TEST_DURATION_SECONDS * 1000;
 
+// Dataset de 9 moléculas oficiales VcM
+const DATASET_MOLECULES = [
+  'ozone',
+  'hydrogen-chloride',
+  'sulfuric-acid',
+  'copper-sulfate',
+  'water',
+  'silver-chloride',
+  'chloroform',
+  'carbon-tetrachloride',
+  'acetone',
+];
+
 // Métricas globales de la prueba
 const metrics = {
   healthCheckPassed: false,
@@ -235,11 +248,13 @@ async function runTestSuite() {
       }
       const now = performance.now();
       const requestId = `req-${id}-${Date.now()}-${Math.random().toString(36).substring(2, 6)}`;
+      const molIdx = (id - 1 + metrics.scoresSent) % DATASET_MOLECULES.length;
+      const completedMoleculeId = DATASET_MOLECULES[molIdx];
 
       socket.emit('score-updated', {
         teamId,
         scoreDelta,
-        completedMoleculeId: 'water',
+        completedMoleculeId,
         timeBonus: 15,
         triviaBonus: 100,
         totalEarned,
@@ -309,9 +324,15 @@ async function runTestSuite() {
   setTimeout(() => {
     console.log('\n▶️ [Paso 7] Probando flujo de canje de códigos de mesa (redeem-code)...');
     const testCodes = [
-      { teamId: 'team-alfa', score: 175, code: 'ALFA-850', moleculeId: 'ethanol' },
-      { teamId: 'team-beta', score: 150, code: 'BETA-720', moleculeId: 'acetone' },
-      { teamId: 'team-gamma', score: 200, code: 'GAM-1000', moleculeId: 'acetic-acid' },
+      { teamId: 'team-alfa', score: 175, code: 'ALFA-850', moleculeId: 'ozone' },
+      { teamId: 'team-beta', score: 150, code: 'BETA-720', moleculeId: 'hydrogen-chloride' },
+      { teamId: 'team-gamma', score: 200, code: 'GAM-1000', moleculeId: 'sulfuric-acid' },
+      { teamId: 'team-alfa', score: 180, code: 'ALFA-900', moleculeId: 'copper-sulfate' },
+      { teamId: 'team-beta', score: 160, code: 'BETA-800', moleculeId: 'water' },
+      { teamId: 'team-gamma', score: 190, code: 'GAM-950', moleculeId: 'silver-chloride' },
+      { teamId: 'team-alfa', score: 185, code: 'ALFA-920', moleculeId: 'chloroform' },
+      { teamId: 'team-beta', score: 170, code: 'BETA-850', moleculeId: 'carbon-tetrachloride' },
+      { teamId: 'team-gamma', score: 210, code: 'GAM-1050', moleculeId: 'acetone' },
     ];
 
     testCodes.forEach((sample) => {

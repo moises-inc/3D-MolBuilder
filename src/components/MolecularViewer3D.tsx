@@ -338,6 +338,10 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
           case 'C': r = 1.15; break;
           case 'N': r = 1.05; break;
           case 'O': r = 1.00; break;
+          case 'Cl': r = 1.25; break;
+          case 'S': r = 1.30; break;
+          case 'Cu': r = 1.35; break;
+          case 'Ag': r = 1.40; break;
           default: r = 1.00;
         }
       } else if (isWireframe) {

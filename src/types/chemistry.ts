@@ -3,7 +3,7 @@
  * Universidad San Sebastián (USS) - Vinculación con el Medio
  */
 
-export type ElementSymbol = 'C' | 'H' | 'O' | 'N' | 'Cl' | 'S';
+export type ElementSymbol = 'C' | 'H' | 'O' | 'N' | 'Cl' | 'S' | 'Cu' | 'Ag';
 export type Hybridization = 'sp3' | 'sp2' | 'sp' | 's' | 'none';
 export type DifficultyLevel = 'facil' | 'intermedio' | 'avanzado';
 export type Polarity = 'polar' | 'apolar';

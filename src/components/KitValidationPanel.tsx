@@ -125,6 +125,8 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
     N: { name: 'Nitrógeno (Azul)', textColor: 'text-blue-400' },
     Cl: { name: 'Cloro (Verde)', textColor: 'text-emerald-400' },
     S: { name: 'Azufre (Amarillo)', textColor: 'text-amber-400' },
+    Cu: { name: 'Cobre (Bronce)', textColor: 'text-amber-500' },
+    Ag: { name: 'Plata (Plateado)', textColor: 'text-slate-300' },
   };
 
   return (
