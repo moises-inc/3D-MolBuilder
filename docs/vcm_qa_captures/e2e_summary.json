@@ -2,7 +2,7 @@
   "timestamp": "2026-09-12T21:48:06.319Z",
   "tool": "Playwright Real Browser E2E Suite",
   "environment": {
-    "chromiumPath": "/home/moises/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome",
+    "chromiumPath": "system-default",
     "viewportsTested": [
       "1920x1080 (PC Proyector)",
       "1366x768 (Notebook Escolar)"

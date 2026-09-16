@@ -10,18 +10,26 @@
  * - PIDE Core (:5173): 5 módulos analíticos, enlace a MolBuilder y responsividad 1366x768 / 1080p.
  */
 
-import playwrightCore from '/home/moises/.nvm/versions/node/v20.20.2/lib/node_modules/@playwright/cli/node_modules/playwright-core/index.js';
 import fs from 'fs';
 import path from 'path';
 
-const { chromium } = playwrightCore;
+let chromium;
+try {
+  const playwrightCore = await import('playwright-core');
+  chromium = playwrightCore.default?.chromium || playwrightCore.chromium;
+} catch {
+  const customPath = process.env.PLAYWRIGHT_CORE_PATH || 'playwright-core';
+  const playwrightCore = await import(customPath);
+  chromium = playwrightCore.default?.chromium || playwrightCore.chromium;
+}
 
-const CAPTURES_DIR = '/tmp/vcm_qa_captures';
+const CAPTURES_DIR = process.env.CAPTURES_DIR || '/tmp/vcm_qa_captures';
 if (!fs.existsSync(CAPTURES_DIR)) {
   fs.mkdirSync(CAPTURES_DIR, { recursive: true });
 }
 
-const CHROMIUM_PATH = '/home/moises/.cache/ms-playwright/chromium-1243/chrome-linux64/chrome';
+const CHROMIUM_PATH = process.env.CHROMIUM_PATH || undefined;
+
 
 const consoleLogs = [];
 const pageErrors = [];
