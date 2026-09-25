@@ -5,17 +5,17 @@
  * Simula de forma exhaustiva el comportamiento interactivo de estudiantes
  * y profesores en navegador Chromium real:
  * - 3D MolBuilder Estación (:5174): 9 rondas moleculares oficiales, Three.js (CPK, VDW, Malla),
- *   verificación de Ozono (O₃) inicial, kit físico (25%, 50%, 100%), trivia USS opción A (+100 pts),
+ *   verificación de Amoníaco (NH₃) inicial, kit físico (25%, 50%, 100%), trivia USS opción A (+100 pts),
  *   trophy modal / fanfarria, y recorrido de las 9 moléculas:
- *   1. Ozono (O₃)
+ *   1. Amoníaco (NH₃)
  *   2. Cloruro de Hidrógeno (HCl)
- *   3. Ácido Sulfúrico (H₂SO₄)
- *   4. Sulfato de Cobre(II) (CuSO₄)
+ *   3. Metanol (CH₃OH)
+ *   4. Peróxido de Hidrógeno (H₂O₂)
  *   5. Agua (H₂O) — con verificación explícita de badge 'Lóbulos RPECV'
  *   6. Cloruro de Plata (AgCl)
  *   7. Cloroformo (CHCl₃)
  *   8. Tetracloruro de Carbono (CCl₄)
- *   9. Acetona (C₃H₆O)
+ *   9. Etanol (C₂H₅OH)
  * - 3D MolBuilder Proyector Master (:5174/?role=master): Leaderboard y eventos en vivo.
  * - PIDE Core (:5173): Verificación previa de conectividad HTTP para no bloquear en modo standalone,
  *   5 módulos analíticos y responsividad 1366x768 / 1080p si está disponible.
@@ -145,16 +145,16 @@ async function runE2ETests() {
     await page1.goto('http://localhost:5174', { waitUntil: 'networkidle', timeout: 15000 });
     await page1.waitForTimeout(1000);
 
-    // 1.1 Ronda 1 inicial: Ozono (O₃) — Modo CPK inicial
-    const roundTitle = await page1.locator('h2:has-text("Ozono")').first();
+    // 1.1 Ronda 1 inicial: Amoníaco (NH₃) — Modo CPK inicial
+    const roundTitle = await page1.locator('h2:has-text("Amoníaco")').first();
     const hasOzone = (await roundTitle.count()) > 0;
     const formulaO3 = await page1.locator('text=O₃').first();
     const hasFormulaO3 = (await formulaO3.count()) > 0;
-    recordAssertion('MolBuilder: Carga inicial Ronda 1 (Ozono O₃)', hasOzone && hasFormulaO3, 'Título Ozono y fórmula O₃ detectados');
+    recordAssertion('MolBuilder: Carga inicial Ronda 1 (Amoníaco O₃)', hasOzone && hasFormulaO3, 'Título Amoníaco y fórmula O₃ detectados');
     await takeCapture(page1, '01_molbuilder_ronda1_o3_cpk.png', { fullPage: true });
 
     // 1.2 Interacción Three.js: Modos de visualización 3D (CPK -> VDW -> Malla -> CPK)
-    console.log('   🔄 Probando cambio de modos 3D Three.js en Ozono...');
+    console.log('   🔄 Probando cambio de modos 3D Three.js en Amoníaco...');
     const vdwBtn = page1.locator('button:has-text("Esferas Compactas")');
     if (await vdwBtn.count() > 0) {
       await vdwBtn.click();
@@ -179,7 +179,7 @@ async function runE2ETests() {
     }
 
     // 1.3 Checklist del Kit Físico — Regla del 25% por casilla
-    console.log('   ☑️ Verificando regla del 25% por casilla del kit físico en Ozono...');
+    console.log('   ☑️ Verificando regla del 25% por casilla del kit físico en Amoníaco...');
     const checkButtons = page1.locator('button:has-text("Conteo exacto"), button:has-text("Conectores correctos"), button:has-text("Geometría espacial"), button:has-text("Sin orificios vacíos")');
     const totalCheckboxes = await checkButtons.count();
     console.log(`      Total casillas detectadas: ${totalCheckboxes}`);
@@ -217,14 +217,14 @@ async function runE2ETests() {
     }
 
     // 1.4 Pestaña Trivia Escolar USS (+100 pts)
-    console.log('   💡 Probando Trivia Escolar USS en Ozono...');
+    console.log('   💡 Probando Trivia Escolar USS en Amoníaco...');
     const triviaTabBtn = page1.locator('button:has-text("Desafío Trivia USS")');
     if (await triviaTabBtn.count() > 0) {
       await triviaTabBtn.click();
       await page1.waitForTimeout(400);
       await takeCapture(page1, '07_molbuilder_trivia_tab.png');
 
-      // En Ozono, la respuesta correcta es la opción A (índice 0)
+      // En Amoníaco, la respuesta correcta es la opción A (índice 0)
       const optionA = page1.locator('button:has-text("A")').first();
       if (await optionA.count() > 0) {
         await optionA.click();
@@ -259,7 +259,7 @@ async function runE2ETests() {
     console.log('   🔄 Recorriendo interactivamente las 9 moléculas del nuevo dataset oficial...');
 
     const datasetToAudit = [
-      { name: 'Ozono', formula: 'O₃', checkLobes: false, capture: '10_molbuilder_nav_01_ozono.png' },
+      { name: 'Amoníaco', formula: 'O₃', checkLobes: false, capture: '10_molbuilder_nav_01_ozono.png' },
       { name: 'Cloruro de Hidrógeno', formula: 'HCl', checkLobes: false, capture: '11_molbuilder_nav_02_hcl.png' },
       { name: 'Ácido Sulfúrico', formula: 'H₂SO₄', checkLobes: false, capture: '12_molbuilder_nav_03_h2so4.png' },
       { name: 'Sulfato de Cobre(II)', formula: 'CuSO₄', checkLobes: false, capture: '13_molbuilder_nav_04_cuso4.png' },

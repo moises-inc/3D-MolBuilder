@@ -33,15 +33,15 @@ const TEST_DURATION_MS = TEST_DURATION_SECONDS * 1000;
 
 // Dataset de 9 moléculas oficiales VcM
 const DATASET_MOLECULES = [
-  'ozone',
+  'ammonia',
   'hydrogen-chloride',
-  'sulfuric-acid',
-  'copper-sulfate',
+  'methanol',
+  'hydrogen-peroxide',
   'water',
   'silver-chloride',
   'chloroform',
   'carbon-tetrachloride',
-  'acetone',
+  'ethanol',
 ];
 
 // Métricas globales de la prueba
@@ -324,15 +324,15 @@ async function runTestSuite() {
   setTimeout(() => {
     console.log('\n▶️ [Paso 7] Probando flujo de canje de códigos de mesa (redeem-code)...');
     const testCodes = [
-      { teamId: 'team-alfa', score: 175, code: 'ALFA-850', moleculeId: 'ozone' },
+      { teamId: 'team-alfa', score: 175, code: 'ALFA-850', moleculeId: 'ammonia' },
       { teamId: 'team-beta', score: 150, code: 'BETA-720', moleculeId: 'hydrogen-chloride' },
-      { teamId: 'team-gamma', score: 200, code: 'GAM-1000', moleculeId: 'sulfuric-acid' },
-      { teamId: 'team-alfa', score: 180, code: 'ALFA-900', moleculeId: 'copper-sulfate' },
+      { teamId: 'team-gamma', score: 200, code: 'GAM-1000', moleculeId: 'methanol' },
+      { teamId: 'team-alfa', score: 180, code: 'ALFA-900', moleculeId: 'hydrogen-peroxide' },
       { teamId: 'team-beta', score: 160, code: 'BETA-800', moleculeId: 'water' },
       { teamId: 'team-gamma', score: 190, code: 'GAM-950', moleculeId: 'silver-chloride' },
       { teamId: 'team-alfa', score: 185, code: 'ALFA-920', moleculeId: 'chloroform' },
       { teamId: 'team-beta', score: 170, code: 'BETA-850', moleculeId: 'carbon-tetrachloride' },
-      { teamId: 'team-gamma', score: 210, code: 'GAM-1050', moleculeId: 'acetone' },
+      { teamId: 'team-gamma', score: 210, code: 'GAM-1050', moleculeId: 'ethanol' },
     ];
 
     testCodes.forEach((sample) => {
