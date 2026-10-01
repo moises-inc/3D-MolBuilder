@@ -9,7 +9,6 @@ import {
   Settings, 
   ChevronLeft, 
   ChevronRight, 
-  Flame, 
   Award,
   Tv,
   QrCode
@@ -17,7 +16,6 @@ import {
 import { MoleculeData } from '../types/chemistry';
 import { TeamScore } from '../types/game';
 import { ConnectionStatus } from '../utils/socketSync';
-import { ThemeId, THEME_OPTIONS } from '../types/theme';
 
 interface RoundHeaderProps {
   currentMolecule: MoleculeData;
@@ -37,8 +35,6 @@ interface RoundHeaderProps {
   connectedCount?: number;
   onSwitchToProjector?: () => void;
   onOpenSyncQR?: () => void;
-  currentTheme?: ThemeId;
-  onSelectTheme?: (theme: ThemeId) => void;
 }
 
 export const RoundHeader: React.FC<RoundHeaderProps> = ({
@@ -59,27 +55,25 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
   connectedCount = 1,
   onSwitchToProjector,
   onOpenSyncQR,
-  currentTheme = 'academic',
-  onSelectTheme,
 }) => {
-  const maxTime = currentMolecule.timeLimitSeconds;
+  const maxTime = currentMolecule.timeLimitSeconds || 45;
   const progressPercent = Math.max(0, Math.min(100, (timeLeft / maxTime) * 100));
 
-  // Determine timer color
+  // Determine timer color (Kiosk High-Contrast)
   const isUrgent = timeLeft <= 15;
-  const isWarning = timeLeft > 15 && timeLeft <= 30;
+  const isWarning = timeLeft > 15 && timeLeft <= 25;
 
   const timerColorClass = isUrgent
     ? 'text-red-400 animate-pulse'
     : isWarning
-    ? 'text-amber-400'
-    : 'text-orange-400';
+    ? 'text-amber-300'
+    : 'text-emerald-400';
 
   const timerBarClass = isUrgent
     ? 'bg-red-500 shadow-[0_0_12px_rgba(239,68,68,0.8)]'
     : isWarning
     ? 'bg-amber-400 shadow-[0_0_10px_rgba(251,191,36,0.6)]'
-    : 'bg-orange-500 shadow-[0_0_10px_rgba(249,115,22,0.6)]';
+    : 'bg-emerald-400 shadow-[0_0_10px_rgba(56,239,125,0.7)]';
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -87,58 +81,47 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
-  const headerThemeClass = currentTheme === 'academic'
-    ? 'bg-gradient-to-r from-[#001233] via-[#00205B] to-[#001233] border-b border-[#D4AF37]/50 shadow-md'
-    : currentTheme === 'kiosk'
-    ? 'bg-gradient-to-r from-[#060b1e] via-[#0f1d40] to-[#060b1e] border-b border-emerald-500/50 shadow-lg'
-    : 'bg-black/90 border-b border-oled-border';
-
-  const brandTextClass = currentTheme === 'academic'
-    ? 'text-[#D4AF37]'
-    : currentTheme === 'kiosk'
-    ? 'text-emerald-400'
-    : 'text-orange-400';
-
   return (
-    <header className={`w-full backdrop-blur-md sticky top-0 z-30 px-4 py-2.5 transition-colors duration-300 ${headerThemeClass}`}>
-      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
+    <header className="w-full bg-gradient-to-r from-[#060b1e] via-[#0f1d40] to-[#060b1e] border-b border-emerald-500/40 shadow-lg sticky top-0 z-30 px-3 sm:px-5 py-2">
+      <div className="max-w-7xl mx-auto flex items-center justify-between gap-2 sm:gap-4 flex-wrap">
+        
         {/* Brand & Round Selector */}
-        <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
-          <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 sm:gap-3 shrink-0">
+          <div className="flex items-center gap-2">
             <img 
               src="/assets/uss_shield.png" 
               alt="Universidad San Sebastián" 
-              className="h-9 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.45)] drop-shadow-[0_2px_6px_rgba(0,32,91,0.6)] select-none"
+              className="h-8 sm:h-9 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.4)] select-none"
             />
-            <span className={`font-mono text-base font-bold tracking-wider select-none ${brandTextClass}`}>
+            <span className="font-mono text-sm sm:text-base font-black tracking-wide text-emerald-400 select-none hidden sm:inline">
               3D MolBuilder
             </span>
           </div>
 
-          <div className="h-6 w-px bg-oled-border hidden md:block" />
+          <div className="h-5 w-px bg-slate-700/60 hidden md:block" />
 
-          {/* Molecule navigation carousel */}
-          <div className="flex items-center gap-1 bg-oled-panel p-1 rounded-lg border border-oled-border">
+          {/* Molecule Carousel Navigation */}
+          <div className="flex items-center gap-1 bg-black/50 p-1 rounded-xl border border-emerald-500/30">
             <button
               onClick={() => onSelectIndex(Math.max(0, currentIndex - 1))}
               disabled={currentIndex === 0}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors"
+              className="p-1 text-slate-400 hover:text-emerald-300 disabled:opacity-20 transition-colors"
               title="Molécula anterior"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <div className="px-2 text-center min-w-[120px]">
-              <div className="text-[10px] uppercase font-mono text-slate-400">
-                Ronda {currentIndex + 1} de {totalMolecules}
-              </div>
-              <div className="text-xs font-bold text-white truncate max-w-[140px]">
+            <div className="px-2 text-center min-w-[100px] sm:min-w-[130px]">
+              <span className="text-[10px] uppercase font-mono text-emerald-400/80 font-bold block">
+                Ronda {currentIndex + 1}/{totalMolecules}
+              </span>
+              <span className="text-xs font-black text-white truncate max-w-[110px] sm:max-w-[140px] block">
                 {currentMolecule.name}
-              </div>
+              </span>
             </div>
             <button
               onClick={() => onSelectIndex(Math.min(totalMolecules - 1, currentIndex + 1))}
               disabled={currentIndex === totalMolecules - 1}
-              className="p-1 text-slate-400 hover:text-white disabled:opacity-30 disabled:hover:text-slate-400 transition-colors"
+              className="p-1 text-slate-400 hover:text-emerald-300 disabled:opacity-20 transition-colors"
               title="Siguiente molécula"
             >
               <ChevronRight className="w-4 h-4" />
@@ -146,40 +129,40 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
           </div>
         </div>
 
-        {/* Center: Interactive Countdown Timer */}
-        <div className="flex items-center gap-3 bg-oled-panel px-4 py-1.5 rounded-xl border border-oled-border w-full md:w-auto justify-center">
-          <div className="flex items-center gap-2">
+        {/* Center: Countdown Timer (Despejado & Legible Kiosk) */}
+        <div className="flex items-center gap-2 sm:gap-3 bg-black/60 px-3 py-1 rounded-xl border border-emerald-500/40 shadow-inner">
+          <div className="flex items-center gap-1.5">
             <Timer className={`w-4 h-4 ${timerColorClass}`} />
-            <span className={`text-xl font-mono font-bold tracking-wider ${timerColorClass}`}>
+            <span className={`text-lg sm:text-xl font-mono font-black tracking-wider ${timerColorClass}`}>
               {formatTime(timeLeft)}
             </span>
           </div>
 
           {/* Mini progress bar */}
-          <div className="w-24 h-2 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 hidden sm:block">
+          <div className="w-16 sm:w-20 h-1.5 bg-slate-800 rounded-full overflow-hidden border border-slate-700/50 hidden md:block">
             <div
               className={`h-full transition-all duration-300 ${timerBarClass}`}
               style={{ width: `${progressPercent}%` }}
             />
           </div>
 
-          <div className="flex items-center gap-1 ml-1">
+          <div className="flex items-center gap-1">
             <button
               onClick={onToggleTimer}
-              className={`p-1.5 rounded-md font-bold transition-all text-xs flex items-center gap-1 ${
+              className={`px-2 py-1 rounded-lg font-black transition-all text-xs flex items-center gap-1 shadow-sm ${
                 timerActive
-                  ? 'bg-amber-500/20 text-amber-300 border border-amber-500/40 hover:bg-amber-500/30'
-                  : 'bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 hover:bg-emerald-500/30'
+                  ? 'bg-amber-500/30 text-amber-300 border border-amber-500/60 hover:bg-amber-500/40'
+                  : 'bg-emerald-500 text-black border border-emerald-300 hover:bg-emerald-400 shadow-[0_0_10px_rgba(56,239,125,0.4)]'
               }`}
               title={timerActive ? 'Pausar Tiempo' : 'Iniciar Tiempo de Ronda'}
             >
-              {timerActive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
-              <span>{timerActive ? 'Pausar' : 'Iniciar'}</span>
+              {timerActive ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5 fill-black" />}
+              <span className="hidden sm:inline">{timerActive ? 'Pausar' : 'Iniciar'}</span>
             </button>
 
             <button
               onClick={onResetTimer}
-              className="p-1.5 rounded-md text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
+              className="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-white/10 transition-colors"
               title="Reiniciar cronómetro"
             >
               <RotateCcw className="w-3.5 h-3.5" />
@@ -187,102 +170,76 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
           </div>
         </div>
 
-        {/* Right: Active Team & Score Controls */}
-        <div className="flex items-center gap-2 w-full md:w-auto justify-between md:justify-end">
-          {/* Team Selector Dropdown */}
-          <div className="flex items-center gap-1.5 bg-oled-panel px-2.5 py-1 rounded-lg border border-oled-border">
-            <Users className="w-3.5 h-3.5 text-slate-400" />
-            <select
-              value={activeTeam.id}
-              onChange={(e) => onSelectTeam(e.target.value)}
-              className="bg-transparent text-xs font-semibold text-white focus:outline-none cursor-pointer"
-            >
-              {teams.map((t) => (
-                <option key={t.id} value={t.id} className="bg-slate-900 text-white">
-                  {t.name} ({t.score} pts)
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Current Team Score Badge */}
-          <div className="flex items-center gap-1.5 bg-uss-blue/40 border border-uss-gold/40 px-3 py-1 rounded-lg">
-            <Trophy className="w-3.5 h-3.5 text-uss-goldBright" />
-            <span className="text-xs font-mono font-bold text-uss-goldBright">
-              {activeTeam.score} pts
-            </span>
-          </div>
-
-          {/* Theme Selector (Academic USS / Cyber OLED / Kiosk) */}
-          <div className="flex items-center rounded-lg bg-black/60 p-0.5 border border-white/15 gap-0.5" title="Selector de Tema Visual (Reunión Docente USS)">
-            {THEME_OPTIONS.map((opt) => {
-              const isActive = currentTheme === opt.id;
-              return (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => onSelectTheme?.(opt.id)}
-                  className={`px-2 py-1 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-all ${
-                    isActive
-                      ? opt.id === 'academic'
-                        ? 'bg-[#00205B] text-[#D4AF37] border border-[#D4AF37]/60 shadow-[0_0_8px_rgba(212,175,55,0.3)] font-bold'
-                        : opt.id === 'kiosk'
-                        ? 'bg-emerald-600 text-black border border-emerald-300 shadow-[0_0_8px_rgba(56,239,125,0.4)] font-black'
-                        : 'bg-orange-500/30 text-orange-300 border border-orange-400/60 shadow-[0_0_8px_rgba(249,115,22,0.3)] font-bold'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
-                  }`}
-                  title={`Tema: ${opt.label} — ${opt.description}`}
-                >
-                  <span className="text-xs">{opt.icon}</span>
-                  <span className="hidden xl:inline">{opt.label}</span>
-                </button>
-              );
-            })}
+        {/* Right: Team Selection, Score & Controls */}
+        <div className="flex items-center gap-2 shrink-0">
+          {/* Unified Team Selector + Score Badge */}
+          <div className="flex items-center bg-black/60 rounded-xl border border-emerald-500/40 overflow-hidden shadow-sm">
+            <div className="flex items-center gap-1.5 px-2.5 py-1">
+              <Users className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
+              <select
+                value={activeTeam.id}
+                onChange={(e) => onSelectTeam(e.target.value)}
+                className="bg-transparent text-xs font-bold text-white focus:outline-none cursor-pointer pr-1"
+                title="Seleccionar Equipo Activo"
+              >
+                {teams.map((t) => (
+                  <option key={t.id} value={t.id} className="bg-slate-900 text-white">
+                    {t.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            
+            <div className="bg-emerald-500/20 border-l border-emerald-500/40 px-2.5 py-1 flex items-center gap-1">
+              <Trophy className="w-3.5 h-3.5 text-yellow-400" />
+              <span className="text-xs font-mono font-black text-yellow-300">
+                {activeTeam.score} pts
+              </span>
+            </div>
           </div>
 
           {/* Leaderboard Button */}
           <button
             onClick={onOpenLeaderboard}
-            className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-slate-300 hover:text-white hover:border-slate-500 transition-colors"
+            className="p-2 rounded-xl bg-black/60 border border-emerald-500/40 text-emerald-300 hover:text-white hover:bg-emerald-500/20 hover:border-emerald-400 transition-all shadow-sm"
             title="Ver Tabla de Posiciones"
           >
-            <Award className="w-4 h-4 text-pide-cyan" />
+            <Award className="w-4 h-4 text-emerald-400" />
           </button>
 
-          {/* Fallback QR Modal Button */}
+          {/* Quick QR fallback */}
           {onOpenSyncQR && (
             <button
               onClick={onOpenSyncQR}
-              className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-amber-300 hover:text-white hover:border-amber-500/60 transition-colors"
-              title="Generar Código QR y Código Corto de Mesa"
+              className="p-2 rounded-xl bg-black/60 border border-amber-500/40 text-amber-300 hover:text-white hover:bg-amber-500/20 transition-all"
+              title="Código QR y Respaldo de Ronda"
             >
               <QrCode className="w-4 h-4" />
             </button>
           )}
 
-          {/* Switch to Projector Mode Button */}
+          {/* Switch to Projector */}
           {onSwitchToProjector && (
             <button
               onClick={onSwitchToProjector}
-              className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-cyan-300 hover:text-white hover:border-cyan-500/60 transition-colors flex items-center gap-1 text-xs font-semibold"
-              title="Conmutar a Modo Proyector Central"
+              className="p-2 rounded-xl bg-black/60 border border-cyan-500/40 text-cyan-300 hover:text-white hover:bg-cyan-500/20 transition-all hidden lg:flex items-center gap-1 text-xs font-bold"
+              title="Modo Proyector Central"
             >
-              <Tv className="w-4 h-4 text-pide-cyan" />
-              <span className="hidden sm:inline">Proyector</span>
+              <Tv className="w-4 h-4" />
             </button>
           )}
 
-          {/* LAN Connection LED Indicator (Clic para abrir configuración de red) */}
+          {/* LAN Connection Status */}
           <button 
             type="button"
             onClick={onOpenSettings}
-            className="flex items-center gap-1.5 px-2 py-1 rounded-lg bg-oled-panel border border-oled-border text-[11px] font-mono hover:border-slate-500 transition-colors"
+            className="flex items-center gap-1.5 px-2 py-1.5 rounded-xl bg-black/60 border border-slate-700 text-[11px] font-mono hover:border-slate-500 transition-all"
             title={
               syncStatus === 'connected' 
-                ? `Conectado a Red LAN en tiempo real (${connectedCount} disp.) — Clic para ver detalles de red` 
+                ? `Conectado a Red LAN (${connectedCount} dispositivos) — Clic para configuración` 
                 : syncStatus === 'connecting'
-                ? 'Conectando al servidor LAN... — Clic para configurar IP'
-                : 'Modo Local Offline / Respaldo QR — Clic para configurar IP del Servidor'
+                ? 'Conectando a Red LAN...'
+                : 'Modo Offline — Clic para conectar'
             }
           >
             <span 
@@ -294,20 +251,21 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
                   : 'bg-amber-400 shadow-[0_0_8px_#efb65f]'
               }`} 
             />
-            <span className="text-slate-300 hidden lg:inline">
-              {syncStatus === 'connected' ? 'LAN' : syncStatus === 'connecting' ? 'Conectando...' : 'QR'}
+            <span className="text-slate-300 hidden xl:inline">
+              {syncStatus === 'connected' ? 'LAN' : 'Local'}
             </span>
           </button>
 
           {/* Settings Button */}
           <button
             onClick={onOpenSettings}
-            className="p-1.5 rounded-lg bg-oled-panel border border-oled-border text-slate-300 hover:text-white hover:border-slate-500 transition-colors"
-            title="Configuración de Rondas y Equipos"
+            className="p-2 rounded-xl bg-black/60 border border-slate-700 text-slate-300 hover:text-white hover:border-slate-500 transition-all"
+            title="Configuración de Red y Equipos"
           >
             <Settings className="w-4 h-4" />
           </button>
         </div>
+
       </div>
     </header>
   );

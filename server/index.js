@@ -160,18 +160,18 @@ io.on('connection', (socket) => {
         return;
       }
       const teamId = String(payload.teamId || '').trim();
-      const scoreDelta = Number(payload.scoreDelta) || 0;
-      const totalEarned = Number(payload.totalEarned) || scoreDelta;
+      const scoreDelta = typeof payload.scoreDelta === 'number' ? payload.scoreDelta : (Number(payload.scoreDelta) || 0);
+      const earned = scoreDelta !== 0 ? scoreDelta : (Number(payload.totalEarned) || 0);
       const completedMoleculeId = payload.completedMoleculeId ? String(payload.completedMoleculeId) : undefined;
       const timeBonus = Number(payload.timeBonus) || 0;
       const triviaBonus = Number(payload.triviaBonus) || 0;
 
-      if (!teamId || isNaN(totalEarned)) {
+      if (!teamId || isNaN(earned)) {
         console.warn(`[Socket.io] ⚠️ Datos incompletos en score-updated desde ${socket.id}`);
         return;
       }
 
-      console.log(`[Socket.io] 🏆 Puntaje recibido para ${teamId}: +${totalEarned} pts`);
+      console.log(`[Socket.io] 🏆 Puntaje recibido para ${teamId}: +${earned} pts`);
 
       // Actualizar estado en memoria
       tournamentState.teams = tournamentState.teams.map((t) => {
@@ -181,7 +181,7 @@ io.on('connection', (socket) => {
             : t.completedMolecules;
           return {
             ...t,
-            score: t.score + totalEarned,
+            score: t.score + earned,
             completedMolecules: completed,
           };
         }

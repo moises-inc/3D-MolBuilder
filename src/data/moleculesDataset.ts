@@ -41,7 +41,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 17.031,
     "classification": "Base inorgánica de Lewis / Piramidal trigonal (sp³)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "nh3-n",
@@ -164,7 +164,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 36.461,
     "classification": "Haluro de hidrógeno / Ácido binario hidrácido",
     "difficultyLevel": "facil",
-    "timeLimitSeconds": 60,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "hcl-h",
@@ -251,7 +251,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 32.042,
     "classification": "Alcohol alifático primario / Tetraédrica en C (sp³) y Angular en O (sp³)",
     "difficultyLevel": "avanzado",
-    "timeLimitSeconds": 120,
+    "timeLimitSeconds": 50,
     "atoms": [
       {
         "id": "met-c",
@@ -411,7 +411,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 34.015,
     "classification": "Peróxido inorgánico / Geometría abierta no coplanar (sp³)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "h2o2-o1",
@@ -534,7 +534,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 18.015,
     "classification": "Solvente inorgánico polar / Base hidrolítica universal",
     "difficultyLevel": "facil",
-    "timeLimitSeconds": 60,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "h2o-o",
@@ -639,7 +639,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 143.321,
     "classification": "Sal halógena insoluble / Red iónico-covalente polarizable",
     "difficultyLevel": "facil",
-    "timeLimitSeconds": 60,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "agcl-ag",
@@ -726,7 +726,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 119.378,
     "classification": "Haloalcano / Tetraédrica distorsionada (sp³)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 50,
     "atoms": [
       {
         "id": "chcl3-c",
@@ -868,7 +868,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 153.823,
     "classification": "Haloalcano simétrico / Tetraédrica regular (109.5°)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 50,
     "atoms": [
       {
         "id": "ccl4-c",
@@ -1009,7 +1009,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 46.069,
     "classification": "Alcohol alifático primario / Tetraédrica en C (sp³) y Angular en O (sp³)",
     "difficultyLevel": "avanzado",
-    "timeLimitSeconds": 120,
+    "timeLimitSeconds": 60,
     "atoms": [
       {
         "id": "eth-c1",
@@ -1223,7 +1223,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 84.93,
     "classification": "Haloalcano / Tetraédrica distorsionada (sp³)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "dcm-c",
@@ -1365,7 +1365,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 74.12,
     "classification": "Alcohol terciario alifático / Tetraédrica en carbonos (sp³) y Angular en oxígeno (sp³)",
     "difficultyLevel": "avanzado",
-    "timeLimitSeconds": 120,
+    "timeLimitSeconds": 60,
     "atoms": [
       {
         "id": "tbut-c0",
@@ -1687,7 +1687,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 60.06,
     "classification": "Diamida carbónica / Trigonal plana en C (sp²) y planarizada en N (sp² por resonancia)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 60,
     "atoms": [
       {
         "id": "urea-c",
@@ -1884,7 +1884,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 30.03,
     "classification": "Aldehído alifático / Trigonal plana (sp²)",
     "difficultyLevel": "facil",
-    "timeLimitSeconds": 60,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "form-c",
@@ -2008,7 +2008,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 46.07,
     "classification": "Éter alifático simétrico / Angular en oxígeno (sp³) y Tetraédrica en carbonos (sp³)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 60,
     "atoms": [
       {
         "id": "mox-o",
@@ -2222,7 +2222,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 28.05,
     "classification": "Alqueno lineal / Trigonal plana en ambos carbonos (sp²)",
     "difficultyLevel": "facil",
-    "timeLimitSeconds": 60,
+    "timeLimitSeconds": 45,
     "atoms": [
       {
         "id": "ethene-c1",
@@ -2381,7 +2381,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 62.5,
     "classification": "Haloalqueno / Trigonal plana en ambos carbonos (sp²)",
     "difficultyLevel": "intermedio",
-    "timeLimitSeconds": 90,
+    "timeLimitSeconds": 50,
     "atoms": [
       {
         "id": "vc-c1",
@@ -2541,7 +2541,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
     "molarMass": 94.5,
     "classification": "Ácido carboxílico halogenado / Trigonal plana en C1 (sp²) y Tetraédrica en C2 (sp³)",
     "difficultyLevel": "avanzado",
-    "timeLimitSeconds": 120,
+    "timeLimitSeconds": 60,
     "atoms": [
       {
         "id": "caa-c1",

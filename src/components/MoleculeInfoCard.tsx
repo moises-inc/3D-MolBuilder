@@ -52,11 +52,13 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const [triviaSubmitted, setTriviaSubmitted] = useState<boolean>(false);
 
-  // Reset trivia local selection on molecule change
+  // Reset trivia local selection on molecule change or when active team hasn't answered
   React.useEffect(() => {
-    setSelectedOption(null);
-    setTriviaSubmitted(false);
-  }, [molecule.id]);
+    if (!triviaAnswered) {
+      setSelectedOption(null);
+      setTriviaSubmitted(false);
+    }
+  }, [molecule.id, triviaAnswered]);
 
   // Difficulty badge colors
   const difficultyConfig = {
@@ -169,47 +171,17 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
       {/* Collapsible Content */}
       {!isCollapsed && (
         <>
-          {/* Banner Superior Destacado: Concepto Clave de la Ronda (Requisito Clave 2.3) */}
-          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-amber-950/60 via-zinc-950/95 to-amber-950/50 border-b border-amber-500/35 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-lg">
-            <div className="flex-1 space-y-1">
-              <div className="flex items-center gap-2 text-amber-400 font-extrabold text-xs sm:text-sm tracking-wide">
-                <Lightbulb className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
-                <span>💡 Concepto Clave de la Ronda (Pregunta de Trivia)</span>
-                <span className="text-[10px] font-mono uppercase bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 font-bold ml-1">
-                  Clave Didáctica
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
-                {molecule.didactica.datoClaveTrivia || molecule.trivia.explicacion}
-              </p>
-            </div>
-            <div className="shrink-0 flex items-center gap-2 w-full md:w-auto justify-end">
-              <button
-                onClick={() => setActiveTab('trivia')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition-all shadow-md active:scale-95 ${
-                  activeTab === 'trivia'
-                    ? 'bg-amber-400 text-black shadow-[0_0_12px_rgba(251,191,36,0.5)]'
-                    : 'bg-amber-500 hover:bg-amber-400 text-black border border-amber-400/60 hover:shadow-[0_0_10px_rgba(245,158,11,0.4)]'
-                }`}
-                title="Ir directamente a responder la Trivia USS de esta ronda"
-              >
-                <HelpCircle className="w-3.5 h-3.5" />
-                <span>{activeTab === 'trivia' ? 'En Trivia Activa ▼' : 'Responder Trivia (+100 pts)'}</span>
-                <ChevronRight className="w-3.5 h-3.5" />
-              </button>
-            </div>
-          </div>
-          {/* Navigation Tabs */}
+          {/* Navigation Tabs at the top */}
           <div className="flex border-b border-oled-border bg-zinc-950 text-xs sm:text-sm">
             <button
               onClick={() => setActiveTab('didactic')}
               className={`flex-1 py-2.5 px-4 font-bold flex items-center justify-center gap-2 border-b-2 transition-all ${
                 activeTab === 'didactic'
-                  ? 'border-orange-500 text-orange-400 bg-orange-950/20 shadow-inner'
+                  ? 'border-emerald-400 text-emerald-300 bg-emerald-950/30 shadow-inner'
                   : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
-              <BookOpen className="w-4 h-4 text-orange-400" />
+              <BookOpen className="w-4 h-4 text-emerald-400" />
               <span>Ficha Didáctica & Estructura</span>
             </button>
 
@@ -217,17 +189,46 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
               onClick={() => setActiveTab('trivia')}
               className={`flex-1 py-2.5 px-4 font-bold flex items-center justify-center gap-2 border-b-2 transition-all relative ${
                 activeTab === 'trivia'
-                  ? 'border-orange-500 text-orange-400 bg-orange-950/20 shadow-inner'
+                  ? 'border-emerald-400 text-emerald-300 bg-emerald-950/30 shadow-inner'
                   : 'border-transparent text-slate-400 hover:text-slate-200'
               }`}
             >
-              <HelpCircle className="w-4 h-4 text-orange-400" />
+              <HelpCircle className="w-4 h-4 text-emerald-400" />
               <span>Desafío Trivia USS (+100 pts)</span>
               {triviaAnswered && (
                 <CheckCircle2 className="w-3.5 h-3.5 text-emerald-400" />
               )}
             </button>
           </div>
+
+          {/* Banner Clave de la Ronda: Visible ÚNICAMENTE en la Ficha Didáctica inicial */}
+          {activeTab === 'didactic' && (
+            <div className="p-3.5 sm:p-4 bg-gradient-to-r from-emerald-950/70 via-zinc-950/95 to-emerald-950/60 border-b border-emerald-500/40 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-lg">
+              <div className="flex-1 space-y-1">
+                <div className="flex items-center gap-2 text-emerald-300 font-extrabold text-xs sm:text-sm tracking-wide">
+                  <Lightbulb className="w-4 h-4 text-emerald-400 shrink-0 animate-pulse" />
+                  <span>💡 Concepto Clave de la Ronda (Lectura Previa a la Trivia)</span>
+                  <span className="text-[10px] font-mono uppercase bg-emerald-500/20 text-emerald-300 px-2 py-0.5 rounded border border-emerald-500/40 font-bold ml-1">
+                    Clave Didáctica
+                  </span>
+                </div>
+                <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
+                  {molecule.didactica.datoClaveTrivia || molecule.trivia.explicacion}
+                </p>
+              </div>
+              <div className="shrink-0 flex items-center gap-2 w-full md:w-auto justify-end">
+                <button
+                  onClick={() => setActiveTab('trivia')}
+                  className="px-3.5 py-1.5 rounded-xl text-xs font-black flex items-center gap-1.5 transition-all shadow-md bg-gradient-to-r from-emerald-500 to-teal-400 hover:from-emerald-400 hover:to-teal-300 text-black active:scale-95 shadow-[0_0_12px_rgba(56,239,125,0.35)]"
+                  title="Ir a responder la Trivia USS de esta ronda (el dato clave se ocultará)"
+                >
+                  <HelpCircle className="w-3.5 h-3.5" />
+                  <span>Responder Trivia (+100 pts)</span>
+                  <ChevronRight className="w-3.5 h-3.5" />
+                </button>
+              </div>
+            </div>
+          )}
 
           {/* Tab Contents - Expanded Didactic Flow */}
           <div className="p-4 sm:p-5 space-y-5 text-slate-200 leading-relaxed text-sm sm:text-base">

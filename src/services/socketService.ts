@@ -260,7 +260,7 @@ export class SocketService {
     if (!payload || typeof payload !== 'object') return;
     const { teamId, scoreDelta, completedMoleculeId, timeBonus, triviaBonus, totalEarned } = payload;
     if (!teamId) return;
-    const earned = totalEarned || scoreDelta || 0;
+    const earned = typeof scoreDelta === 'number' ? scoreDelta : (Number(totalEarned) || 0);
 
     this.tournamentState.teams = this.tournamentState.teams.map((t) => {
       if (t.id === teamId) {

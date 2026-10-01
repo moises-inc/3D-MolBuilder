@@ -58,9 +58,11 @@ export const App: React.FC = () => {
   const [timerActive, setTimerActive] = useState<boolean>(false);
   const timerRef = useRef<number | null>(null);
 
-  // Trivia state for current round
-  const [triviaAnswered, setTriviaAnswered] = useState<boolean>(false);
-  const [triviaBonusEarned, setTriviaBonusEarned] = useState<number>(0);
+  // Trivia state for current round indexed per team
+  const [teamTriviaMap, setTeamTriviaMap] = useState<Record<string, { answered: boolean; isCorrect: boolean; bonus: number }>>({});
+  const activeTeamTrivia = teamTriviaMap[activeTeamId] || { answered: false, isCorrect: false, bonus: 0 };
+  const triviaAnswered = activeTeamTrivia.answered;
+  const triviaBonusEarned = activeTeamTrivia.bonus;
 
   // Modals state
   const [showTrophyModal, setShowTrophyModal] = useState<boolean>(false);
@@ -88,32 +90,16 @@ export const App: React.FC = () => {
   const [qrModalMode, setQrModalMode] = useState<'show' | 'redeem'>('show');
   const [currentQRData, setCurrentQRData] = useState<SyncQRData | null>(null);
 
-  // Theme state ('academic' | 'oled' | 'kiosk')
-  const [currentTheme, setCurrentTheme] = useState<ThemeId>(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('pide_theme') as ThemeId;
-      if (saved && (saved === 'academic' || saved === 'oled' || saved === 'kiosk')) {
-        return saved;
-      }
-    }
-    return 'academic'; // Predeterminado: Clean Academic USS
-  });
-
-  const handleSelectTheme = (newTheme: ThemeId) => {
-    setCurrentTheme(newTheme);
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('pide_theme', newTheme);
-      document.documentElement.setAttribute('data-theme', newTheme);
-    }
-  };
+  // Tema visual consolidado exclusivamente en Gamified Kiosk
+  const currentTheme: ThemeId = 'kiosk';
+  const activeThemeConfig = getThemeConfig('kiosk');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      document.documentElement.setAttribute('data-theme', currentTheme);
+      document.documentElement.setAttribute('data-theme', 'kiosk');
+      localStorage.setItem('pide_theme', 'kiosk');
     }
-  }, [currentTheme]);
-
-  const activeThemeConfig = getThemeConfig(currentTheme);
+  }, []);
 
   // Initialize Socket.io LAN synchronization
   useEffect(() => {
@@ -183,8 +169,7 @@ export const App: React.FC = () => {
   useEffect(() => {
     setTimeLeft(currentMolecule.timeLimitSeconds);
     setTimerActive(false);
-    setTriviaAnswered(false);
-    setTriviaBonusEarned(0);
+    setTeamTriviaMap({});
     setSelectedAtom(null);
   }, [currentIndex, currentMolecule]);
 
@@ -223,11 +208,14 @@ export const App: React.FC = () => {
 
   // Handle trivia answer
   const handleTriviaAnswered = (isCorrect: boolean) => {
-    setTriviaAnswered(true);
+    const bonus = isCorrect ? 100 : 0;
+    setTeamTriviaMap((prev) => ({
+      ...prev,
+      [activeTeamId]: { answered: true, isCorrect, bonus },
+    }));
+
     if (isCorrect) {
       sounds.playTriviaCorrect();
-      const bonus = 100;
-      setTriviaBonusEarned(bonus);
       // Award trivia bonus immediately to active team
       setTeams((prev) =>
         prev.map((t) => (t.id === activeTeamId ? { ...t, score: t.score + bonus } : t))
@@ -247,7 +235,8 @@ export const App: React.FC = () => {
     sounds.playSuccess();
     setTimerActive(false);
 
-    const totalEarned = roundScore + triviaBonusEarned;
+    const activeTeamBonus = teamTriviaMap[activeTeamId]?.bonus || 0;
+    const roundTotalScore = roundScore + activeTeamBonus;
 
     // Update active team score and completed molecules
     setTeams((prev) =>
@@ -266,41 +255,41 @@ export const App: React.FC = () => {
       })
     );
 
-    // Emit real-time update to LAN server
+    // Emit real-time update to LAN server with scoreDelta strictly equal to roundScore
     socketSync.emitScoreUpdate({
       teamId: activeTeamId,
       scoreDelta: roundScore,
       completedMoleculeId: currentMolecule.id,
       timeBonus,
-      triviaBonus: triviaBonusEarned,
-      totalEarned,
+      triviaBonus: activeTeamBonus,
+      totalEarned: roundScore,
     });
     socketSync.emitVictoryFanfare({
       teamId: activeTeamId,
       moleculeId: currentMolecule.id,
-      scoreEarned: totalEarned,
+      scoreEarned: roundTotalScore,
       teamName: activeTeam.name,
     });
 
     // Generate short 6-char fallback code and QR data
     const teamPrefix = activeTeam.id.replace('team-', '').slice(0, 3).toUpperCase() || 'ALF';
-    const shortCode = `${teamPrefix}-${totalEarned}`;
+    const shortCode = `${teamPrefix}-${roundTotalScore}`;
     setCurrentQRData({
       teamId: activeTeam.id,
       teamName: activeTeam.name,
       moleculeId: currentMolecule.id,
       moleculeName: currentMolecule.name,
-      scoreEarned: totalEarned,
+      scoreEarned: roundTotalScore,
       timeBonus,
-      triviaBonus: triviaBonusEarned,
+      triviaBonus: activeTeamBonus,
       shortCode,
       timestamp: Date.now(),
     });
 
     setLastRoundScore({
-      total: totalEarned,
+      total: roundTotalScore,
       time: timeBonus,
-      trivia: triviaBonusEarned,
+      trivia: activeTeamBonus,
     });
     setShowTrophyModal(true);
   };
@@ -324,6 +313,7 @@ export const App: React.FC = () => {
     setCurrentIndex(0);
     setTimeLeft(MOLECULES_DATASET[0].timeLimitSeconds);
     setTimerActive(false);
+    setTeamTriviaMap({});
   };
 
   const handleUpdateTeams = (newTeams: TeamScore[]) => {
@@ -405,8 +395,6 @@ export const App: React.FC = () => {
               setQrModalMode('show');
               setShowSyncQRModal(true);
             }}
-            currentTheme={currentTheme}
-            onSelectTheme={handleSelectTheme}
           />
 
           {/* Main Workspace: Two Clear Structural Sections */}

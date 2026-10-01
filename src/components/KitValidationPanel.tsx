@@ -368,27 +368,38 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
       <div className="p-3.5 border-t border-oled-border bg-oled-panel">
         <button
           onClick={handleValidate}
-          disabled={disabled}
-          className={`w-full py-3 rounded-lg font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg ${
-            disabled
+          disabled={disabled || isAlreadyCompleted || successAnimation}
+          className={`w-full py-3 rounded-xl font-black text-xs uppercase tracking-wider flex items-center justify-center gap-2 transition-all shadow-lg ${
+            isAlreadyCompleted
+              ? 'bg-emerald-950/40 border border-emerald-500/50 text-emerald-300 cursor-not-allowed shadow-none'
+              : disabled
               ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-slate-700'
               : successAnimation
               ? 'bg-emerald-400 text-black scale-[0.98]'
               : checkedCount === 4
-              ? 'bg-gradient-to-r from-orange-500 via-amber-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-black font-extrabold shadow-[0_0_20px_rgba(249,115,22,0.4)]'
+              ? 'bg-gradient-to-r from-emerald-500 via-teal-400 to-emerald-400 hover:from-emerald-400 hover:to-teal-300 text-black font-black shadow-[0_0_20px_rgba(56,239,125,0.4)]'
               : checkedCount > 0
-              ? 'bg-gradient-to-r from-orange-500 to-amber-600 hover:from-orange-400 hover:to-amber-500 text-black font-bold'
+              ? 'bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-black font-bold'
               : 'bg-zinc-800 text-zinc-400 hover:text-white border border-zinc-700'
           }`}
         >
-          <Send className="w-4 h-4" />
-          <span>
-            {checkedCount === 4
-              ? `Validar Ensamblado Completo (${currentTotalPotential} pts)`
-              : checkedCount > 0
-              ? `Validar Puntaje Parcial (${currentTotalPotential} pts)`
-              : 'Validar Ensamblado de Ronda'}
-          </span>
+          {isAlreadyCompleted ? (
+            <>
+              <CheckCircle2 className="w-4 h-4 text-emerald-400" />
+              <span>✓ Molécula Ya Validada por este Equipo</span>
+            </>
+          ) : (
+            <>
+              <Send className="w-4 h-4" />
+              <span>
+                {checkedCount === 4
+                  ? `Validar Ensamblado Completo (${currentTotalPotential} pts)`
+                  : checkedCount > 0
+                  ? `Validar Puntaje Parcial (${currentTotalPotential} pts)`
+                  : 'Validar Ensamblado de Ronda'}
+              </span>
+            </>
+          )}
         </button>
       </div>
     </div>
