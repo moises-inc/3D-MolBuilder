@@ -12,20 +12,40 @@ import {
   Zap,
   BookOpen,
   ChevronDown,
-  ChevronUp
+  ChevronUp,
+  ChevronRight
 } from 'lucide-react';
-import { MoleculeData } from '../types/chemistry';
+import { MoleculeData, KitCompatibility } from '../types/chemistry';
+import { ThemeId } from '../types/theme';
 
 interface MoleculeInfoCardProps {
   molecule: MoleculeData;
   onTriviaAnswered?: (isCorrect: boolean) => void;
   triviaAnswered?: boolean;
+  theme?: ThemeId;
 }
+
+export const getCompatibility = (mol: MoleculeData): KitCompatibility => {
+  if (mol.compatibilidad) return mol.compatibilidad;
+  if (mol.kitFisico?.compatibilidad) return mol.kitFisico.compatibilidad;
+  if ((mol.kitFisico?.conectores?.largosFlexibles ?? 0) > 0 || mol.bonds?.some((b) => b.order >= 2)) {
+    return 'requiere_flexibles';
+  }
+  if (
+    mol.atoms?.some((a) => ['Cu', 'Ag'].includes(a.element)) ||
+    mol.classification?.toLowerCase().includes('red iónico') ||
+    mol.classification?.toLowerCase().includes('cristal')
+  ) {
+    return 'digital_prioritario';
+  }
+  return 'estandar_rigido';
+};
 
 export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
   molecule,
   onTriviaAnswered,
   triviaAnswered = false,
+  theme = 'academic',
 }) => {
   const [activeTab, setActiveTab] = useState<'didactic' | 'trivia'>('didactic');
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
@@ -44,6 +64,23 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
     intermedio: { label: 'Nivel Intermedio', bg: 'bg-amber-500/20', text: 'text-amber-300', border: 'border-amber-500/40' },
     avanzado: { label: 'Nivel Avanzado', bg: 'bg-purple-500/20', text: 'text-purple-300', border: 'border-purple-500/40' },
   }[molecule.difficultyLevel] || { label: 'Nivel Estándar', bg: 'bg-blue-500/20', text: 'text-blue-300', border: 'border-blue-500/40' };
+
+  // Compatibility badge config for Physical Kit
+  const compat = getCompatibility(molecule);
+  const compatBadgeConfig = {
+    estandar_rigido: {
+      label: '🟢 Apto para Kit Físico Estándar (Enlaces Simples)',
+      classes: 'bg-emerald-950/70 text-emerald-300 border-emerald-500/50 shadow-sm font-semibold',
+    },
+    requiere_flexibles: {
+      label: '🟡 Requiere Conectores Flexibles (Enlace Doble)',
+      classes: 'bg-amber-950/70 text-amber-300 border-amber-500/50 shadow-sm font-semibold',
+    },
+    digital_prioritario: {
+      label: '🔵 Modelo Digital Prioritario',
+      classes: 'bg-blue-950/70 text-blue-300 border-blue-400/50 shadow-sm font-semibold',
+    },
+  }[compat];
 
   const handleSelectOption = (index: number) => {
     if (triviaSubmitted || triviaAnswered) return;
@@ -123,11 +160,45 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
           <Zap className="w-3.5 h-3.5" />
           <span>{molecule.didactica.polaridad === 'polar' ? 'Polar (μ > 0 D)' : 'Apolar (μ = 0 D)'}</span>
         </span>
+        {/* Badge de Compatibilidad con Kit Físico */}
+        <span className={`px-2.5 py-0.5 text-[11px] font-semibold rounded border flex items-center gap-1.5 ${compatBadgeConfig.classes}`} title={compatBadgeConfig.label}>
+          <span>{compatBadgeConfig.label}</span>
+        </span>
       </div>
 
       {/* Collapsible Content */}
       {!isCollapsed && (
         <>
+          {/* Banner Superior Destacado: Concepto Clave de la Ronda (Requisito Clave 2.3) */}
+          <div className="p-3.5 sm:p-4 bg-gradient-to-r from-amber-950/60 via-zinc-950/95 to-amber-950/50 border-b border-amber-500/35 flex flex-col md:flex-row items-start md:items-center justify-between gap-3 shadow-lg">
+            <div className="flex-1 space-y-1">
+              <div className="flex items-center gap-2 text-amber-400 font-extrabold text-xs sm:text-sm tracking-wide">
+                <Lightbulb className="w-4 h-4 text-amber-400 shrink-0 animate-pulse" />
+                <span>💡 Concepto Clave de la Ronda (Pregunta de Trivia)</span>
+                <span className="text-[10px] font-mono uppercase bg-amber-500/20 text-amber-300 px-2 py-0.5 rounded border border-amber-500/40 font-bold ml-1">
+                  Clave Didáctica
+                </span>
+              </div>
+              <p className="text-xs sm:text-sm text-slate-100 font-medium leading-relaxed">
+                {molecule.didactica.datoClaveTrivia || molecule.trivia.explicacion}
+              </p>
+            </div>
+            <div className="shrink-0 flex items-center gap-2 w-full md:w-auto justify-end">
+              <button
+                onClick={() => setActiveTab('trivia')}
+                className={`px-3 py-1.5 rounded-lg text-xs font-extrabold flex items-center gap-1.5 transition-all shadow-md active:scale-95 ${
+                  activeTab === 'trivia'
+                    ? 'bg-amber-400 text-black shadow-[0_0_12px_rgba(251,191,36,0.5)]'
+                    : 'bg-amber-500 hover:bg-amber-400 text-black border border-amber-400/60 hover:shadow-[0_0_10px_rgba(245,158,11,0.4)]'
+                }`}
+                title="Ir directamente a responder la Trivia USS de esta ronda"
+              >
+                <HelpCircle className="w-3.5 h-3.5" />
+                <span>{activeTab === 'trivia' ? 'En Trivia Activa ▼' : 'Responder Trivia (+100 pts)'}</span>
+                <ChevronRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
           {/* Navigation Tabs */}
           <div className="flex border-b border-oled-border bg-zinc-950 text-xs sm:text-sm">
             <button
@@ -317,11 +388,17 @@ export const MoleculeInfoCard: React.FC<MoleculeInfoCardProps> = ({
 
                 {/* Explicación científica tras responder */}
                 {(triviaSubmitted || triviaAnswered) && (
-                  <div className="p-3 bg-zinc-950/90 rounded-xl border border-orange-500/40 text-xs space-y-1.5 animate-fade-in shadow-xl">
+                  <div className="p-3 bg-zinc-950/90 rounded-xl border border-orange-500/40 text-xs space-y-2 animate-fade-in shadow-xl">
                     <div className="flex items-center gap-2 font-bold text-orange-400 uppercase tracking-wider">
                       <Lightbulb className="w-3.5 h-3.5" />
                       <span>Explicación Científica (Docentes USS):</span>
                     </div>
+                    {molecule.didactica.datoClaveTrivia && (
+                      <div className="p-2.5 bg-amber-950/40 rounded-lg border border-amber-500/40 text-amber-200 text-[11px] leading-relaxed">
+                        <strong className="text-amber-300 font-bold block mb-0.5">Dato Clave de la Trivia:</strong>
+                        {molecule.didactica.datoClaveTrivia}
+                      </div>
+                    )}
                     <p className="text-slate-200 leading-relaxed">
                       {molecule.trivia.explicacion}
                     </p>

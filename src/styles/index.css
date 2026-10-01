@@ -3,11 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --bg-oled: #09090b;
-  --panel-oled: rgba(18, 18, 22, 0.85);
-  --card-oled: #121216;
-  --line-oled: rgba(249, 115, 22, 0.2);
-  --line-highlight: rgba(249, 115, 22, 0.35);
+  --bg-oled: #0a1024;
+  --panel-oled: rgba(15, 23, 42, 0.92);
+  --card-oled: #0d1630;
+  --line-oled: rgba(212, 175, 55, 0.35);
+  --line-highlight: rgba(212, 175, 55, 0.55);
   --cyan-pide: #5de1e5;
   --amber-pide: #F97316;
   --amber-dark: #EA580C;
@@ -15,6 +15,30 @@
   --rose-pide: #ff4d6d;
   --uss-blue: #00205B;
   --uss-gold: #D4AF37;
+}
+
+[data-theme="academic"] {
+  --bg-oled: #0a1024;
+  --panel-oled: rgba(15, 23, 42, 0.92);
+  --card-oled: #0d1630;
+  --line-oled: rgba(212, 175, 55, 0.35);
+  --line-highlight: rgba(212, 175, 55, 0.55);
+}
+
+[data-theme="oled"] {
+  --bg-oled: #09090b;
+  --panel-oled: rgba(18, 18, 22, 0.85);
+  --card-oled: #121216;
+  --line-oled: rgba(249, 115, 22, 0.2);
+  --line-highlight: rgba(249, 115, 22, 0.35);
+}
+
+[data-theme="kiosk"] {
+  --bg-oled: #070b19;
+  --panel-oled: rgba(13, 22, 44, 0.95);
+  --card-oled: #0c152e;
+  --line-oled: rgba(56, 239, 125, 0.35);
+  --line-highlight: rgba(56, 239, 125, 0.6);
 }
 
 body {
@@ -30,15 +54,19 @@ body {
 
 /* Explicit custom utility classes requested */
 .bg-oled {
-  background-color: #09090b !important;
+  background-color: var(--bg-oled) !important;
 }
 
 .bg-oled-panel {
-  background-color: rgba(18, 18, 22, 0.85) !important;
+  background-color: var(--panel-oled) !important;
+}
+
+.bg-oled-card {
+  background-color: var(--card-oled) !important;
 }
 
 .border-oled-border {
-  border-color: rgba(249, 115, 22, 0.2) !important;
+  border-color: var(--line-oled) !important;
 }
 
 .text-pide-amber {

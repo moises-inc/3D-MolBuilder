@@ -27,7 +27,7 @@ export const RecursiveErosionBackground: React.FC<RecursiveErosionBackgroundProp
 
   return (
     <div
-      className={`fixed inset-0 pointer-events-none overflow-hidden z-0 bg-[#09090b] ${className}`}
+      className={`fixed inset-0 pointer-events-none overflow-hidden z-0 bg-transparent ${className}`}
       aria-hidden="true"
     >
       <iframe

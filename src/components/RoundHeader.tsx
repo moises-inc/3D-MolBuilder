@@ -17,6 +17,7 @@ import {
 import { MoleculeData } from '../types/chemistry';
 import { TeamScore } from '../types/game';
 import { ConnectionStatus } from '../utils/socketSync';
+import { ThemeId, THEME_OPTIONS } from '../types/theme';
 
 interface RoundHeaderProps {
   currentMolecule: MoleculeData;
@@ -36,6 +37,8 @@ interface RoundHeaderProps {
   connectedCount?: number;
   onSwitchToProjector?: () => void;
   onOpenSyncQR?: () => void;
+  currentTheme?: ThemeId;
+  onSelectTheme?: (theme: ThemeId) => void;
 }
 
 export const RoundHeader: React.FC<RoundHeaderProps> = ({
@@ -56,6 +59,8 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
   connectedCount = 1,
   onSwitchToProjector,
   onOpenSyncQR,
+  currentTheme = 'academic',
+  onSelectTheme,
 }) => {
   const maxTime = currentMolecule.timeLimitSeconds;
   const progressPercent = Math.max(0, Math.min(100, (timeLeft / maxTime) * 100));
@@ -82,8 +87,20 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
     return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
+  const headerThemeClass = currentTheme === 'academic'
+    ? 'bg-gradient-to-r from-[#001233] via-[#00205B] to-[#001233] border-b border-[#D4AF37]/50 shadow-md'
+    : currentTheme === 'kiosk'
+    ? 'bg-gradient-to-r from-[#060b1e] via-[#0f1d40] to-[#060b1e] border-b border-emerald-500/50 shadow-lg'
+    : 'bg-black/90 border-b border-oled-border';
+
+  const brandTextClass = currentTheme === 'academic'
+    ? 'text-[#D4AF37]'
+    : currentTheme === 'kiosk'
+    ? 'text-emerald-400'
+    : 'text-orange-400';
+
   return (
-    <header className="w-full bg-black/90 backdrop-blur-md border-b border-oled-border sticky top-0 z-30 px-4 py-2.5">
+    <header className={`w-full backdrop-blur-md sticky top-0 z-30 px-4 py-2.5 transition-colors duration-300 ${headerThemeClass}`}>
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-3">
         {/* Brand & Round Selector */}
         <div className="flex items-center gap-4 w-full md:w-auto justify-between md:justify-start">
@@ -93,7 +110,7 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
               alt="Universidad San Sebastián" 
               className="h-9 w-auto object-contain drop-shadow-[0_0_8px_rgba(212,175,55,0.45)] drop-shadow-[0_2px_6px_rgba(0,32,91,0.6)] select-none"
             />
-            <span className="font-mono text-base font-bold text-orange-400 tracking-wider select-none">
+            <span className={`font-mono text-base font-bold tracking-wider select-none ${brandTextClass}`}>
               3D MolBuilder
             </span>
           </div>
@@ -194,6 +211,33 @@ export const RoundHeader: React.FC<RoundHeaderProps> = ({
             <span className="text-xs font-mono font-bold text-uss-goldBright">
               {activeTeam.score} pts
             </span>
+          </div>
+
+          {/* Theme Selector (Academic USS / Cyber OLED / Kiosk) */}
+          <div className="flex items-center rounded-lg bg-black/60 p-0.5 border border-white/15 gap-0.5" title="Selector de Tema Visual (Reunión Docente USS)">
+            {THEME_OPTIONS.map((opt) => {
+              const isActive = currentTheme === opt.id;
+              return (
+                <button
+                  key={opt.id}
+                  type="button"
+                  onClick={() => onSelectTheme?.(opt.id)}
+                  className={`px-2 py-1 rounded-md text-[11px] font-semibold flex items-center gap-1 transition-all ${
+                    isActive
+                      ? opt.id === 'academic'
+                        ? 'bg-[#00205B] text-[#D4AF37] border border-[#D4AF37]/60 shadow-[0_0_8px_rgba(212,175,55,0.3)] font-bold'
+                        : opt.id === 'kiosk'
+                        ? 'bg-emerald-600 text-black border border-emerald-300 shadow-[0_0_8px_rgba(56,239,125,0.4)] font-black'
+                        : 'bg-orange-500/30 text-orange-300 border border-orange-400/60 shadow-[0_0_8px_rgba(249,115,22,0.3)] font-bold'
+                      : 'text-slate-400 hover:text-white hover:bg-white/5 border border-transparent'
+                  }`}
+                  title={`Tema: ${opt.label} — ${opt.description}`}
+                >
+                  <span className="text-xs">{opt.icon}</span>
+                  <span className="hidden xl:inline">{opt.label}</span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Leaderboard Button */}

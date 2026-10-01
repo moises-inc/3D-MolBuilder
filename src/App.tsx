@@ -16,6 +16,7 @@ import { socketSync, ClientRole, ConnectionStatus, ActivityEvent } from './utils
 import { sounds } from './utils/soundEffects';
 import confetti from 'canvas-confetti';
 import { Atom, Award, Info, Sparkles } from 'lucide-react';
+import { ThemeId, getThemeConfig } from './types/theme';
 
 const INITIAL_TEAMS: TeamScore[] = [
   {
@@ -86,6 +87,33 @@ export const App: React.FC = () => {
   const [showSyncQRModal, setShowSyncQRModal] = useState<boolean>(false);
   const [qrModalMode, setQrModalMode] = useState<'show' | 'redeem'>('show');
   const [currentQRData, setCurrentQRData] = useState<SyncQRData | null>(null);
+
+  // Theme state ('academic' | 'oled' | 'kiosk')
+  const [currentTheme, setCurrentTheme] = useState<ThemeId>(() => {
+    if (typeof window !== 'undefined') {
+      const saved = localStorage.getItem('pide_theme') as ThemeId;
+      if (saved && (saved === 'academic' || saved === 'oled' || saved === 'kiosk')) {
+        return saved;
+      }
+    }
+    return 'academic'; // Predeterminado: Clean Academic USS
+  });
+
+  const handleSelectTheme = (newTheme: ThemeId) => {
+    setCurrentTheme(newTheme);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('pide_theme', newTheme);
+      document.documentElement.setAttribute('data-theme', newTheme);
+    }
+  };
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      document.documentElement.setAttribute('data-theme', currentTheme);
+    }
+  }, [currentTheme]);
+
+  const activeThemeConfig = getThemeConfig(currentTheme);
 
   // Initialize Socket.io LAN synchronization
   useEffect(() => {
@@ -333,8 +361,13 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-transparent text-slate-100 selection:bg-orange-500 selection:text-black">
-      <RecursiveErosionBackground mode="dark" hue={-30} saturation={1.2} brightness={0.9} />
+    <div className={`relative flex flex-col min-h-screen transition-colors duration-300 selection:bg-amber-500 selection:text-black ${activeThemeConfig.classes.root}`}>
+      <RecursiveErosionBackground 
+        mode="dark" 
+        hue={activeThemeConfig.erosionConfig.hue} 
+        saturation={activeThemeConfig.erosionConfig.saturation} 
+        brightness={activeThemeConfig.erosionConfig.brightness} 
+      />
       {clientRole === 'master' ? (
         <ProjectorView
           teams={teams}
@@ -372,6 +405,8 @@ export const App: React.FC = () => {
               setQrModalMode('show');
               setShowSyncQRModal(true);
             }}
+            currentTheme={currentTheme}
+            onSelectTheme={handleSelectTheme}
           />
 
           {/* Main Workspace: Two Clear Structural Sections */}
@@ -382,6 +417,7 @@ export const App: React.FC = () => {
                 molecule={currentMolecule}
                 onTriviaAnswered={handleTriviaAnswered}
                 triviaAnswered={triviaAnswered}
+                theme={currentTheme}
               />
             </section>
 
@@ -460,8 +496,8 @@ export const App: React.FC = () => {
                       onClick={() => setCurrentIndex(idx)}
                       className={`px-3 py-1.5 rounded-lg border text-xs font-semibold whitespace-nowrap transition-all flex items-center gap-1.5 ${
                         isSelected
-                          ? 'bg-orange-500/20 border-orange-400 text-orange-300 shadow-[0_0_12px_rgba(249,115,22,0.3)]'
-                          : 'bg-oled-panel border-oled-border text-slate-400 hover:text-white hover:border-slate-600'
+                          ? activeThemeConfig.classes.fastSelectorActive
+                          : activeThemeConfig.classes.fastSelectorInactive
                       }`}
                     >
                       <span className="font-mono text-[10px] text-slate-500 font-bold">

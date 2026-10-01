@@ -29,6 +29,8 @@ export interface Bond3D {
   order: BondOrder;
 }
 
+export type KitCompatibility = 'estandar_rigido' | 'requiere_flexibles' | 'digital_prioritario';
+
 export interface EducationalDidacticCard {
   descripcionCientifica: string;
   datosCuriosos: string[];
@@ -36,6 +38,7 @@ export interface EducationalDidacticCard {
   geometriaMolecular: string;
   polaridad: Polarity;
   justificacionPolaridad: string;
+  datoClaveTrivia?: string;
 }
 
 export interface PhysicalKitRequirements {
@@ -46,6 +49,7 @@ export interface PhysicalKitRequirements {
   };
   descripcionConectores: string;
   tipsArmado: string;
+  compatibilidad?: 'estandar_rigido' | 'requiere_flexibles' | 'digital_prioritario';
 }
 
 export interface TriviaQuestion {
@@ -69,4 +73,5 @@ export interface MoleculeData {
   didactica: EducationalDidacticCard;
   kitFisico: PhysicalKitRequirements;
   trivia: TriviaQuestion;
+  compatibilidad?: KitCompatibility;
 }

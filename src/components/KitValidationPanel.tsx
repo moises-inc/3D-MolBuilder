@@ -164,9 +164,26 @@ export const KitValidationPanel: React.FC<KitValidationPanelProps> = ({
 
         {/* Required Spheres & Connectors Card */}
         <div className="bg-oled-panel p-3.5 rounded-lg border border-oled-border space-y-3">
-          <div className="text-[11px] uppercase font-mono font-bold text-orange-400 flex items-center gap-1.5">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Piezas Requeridas en la Mesa:</span>
+          <div className="flex items-center justify-between gap-2">
+            <div className="text-[11px] uppercase font-mono font-bold text-orange-400 flex items-center gap-1.5">
+              <Sparkles className="w-3.5 h-3.5" />
+              <span>Piezas Requeridas en la Mesa:</span>
+            </div>
+            {molecule.kitFisico.compatibilidad && (
+              <span className={`text-[10px] font-mono px-2 py-0.5 rounded border font-semibold ${
+                molecule.kitFisico.compatibilidad === 'requiere_flexibles'
+                  ? 'bg-amber-950/60 text-amber-300 border-amber-600/50'
+                  : molecule.kitFisico.compatibilidad === 'digital_prioritario'
+                  ? 'bg-cyan-950/60 text-cyan-300 border-cyan-600/50'
+                  : 'bg-emerald-950/60 text-emerald-300 border-emerald-600/50'
+              }`}>
+                {molecule.kitFisico.compatibilidad === 'requiere_flexibles'
+                  ? 'Conectores Flexibles'
+                  : molecule.kitFisico.compatibilidad === 'digital_prioritario'
+                  ? 'Digital Prioritario'
+                  : 'Kit Rígido Estándar'}
+              </span>
+            )}
           </div>
 
           {/* Spheres list */}
