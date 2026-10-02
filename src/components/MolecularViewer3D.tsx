@@ -482,33 +482,62 @@ export const MolecularViewer3D: React.FC<MolecularViewer3DProps> = ({
             side: THREE.DoubleSide,
           });
 
+      const electronMaterial = new THREE.MeshStandardMaterial({
+        color: 0x38bdf8,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.9,
+        roughness: 0.2,
+        metalness: 0.1,
+      });
+
+      const addLonePairWithElectrons = (origin: THREE.Vector3, dir: THREE.Vector3, perpHint?: THREE.Vector3) => {
+        // Lóbulo RPECV
+        const lobeMesh = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
+        lobeMesh.position.copy(origin);
+        lobeMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+        group.add(lobeMesh);
+
+        // Vector perpendicular para el par de electrones
+        let perp: THREE.Vector3;
+        if (perpHint) {
+          perp = perpHint.clone().normalize();
+        } else {
+          const arbitrary = Math.abs(dir.x) < 0.8 ? new THREE.Vector3(1, 0, 0) : new THREE.Vector3(0, 0, 1);
+          perp = new THREE.Vector3().crossVectors(dir, arbitrary).normalize();
+        }
+
+        // Par de electrones no enlazantes (:) en el seno del lóbulo orbital
+        const centerOrbital = origin.clone().add(dir.clone().multiplyScalar(0.60));
+        const e1Pos = centerOrbital.clone().add(perp.clone().multiplyScalar(0.12));
+        const e2Pos = centerOrbital.clone().sub(perp.clone().multiplyScalar(0.12));
+
+        const eGeo = new THREE.SphereGeometry(0.065, 14, 14);
+        const eMesh1 = new THREE.Mesh(eGeo, electronMaterial);
+        eMesh1.position.copy(e1Pos);
+        group.add(eMesh1);
+
+        const eMesh2 = new THREE.Mesh(eGeo, electronMaterial);
+        eMesh2.position.copy(e2Pos);
+        group.add(eMesh2);
+      };
+
       if (molecule.id === 'ammonia') {
-        // Nitrogen atom
+        // Átomo de Nitrógeno central
         const nAtom = molecule.atoms.find((a) => a.symbol === 'N') || molecule.atoms[0];
         const nPos = new THREE.Vector3(nAtom.x, nAtom.y, nAtom.z);
-        // 1 Apical superior lobe over nitrogen pointing along +Z (opposite to N-H tripod)
-        const apicalDir = new THREE.Vector3(0, 0, 1).normalize();
-        const lobeMesh = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
-        lobeMesh.position.copy(nPos);
-        lobeMesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), apicalDir);
-        group.add(lobeMesh);
+        // 1 Lóbulo apical superior sobre el nitrógeno apuntando hacia +Y (cúspide piramidal opuesta al trípode N-H)
+        const apicalDir = new THREE.Vector3(0, 1, 0).normalize();
+        addLonePairWithElectrons(nPos, apicalDir, new THREE.Vector3(1, 0, 0));
       } else if (molecule.id === 'water') {
-        // Oxygen atom
+        // Átomo de Oxígeno central
         const oAtom = molecule.atoms.find((a) => a.symbol === 'O') || molecule.atoms[0];
         const oPos = new THREE.Vector3(oAtom.x, oAtom.y, oAtom.z);
-        // 2 Lóbulos RPECV con repulsión ensanchada a 114° (LP-LP > LP-BP > BP-BP)
+        // 2 Lóbulos RPECV con repulsión ensanchada a 114° en el plano Y-Z
         const dir1 = new THREE.Vector3(0, -0.5446, 0.8387).normalize();
         const dir2 = new THREE.Vector3(0, -0.5446, -0.8387).normalize();
 
-        const lobeMesh1 = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
-        lobeMesh1.position.copy(oPos);
-        lobeMesh1.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir1);
-        group.add(lobeMesh1);
-
-        const lobeMesh2 = new THREE.Mesh(createLobeGeometry(), lobeMaterial);
-        lobeMesh2.position.copy(oPos);
-        lobeMesh2.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir2);
-        group.add(lobeMesh2);
+        addLonePairWithElectrons(oPos, dir1, new THREE.Vector3(1, 0, 0));
+        addLonePairWithElectrons(oPos, dir2, new THREE.Vector3(1, 0, 0));
       }
     }
 

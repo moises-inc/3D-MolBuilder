@@ -31,7 +31,7 @@ const SIMULATED_STATIONS_COUNT = parseInt(process.argv[2] || '10', 10);
 const TEST_DURATION_SECONDS = parseInt(process.argv[3] || '12', 10);
 const TEST_DURATION_MS = TEST_DURATION_SECONDS * 1000;
 
-// Dataset de 9 moléculas oficiales VcM
+// Dataset de 20 moléculas oficiales VcM
 const DATASET_MOLECULES = [
   'ammonia',
   'hydrogen-chloride',
@@ -42,6 +42,17 @@ const DATASET_MOLECULES = [
   'chloroform',
   'carbon-tetrachloride',
   'ethanol',
+  'dichloromethane',
+  'tert-butanol',
+  'urea',
+  'formaldehyde',
+  'methoxymethane',
+  'ethene',
+  'vinyl-chloride',
+  'chloroacetic-acid',
+  'aspirin',
+  'paracetamol',
+  'ibuprofen',
 ];
 
 // Métricas globales de la prueba

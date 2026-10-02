@@ -1878,7 +1878,7 @@ export const MOLECULES_DATASET: MoleculeData[] = [
   },
   {
     "id": "formaldehyde",
-    "name": "Formaldehído",
+    "name": "Metanal",
     "iupacName": "Metanal",
     "formula": "HCHO",
     "molarMass": 30.03,
@@ -2729,7 +2729,1511 @@ export const MOLECULES_DATASET: MoleculeData[] = [
       "respuestaCorrecta": 0,
       "explicacion": "La alta electronegatividad del cloro retira densidad electrónica a lo largo de los enlaces sigma (efecto inductivo -I). Esto debilita el enlace O-H del carboxilo y estabiliza el anión carboxilato (ClCH₂COO⁻) al dispersar la carga negativa entre más átomos, aumentando enormemente la acidez."
     }
+  },
+  {
+  "id": "aspirin",
+  "name": "Aspirina",
+  "iupacName": "Ácido 2-acetoxibenzoico",
+  "formula": "C₉H₈O₄",
+  "molarMass": 180.16,
+  "classification": "Fármaco antiinflamatorio no esteroideo (AINE) / Derivado del ácido salicílico",
+  "difficultyLevel": "avanzado",
+  "timeLimitSeconds": 60,
+  "atoms": [
+    {
+      "id": "aspirin-o1",
+      "element": "O",
+      "symbol": "O",
+      "label": "O1",
+      "x": 1.135,
+      "y": 0.399,
+      "z": 0.788,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "aspirin-o2",
+      "element": "O",
+      "symbol": "O",
+      "label": "O2",
+      "x": -0.793,
+      "y": -2.87,
+      "z": -0.742,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "aspirin-o3",
+      "element": "O",
+      "symbol": "O",
+      "label": "O3",
+      "x": 0.698,
+      "y": -2.34,
+      "z": 0.877,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-o4",
+      "element": "O",
+      "symbol": "O",
+      "label": "O4",
+      "x": 1.683,
+      "y": 0.655,
+      "z": -1.474,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c1",
+      "element": "C",
+      "symbol": "C",
+      "label": "C1",
+      "x": -0.184,
+      "y": 0.453,
+      "z": 0.449,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c2",
+      "element": "C",
+      "symbol": "C",
+      "label": "C2",
+      "x": -0.891,
+      "y": -0.707,
+      "z": 0.133,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c3",
+      "element": "C",
+      "symbol": "C",
+      "label": "C3",
+      "x": -0.827,
+      "y": 1.691,
+      "z": 0.422,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c4",
+      "element": "C",
+      "symbol": "C",
+      "label": "C4",
+      "x": -2.241,
+      "y": -0.629,
+      "z": -0.21,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c5",
+      "element": "C",
+      "symbol": "C",
+      "label": "C5",
+      "x": -2.177,
+      "y": 1.768,
+      "z": 0.079,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c6",
+      "element": "C",
+      "symbol": "C",
+      "label": "C6",
+      "x": -2.884,
+      "y": 0.608,
+      "z": -0.237,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c7",
+      "element": "C",
+      "symbol": "C",
+      "label": "C7",
+      "x": -0.239,
+      "y": -2.009,
+      "z": 0.156,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c8",
+      "element": "C",
+      "symbol": "C",
+      "label": "C8",
+      "x": 2.011,
+      "y": 0.516,
+      "z": -0.303,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "aspirin-c9",
+      "element": "C",
+      "symbol": "C",
+      "label": "C9",
+      "x": 3.432,
+      "y": 0.444,
+      "z": 0.172,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "aspirin-h1",
+      "element": "H",
+      "symbol": "H",
+      "label": "H1",
+      "x": -0.283,
+      "y": 2.599,
+      "z": 0.668,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h2",
+      "element": "H",
+      "symbol": "H",
+      "label": "H2",
+      "x": -2.823,
+      "y": -1.516,
+      "z": -0.448,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h3",
+      "element": "H",
+      "symbol": "H",
+      "label": "H3",
+      "x": -2.678,
+      "y": 2.732,
+      "z": 0.059,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h4",
+      "element": "H",
+      "symbol": "H",
+      "label": "H4",
+      "x": -3.936,
+      "y": 0.668,
+      "z": -0.5,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h5",
+      "element": "H",
+      "symbol": "H",
+      "label": "H5",
+      "x": 3.631,
+      "y": 1.263,
+      "z": 0.868,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h6",
+      "element": "H",
+      "symbol": "H",
+      "label": "H6",
+      "x": 4.106,
+      "y": 0.542,
+      "z": -0.684,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h7",
+      "element": "H",
+      "symbol": "H",
+      "label": "H7",
+      "x": 3.612,
+      "y": -0.521,
+      "z": 0.651,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "aspirin-h8",
+      "element": "H",
+      "symbol": "H",
+      "label": "H8",
+      "x": -0.354,
+      "y": -3.747,
+      "z": -0.725,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    }
+  ],
+  "bonds": [
+    {
+      "id": "aspirin-b1",
+      "from": 0,
+      "to": 4,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b2",
+      "from": 0,
+      "to": 11,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b3",
+      "from": 1,
+      "to": 10,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b4",
+      "from": 1,
+      "to": 20,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b5",
+      "from": 2,
+      "to": 10,
+      "order": 2
+    },
+    {
+      "id": "aspirin-b6",
+      "from": 3,
+      "to": 11,
+      "order": 2
+    },
+    {
+      "id": "aspirin-b7",
+      "from": 4,
+      "to": 5,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b8",
+      "from": 4,
+      "to": 6,
+      "order": 2
+    },
+    {
+      "id": "aspirin-b9",
+      "from": 5,
+      "to": 7,
+      "order": 2
+    },
+    {
+      "id": "aspirin-b10",
+      "from": 5,
+      "to": 10,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b11",
+      "from": 6,
+      "to": 8,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b12",
+      "from": 6,
+      "to": 13,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b13",
+      "from": 7,
+      "to": 9,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b14",
+      "from": 7,
+      "to": 14,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b15",
+      "from": 8,
+      "to": 9,
+      "order": 2
+    },
+    {
+      "id": "aspirin-b16",
+      "from": 8,
+      "to": 15,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b17",
+      "from": 9,
+      "to": 16,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b18",
+      "from": 11,
+      "to": 12,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b19",
+      "from": 12,
+      "to": 17,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b20",
+      "from": 12,
+      "to": 18,
+      "order": 1
+    },
+    {
+      "id": "aspirin-b21",
+      "from": 12,
+      "to": 19,
+      "order": 1
+    }
+  ],
+  "didactica": {
+    "descripcionCientifica": "Fármaco antiinflamatorio no esteroideo (AINE) derivado del ácido salicílico. Presenta un anillo aromático orto-sustituido por un grupo carboxilo (-COOH) y un grupo éster acetilo (-OCOCH₃). Combina centros sp² coplanares con un metilo terminal sp³.",
+    "datosCuriosos": [
+      "Sintetizada por primera vez en forma pura por Felix Hoffmann en laboratorios Bayer en 1897 a partir de corteza de sauce (Salix alba).",
+      "Inhibe de forma irreversible la enzima ciclooxigenasa (COX-1 y COX-2) acetilando el residuo de Serina 530, bloqueando la síntesis de prostaglandinas y tromboxanos.",
+      "En dosis bajas (100 mg diarios) actúa como antiagregante plaquetario cardioprotector, ampliamente utilizado en el sistema de salud chileno (AUGE/GES).",
+      "Es una de las moléculas farmacológicas más consumidas en la historia con más de 40.000 toneladas anuales producidas a nivel global."
+    ],
+    "usosVidaCotidiana": [
+      "Alivio de cefaleas, dolor muscular y estados febriles en botiquines escolares y familiares.",
+      "Prevención secundaria de infartos agudos al miocardio y accidentes cerebrovasculares.",
+      "Tratamiento coadyuvante en procesos reumáticos e inflamatorios crónicos."
+    ],
+    "geometriaMolecular": "Trigonal plana en anillo aromático y carbonilos (sp² ~120°), Tetraédrica en metilo terminal (sp³ ~109.5°), Angular en puente éster (O-C ~110°)",
+    "polaridad": "polar",
+    "justificacionPolaridad": "Momento dipolar neto moderado (μ ≈ 2.15 D) resultante de la asimetría entre el grupo éster acetilo y el ácido carboxílico orto-sustituidos en el anillo bencénico.",
+    "datoClaveTrivia": "Inhibe irreversiblemente la enzima ciclooxigenasa (COX) mediante la acetilación covalente del residuo Serina 530, impidiendo la formación de tromboxanos y prostaglandinas proinflamatorias."
+  },
+  "kitFisico": {
+    "esferas": {
+      "O": 4,
+      "C": 9,
+      "H": 8
+    },
+    "conectores": {
+      "cortosRigidos": 16,
+      "largosFlexibles": 10
+    },
+    "descripcionConectores": "16 conectores cortos rígidos para enlaces simples y 10 conectores largos flexibles para los 5 enlaces dobles.",
+    "tipsArmado": "Arma primero el anillo de benceno de 6 carbonos sp² alternando dobles enlaces con conectores flexibles. Luego añade el carboxilo (-COOH) en posición 1 y el éster acetilo (-OCOCH₃) en posición 2 contigua. Completa con los hidrógenos blancos en los carbonos restantes del anillo y el metilo terminal.",
+    "compatibilidad": "requiere_flexibles"
+  },
+  "trivia": {
+    "pregunta": "¿Cuál es el mecanismo bioquímico exacto por el cual la Aspirina (ácido acetilsalicílico) alivia la inflamación y previene la formación de trombos en la sangre?",
+    "opciones": [
+      "Transfiere irreversiblemente su grupo acetilo a un residuo de serina de la enzima ciclooxigenasa (COX), bloqueando la síntesis de prostaglandinas y tromboxano A₂.",
+      "Destruye físicamente las membranas de las bacterias patógenas que causan fiebre mediante lisis osmótica celular.",
+      "Aumenta la síntesis de ácido clorhídrico en el estómago acelerando el metabolismo gástrico.",
+      "Neutraliza químicamente los iones de sodio y potasio en los receptores neuronales del dolor somático."
+    ],
+    "respuestaCorrecta": 0,
+    "explicacion": "A diferencia de otros AINEs reversibles, la aspirina actúa como un inhibidor suicida irreversible: transfiere covalentemente su grupo acetilo (-COCH₃) a la Ser-530 de la COX-1/2, bloqueando el canal hidrofóbico por donde ingresa el ácido araquidónico e inactivando la síntesis de tromboxanos plaquetarios durante toda la vida útil de la plaqueta."
   }
+},
+  {
+  "id": "paracetamol",
+  "name": "Paracetamol",
+  "iupacName": "N-(4-hidroxifenil)etanamida",
+  "formula": "C₈H₉NO₂",
+  "molarMass": 151.16,
+  "classification": "Analgésico y antipirético no opiáceo / Anilida p-sustituida",
+  "difficultyLevel": "avanzado",
+  "timeLimitSeconds": 60,
+  "atoms": [
+    {
+      "id": "paracetamol-o1",
+      "element": "O",
+      "symbol": "O",
+      "label": "O1",
+      "x": 4.153,
+      "y": 0.597,
+      "z": 0.001,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "paracetamol-o2",
+      "element": "O",
+      "symbol": "O",
+      "label": "O2",
+      "x": -2.298,
+      "y": 1.55,
+      "z": -0.002,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-n1",
+      "element": "N",
+      "symbol": "N",
+      "label": "N1",
+      "x": -1.268,
+      "y": -0.571,
+      "z": -0.0,
+      "color": "#3B82F6",
+      "radius": 0.42,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "paracetamol-c1",
+      "element": "C",
+      "symbol": "C",
+      "label": "C1",
+      "x": 0.096,
+      "y": -0.277,
+      "z": -0.0,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c2",
+      "element": "C",
+      "symbol": "C",
+      "label": "C2",
+      "x": 0.523,
+      "y": 1.05,
+      "z": 0.0,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c3",
+      "element": "C",
+      "symbol": "C",
+      "label": "C3",
+      "x": 1.032,
+      "y": -1.311,
+      "z": -0.001,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c4",
+      "element": "C",
+      "symbol": "C",
+      "label": "C4",
+      "x": 1.886,
+      "y": 1.344,
+      "z": -0.0,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c5",
+      "element": "C",
+      "symbol": "C",
+      "label": "C5",
+      "x": 2.396,
+      "y": -1.017,
+      "z": -0.001,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c6",
+      "element": "C",
+      "symbol": "C",
+      "label": "C6",
+      "x": 2.823,
+      "y": 0.311,
+      "z": -0.001,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c7",
+      "element": "C",
+      "symbol": "C",
+      "label": "C7",
+      "x": -2.346,
+      "y": 0.324,
+      "z": 0.001,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "paracetamol-c8",
+      "element": "C",
+      "symbol": "C",
+      "label": "C8",
+      "x": -3.671,
+      "y": -0.396,
+      "z": 0.001,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "paracetamol-h1",
+      "element": "H",
+      "symbol": "H",
+      "label": "H1",
+      "x": -0.141,
+      "y": 1.903,
+      "z": 0.001,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h2",
+      "element": "H",
+      "symbol": "H",
+      "label": "H2",
+      "x": 0.714,
+      "y": -2.351,
+      "z": -0.001,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h3",
+      "element": "H",
+      "symbol": "H",
+      "label": "H3",
+      "x": -1.499,
+      "y": -1.563,
+      "z": -0.0,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h4",
+      "element": "H",
+      "symbol": "H",
+      "label": "H4",
+      "x": 2.208,
+      "y": 2.383,
+      "z": 0.001,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h5",
+      "element": "H",
+      "symbol": "H",
+      "label": "H5",
+      "x": 3.12,
+      "y": -1.827,
+      "z": -0.001,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h6",
+      "element": "H",
+      "symbol": "H",
+      "label": "H6",
+      "x": -3.763,
+      "y": -1.001,
+      "z": -0.906,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h7",
+      "element": "H",
+      "symbol": "H",
+      "label": "H7",
+      "x": -4.488,
+      "y": 0.33,
+      "z": 0.029,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h8",
+      "element": "H",
+      "symbol": "H",
+      "label": "H8",
+      "x": -3.742,
+      "y": -1.043,
+      "z": 0.88,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "paracetamol-h9",
+      "element": "H",
+      "symbol": "H",
+      "label": "H9",
+      "x": 4.267,
+      "y": 1.563,
+      "z": 0.001,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    }
+  ],
+  "bonds": [
+    {
+      "id": "paracetamol-b1",
+      "from": 0,
+      "to": 8,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b2",
+      "from": 0,
+      "to": 19,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b3",
+      "from": 1,
+      "to": 9,
+      "order": 2
+    },
+    {
+      "id": "paracetamol-b4",
+      "from": 2,
+      "to": 3,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b5",
+      "from": 2,
+      "to": 9,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b6",
+      "from": 2,
+      "to": 13,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b7",
+      "from": 3,
+      "to": 4,
+      "order": 2
+    },
+    {
+      "id": "paracetamol-b8",
+      "from": 3,
+      "to": 5,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b9",
+      "from": 4,
+      "to": 6,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b10",
+      "from": 4,
+      "to": 11,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b11",
+      "from": 5,
+      "to": 7,
+      "order": 2
+    },
+    {
+      "id": "paracetamol-b12",
+      "from": 5,
+      "to": 12,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b13",
+      "from": 6,
+      "to": 8,
+      "order": 2
+    },
+    {
+      "id": "paracetamol-b14",
+      "from": 6,
+      "to": 14,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b15",
+      "from": 7,
+      "to": 8,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b16",
+      "from": 7,
+      "to": 15,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b17",
+      "from": 9,
+      "to": 10,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b18",
+      "from": 10,
+      "to": 16,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b19",
+      "from": 10,
+      "to": 17,
+      "order": 1
+    },
+    {
+      "id": "paracetamol-b20",
+      "from": 10,
+      "to": 18,
+      "order": 1
+    }
+  ],
+  "didactica": {
+    "descripcionCientifica": "Fármaco analgésico y antipirético no opiáceo derivado del para-aminofenol. Consta de un anillo aromático sustituido en para (posiciones 1,4) por un grupo hidroxilo fenólico (-OH) y un grupo acetamida (-NHCOCH₃) de geometría trigonal plana con enlace amida polar resonante.",
+    "datosCuriosos": [
+      "A diferencia de la aspirina o el ibuprofeno, carece de efecto antiinflamatorio periférico significativo y no causa irritación gástrica ni altera la coagulación sanguínea.",
+      "Actúa selectivamente en el sistema nervioso central inhibiendo variantes de ciclooxigenasa neural y modulando vías cannabinoides endógenas a través de su metabolito bioactivo AM404.",
+      "Su metabolismo hepático produce una pequeña fracción de NAPQI, un intermediario reactivo altamente hepatotóxico neutralizado normalmente por el tripéptido glutatión (GSH).",
+      "En caso de intoxicación o sobredosis aguda, el antídoto específico hospitalario es la N-acetilcisteína (NAC), que restablece las reservas celulares de glutatión."
+    ],
+    "usosVidaCotidiana": [
+      "Fármaco de primera línea para dolor leve a moderado y fiebre en pediatría, personas mayores y pacientes anticoagulados.",
+      "Medicamento esencial disponible de forma universal en la atención primaria de salud (CESFAM) en todo Chile.",
+      "Tratamiento sintomático preferente de la gripe común, cefaleas tensionales y dolores osteomusculares leves."
+    ],
+    "geometriaMolecular": "Trigonal plana en anillo y amida (sp² ~120°), Tetraédrica en metilo acetamídico (sp³ ~109.5°), Angular en fenol (-OH ~109°)",
+    "polaridad": "polar",
+    "justificacionPolaridad": "Momento dipolar neto significativo (μ ≈ 2.24 D) favorecido por los grupos donores y aceptores de enlaces de hidrógeno (-OH y -NHCOCH₃) en los polos opuestos de la molécula.",
+    "datoClaveTrivia": "Su metabolito reactivo hepatotóxico en sobredosis es el NAPQI, el cual agota el glutatión hepático y se trata con N-acetilcisteína (NAC)."
+  },
+  "kitFisico": {
+    "esferas": {
+      "O": 2,
+      "N": 1,
+      "C": 8,
+      "H": 9
+    },
+    "conectores": {
+      "cortosRigidos": 16,
+      "largosFlexibles": 8
+    },
+    "descripcionConectores": "16 conectores cortos rígidos para enlaces simples y 8 conectores largos flexibles para los 4 enlaces dobles.",
+    "tipsArmado": "Construye el hexágono de benceno con 6 carbonos negros. En el carbono 1 coloca el oxígeno rojo del fenol con su hidrógeno. En el carbono 4 opuesto, conecta el nitrógeno azul del grupo amida. Enlaza el nitrógeno al carbono carbonilo (=O con conectores flexibles) y termina con el metilo sp³.",
+    "compatibilidad": "requiere_flexibles"
+  },
+  "trivia": {
+    "pregunta": "¿Por qué una sobredosis de Paracetamol (acetaminofén) resulta potencialmente hepatotóxica y requiere atención de urgencia hospitalaria inmediata?",
+    "opciones": [
+      "Porque satura las vías hepáticas habituales y genera NAPQI, un metabolito oxidante electrofílico que agota las reservas de glutatión y destruye los hepatocitos.",
+      "Porque alcaliniza bruscamente el pH plasmático provocando una hipocalcemia aguda en el músculo cardíaco.",
+      "Porque precipita como microcristales insolubles en los glomérulos renales obstruyendo totalmente la diuresis.",
+      "Porque inhibe la absorción gastrointestinal de vitamina B12 en el íleon terminal originando anemia megaloblástica súbita."
+    ],
+    "respuestaCorrecta": 0,
+    "explicacion": "A dosis terapéuticas, el paracetamol se metaboliza principalmente por glucuronidación y sulfatación. En sobredosis, estas vías se saturan y el citocromo P450 (CYP2E1) genera abundante N-acetil-p-benzoquinona imina (NAPQI). Al agotarse el glutatión celular, el NAPQI reacciona con proteínas vitales hepáticas induciendo estrés oxidativo y necrosis masiva del tejido hepático."
+  }
+},
+  {
+  "id": "ibuprofen",
+  "name": "Ibuprofeno",
+  "iupacName": "Ácido 2-[4-(2-metilpropil)fenil]propanoico",
+  "formula": "C₁₃H₁₈O₂",
+  "molarMass": 206.28,
+  "classification": "Fármaco antiinflamatorio no esteroideo (AINE) / Derivado del ácido propiónico",
+  "difficultyLevel": "avanzado",
+  "timeLimitSeconds": 60,
+  "atoms": [
+    {
+      "id": "ibuprofen-o1",
+      "element": "O",
+      "symbol": "O",
+      "label": "O1",
+      "x": -4.921,
+      "y": -1.014,
+      "z": 0.433,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-o2",
+      "element": "O",
+      "symbol": "O",
+      "label": "O2",
+      "x": -2.876,
+      "y": -1.922,
+      "z": 0.075,
+      "color": "#EF4444",
+      "radius": 0.4,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c1",
+      "element": "C",
+      "symbol": "C",
+      "label": "C1",
+      "x": 3.427,
+      "y": -0.452,
+      "z": 0.058,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c2",
+      "element": "C",
+      "symbol": "C",
+      "label": "C2",
+      "x": 2.673,
+      "y": 0.809,
+      "z": -0.409,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c3",
+      "element": "C",
+      "symbol": "C",
+      "label": "C3",
+      "x": 1.178,
+      "y": 0.729,
+      "z": -0.225,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c4",
+      "element": "C",
+      "symbol": "C",
+      "label": "C4",
+      "x": -1.57,
+      "y": 0.583,
+      "z": 0.112,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c5",
+      "element": "C",
+      "symbol": "C",
+      "label": "C5",
+      "x": -3.048,
+      "y": 0.505,
+      "z": 0.294,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c6",
+      "element": "C",
+      "symbol": "C",
+      "label": "C6",
+      "x": 3.132,
+      "y": -0.787,
+      "z": 1.523,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c7",
+      "element": "C",
+      "symbol": "C",
+      "label": "C7",
+      "x": 3.049,
+      "y": -1.641,
+      "z": -0.828,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c8",
+      "element": "C",
+      "symbol": "C",
+      "label": "C8",
+      "x": 0.394,
+      "y": 0.217,
+      "z": -1.247,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c9",
+      "element": "C",
+      "symbol": "C",
+      "label": "C9",
+      "x": 0.614,
+      "y": 1.168,
+      "z": 0.963,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c10",
+      "element": "C",
+      "symbol": "C",
+      "label": "C10",
+      "x": -0.989,
+      "y": 0.144,
+      "z": -1.078,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c11",
+      "element": "C",
+      "symbol": "C",
+      "label": "C11",
+      "x": -0.768,
+      "y": 1.095,
+      "z": 1.132,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-c12",
+      "element": "C",
+      "symbol": "C",
+      "label": "C12",
+      "x": -3.849,
+      "y": 1.339,
+      "z": -0.727,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp3"
+    },
+    {
+      "id": "ibuprofen-c13",
+      "element": "C",
+      "symbol": "C",
+      "label": "C13",
+      "x": -3.576,
+      "y": -0.934,
+      "z": 0.255,
+      "color": "#262626",
+      "radius": 0.45,
+      "hybridization": "sp2"
+    },
+    {
+      "id": "ibuprofen-h1",
+      "element": "H",
+      "symbol": "H",
+      "label": "H1",
+      "x": 4.502,
+      "y": -0.263,
+      "z": -0.051,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h2",
+      "element": "H",
+      "symbol": "H",
+      "label": "H2",
+      "x": 2.904,
+      "y": 1.014,
+      "z": -1.463,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h3",
+      "element": "H",
+      "symbol": "H",
+      "label": "H3",
+      "x": 3.055,
+      "y": 1.68,
+      "z": 0.14,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h4",
+      "element": "H",
+      "symbol": "H",
+      "label": "H4",
+      "x": -3.3,
+      "y": 0.879,
+      "z": 1.296,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h5",
+      "element": "H",
+      "symbol": "H",
+      "label": "H5",
+      "x": 2.104,
+      "y": -1.127,
+      "z": 1.679,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h6",
+      "element": "H",
+      "symbol": "H",
+      "label": "H6",
+      "x": 3.321,
+      "y": 0.077,
+      "z": 2.168,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h7",
+      "element": "H",
+      "symbol": "H",
+      "label": "H7",
+      "x": 3.791,
+      "y": -1.596,
+      "z": 1.86,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h8",
+      "element": "H",
+      "symbol": "H",
+      "label": "H8",
+      "x": 3.703,
+      "y": -2.492,
+      "z": -0.608,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h9",
+      "element": "H",
+      "symbol": "H",
+      "label": "H9",
+      "x": 2.021,
+      "y": -1.979,
+      "z": -0.664,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h10",
+      "element": "H",
+      "symbol": "H",
+      "label": "H10",
+      "x": 3.174,
+      "y": -1.4,
+      "z": -1.889,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h11",
+      "element": "H",
+      "symbol": "H",
+      "label": "H11",
+      "x": 0.833,
+      "y": -0.121,
+      "z": -2.181,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h12",
+      "element": "H",
+      "symbol": "H",
+      "label": "H12",
+      "x": 1.227,
+      "y": 1.575,
+      "z": 1.762,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h13",
+      "element": "H",
+      "symbol": "H",
+      "label": "H13",
+      "x": -1.596,
+      "y": -0.256,
+      "z": -1.885,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h14",
+      "element": "H",
+      "symbol": "H",
+      "label": "H14",
+      "x": -1.204,
+      "y": 1.443,
+      "z": 2.065,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h15",
+      "element": "H",
+      "symbol": "H",
+      "label": "H15",
+      "x": -3.476,
+      "y": 2.369,
+      "z": -0.762,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h16",
+      "element": "H",
+      "symbol": "H",
+      "label": "H16",
+      "x": -3.778,
+      "y": 0.919,
+      "z": -1.736,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h17",
+      "element": "H",
+      "symbol": "H",
+      "label": "H17",
+      "x": -4.911,
+      "y": 1.379,
+      "z": -0.461,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    },
+    {
+      "id": "ibuprofen-h18",
+      "element": "H",
+      "symbol": "H",
+      "label": "H18",
+      "x": -5.239,
+      "y": -1.941,
+      "z": 0.4,
+      "color": "#FFFFFF",
+      "radius": 0.25,
+      "hybridization": "s"
+    }
+  ],
+  "bonds": [
+    {
+      "id": "ibuprofen-b1",
+      "from": 0,
+      "to": 14,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b2",
+      "from": 0,
+      "to": 32,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b3",
+      "from": 1,
+      "to": 14,
+      "order": 2
+    },
+    {
+      "id": "ibuprofen-b4",
+      "from": 2,
+      "to": 3,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b5",
+      "from": 2,
+      "to": 7,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b6",
+      "from": 2,
+      "to": 8,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b7",
+      "from": 2,
+      "to": 15,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b8",
+      "from": 3,
+      "to": 4,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b9",
+      "from": 3,
+      "to": 16,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b10",
+      "from": 3,
+      "to": 17,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b11",
+      "from": 4,
+      "to": 9,
+      "order": 2
+    },
+    {
+      "id": "ibuprofen-b12",
+      "from": 4,
+      "to": 10,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b13",
+      "from": 5,
+      "to": 6,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b14",
+      "from": 5,
+      "to": 11,
+      "order": 2
+    },
+    {
+      "id": "ibuprofen-b15",
+      "from": 5,
+      "to": 12,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b16",
+      "from": 6,
+      "to": 13,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b17",
+      "from": 6,
+      "to": 14,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b18",
+      "from": 6,
+      "to": 18,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b19",
+      "from": 7,
+      "to": 19,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b20",
+      "from": 7,
+      "to": 20,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b21",
+      "from": 7,
+      "to": 21,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b22",
+      "from": 8,
+      "to": 22,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b23",
+      "from": 8,
+      "to": 23,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b24",
+      "from": 8,
+      "to": 24,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b25",
+      "from": 9,
+      "to": 11,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b26",
+      "from": 9,
+      "to": 25,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b27",
+      "from": 10,
+      "to": 12,
+      "order": 2
+    },
+    {
+      "id": "ibuprofen-b28",
+      "from": 10,
+      "to": 26,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b29",
+      "from": 11,
+      "to": 27,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b30",
+      "from": 12,
+      "to": 28,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b31",
+      "from": 13,
+      "to": 29,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b32",
+      "from": 13,
+      "to": 30,
+      "order": 1
+    },
+    {
+      "id": "ibuprofen-b33",
+      "from": 13,
+      "to": 31,
+      "order": 1
+    }
+  ],
+  "didactica": {
+    "descripcionCientifica": "Fármaco antiinflamatorio no esteroideo (AINE) derivado del ácido fenilalcanoico. Posee un anillo aromático 1,4-disustituido con una cadena alifática isobutilo apolar en un extremo y un ácido 2-propanoico quiral en el opuesto. Estructura anfifílica con cabeza ácida polar y cola hidrófoba lipofílica.",
+    "datosCuriosos": [
+      "Descubierto en 1961 por Stewart Adams y John Nicholson en Gran Bretaña durante investigaciones para tratar la artritis reumatoide.",
+      "Presenta un carbono asimétrico quiral (C2), pero el organismo humano invierte enzimáticamente in vivo el enantiómero inactivo (R) en el enantiómero farmacológicamente activo (S).",
+      "Inhibe de forma reversible las enzimas COX-1 y COX-2, reduciendo eficazmente las concentraciones periféricas de prostaglandinas en tejidos lesionados.",
+      "Pertenece a la Lista Modelo de Medicamentos Esenciales de la OMS como analgésico antiinflamatorio básico."
+    ],
+    "usosVidaCotidiana": [
+      "Alivio del dolor de origen dental, muscular, articular y traumatismos en deportistas.",
+      "Manejo de la dismenorrea primaria y cuadros inflamatorios agudos en atención ambulatoria.",
+      "Reducción eficaz de cuadros febriles resistentes a monoterapia básica."
+    ],
+    "geometriaMolecular": "Trigonal plana en anillo y carboxilo (sp² ~120°), Tetraédrica en ramificaciones isobutilo y carbono quiral (sp³ ~109.5°)",
+    "polaridad": "polar",
+    "justificacionPolaridad": "Carácter anfifílico: cabeza polar carboxílica ionizable (μ ≈ 1.68 D) acoplada a una cola hidrofóbica isobutilo no polar de alta liposolubilidad tisular.",
+    "datoClaveTrivia": "Posee un centro quiral pero el organismo humano realiza una inversión metabólica in vivo del enantiómero inactivo (R) al activo (S) mediante racemasa hepática."
+  },
+  "kitFisico": {
+    "esferas": {
+      "O": 2,
+      "C": 13,
+      "H": 18
+    },
+    "conectores": {
+      "cortosRigidos": 29,
+      "largosFlexibles": 8
+    },
+    "descripcionConectores": "29 conectores cortos rígidos para enlaces simples y 8 conectores largos flexibles para los 4 enlaces dobles.",
+    "tipsArmado": "Inicia con el anillo bencénico central. En una posición acopla la cola isobutilo (-CH₂-CH(CH₃)₂), uniendo primero un CH₂ y luego el CH que se bifurca en dos metilos. En la posición opuesta del anillo, conecta el carbono quiral con su metilo y el grupo ácido carboxílico terminal (-COOH).",
+    "compatibilidad": "requiere_flexibles"
+  },
+  "trivia": {
+    "pregunta": "¿Qué fenómeno estereoquímico notable experimenta el Ibuprofeno administrado como mezcla racémica en el cuerpo humano?",
+    "opciones": [
+      "Inversión metabólica unidireccional in vivo, donde el enantiómero inactivo (R) es convertido enzimáticamente en el enantiómero farmacológicamente activo (S).",
+      "Descarboxilación espontánea en la sangre que transforma la molécula en tolueno volátil inofensivo.",
+      "Polimerización macromolecular lineal que incrementa la viscosidad del plasma circulatorio.",
+      "Filtración selectiva inmediata en el glomérulo donde el isómero inactivo es eliminado por la piel mediante transpiración."
+    ],
+    "respuestaCorrecta": 0,
+    "explicacion": "Aunque la formulación convencional es una mezcla racémica 50:50 de (R)- e (S)-ibuprofeno, la enzima hepática alfa-metilacil-CoA racemasa invierte hasta un 60% del isómero (R) inactivo hacia el isómero (S) eucutómero, permitiendo una gran eficacia clínica global."
+  }
+}
 ];
 
 export const getMoleculeById = (id: string): MoleculeData | undefined => {
